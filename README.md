@@ -9,11 +9,13 @@ go get github.com/cloudwego/kitex@latest && go mod tidy
 generateSchema ：生成sql schema
 gormGen ：自动生成query代码
 
-# 编写model
-model/user.go
+# 创建dal层
+## 编写model
+./dal/model/user.go
+写入model
 
 # 生成schema
-cd cmd/generateSchema/ && go run gen.go
+cd cmd/migrateSchema/ && go run migrate.go
 
 # 生成DAO
-cd cmd/gormGen/ && go run gen.go
+cd cmd/gormGen && go run gen.go

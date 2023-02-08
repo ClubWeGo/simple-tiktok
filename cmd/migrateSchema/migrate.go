@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"genuser/model"
+	"usermicro/dal/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
