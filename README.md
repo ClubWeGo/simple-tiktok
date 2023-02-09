@@ -40,3 +40,7 @@ mysql8
 
 etcd
 - 0.0.0.0:2379
+
+docker部署
+- `docker build -t imagename:version .`
+- `docker run -t -i --rm -p 8888:8888 --name testserver imagename:version /bin/bash`
