@@ -2,38 +2,148 @@ package main
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/hex"
+	"usermicro/dal/model"
+	"usermicro/dal/query"
 	usermicro "usermicro/kitex_gen/usermicro"
+	service "usermicro/service"
 )
+
+func MD5(v string) string {
+	d := []byte(v)
+	m := md5.New()
+	m.Write(d)
+	return hex.EncodeToString(m.Sum(nil))
+}
 
 // UserServiceImpl implements the last service interface defined in the IDL.
 type UserServiceImpl struct{}
 
-// GetUserByNameMethod implements the UserServiceImpl interface.
-func (s *UserServiceImpl) GetUserByNameMethod(ctx context.Context, request *usermicro.GetUserReq) (resp *usermicro.GetUserResp, err error) {
+// GetUserMethod implements the UserServiceImpl interface.
+func (s *UserServiceImpl) GetUserMethod(ctx context.Context, request *usermicro.GetUserReq) (resp *usermicro.GetUserResp, err error) {
 	// TODO: Your code here...
-	return
+
+	user, err := service.QueryUserByIdOrNameOrEmail(request.Id, request.Name, request.Email)
+	if err != nil {
+		return &usermicro.GetUserResp{
+			Status: false,
+		}, err
+	}
+
+	userinstance, err := user.First()
+	if err != nil {
+		return &usermicro.GetUserResp{
+			Status: false,
+		}, err
+	}
+
+	return &usermicro.GetUserResp{
+		Status: true,
+		User: &usermicro.UserInfo{
+			Id:            int64(userinstance.ID),
+			Name:          userinstance.Name,
+			Email:         &userinstance.Email,
+			FollowCount:   userinstance.Follow_count,
+			FollowerCount: userinstance.Follower_count,
+		},
+	}, nil
 }
 
 // LoginUserMethod implements the UserServiceImpl interface.
 func (s *UserServiceImpl) LoginUserMethod(ctx context.Context, request *usermicro.LoginUserReq) (resp *usermicro.LoginUserResp, err error) {
 	// TODO: Your code here...
-	return
+	user, err := service.QueryUserByIdOrNameOrEmail(nil, request.Name, request.Email)
+	if err != nil {
+		return &usermicro.LoginUserResp{
+			Status: false,
+		}, err
+	}
+
+	userinstance, err := user.First()
+	if err != nil {
+		return &usermicro.LoginUserResp{
+			Status: false,
+		}, err
+	}
+
+	if MD5(request.Password) == userinstance.Password {
+		return &usermicro.LoginUserResp{
+			Status: true,
+		}, err
+	}
+
+	return &usermicro.LoginUserResp{
+		Status: true,
+	}, err
 }
 
 // CreateUserMethod implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CreateUserMethod(ctx context.Context, request *usermicro.CreateUserReq) (resp *usermicro.CreateUserResp, err error) {
 	// TODO: Your code here...
-	return
+	u := query.User
+
+	user1 := &model.User{
+		Name:           request.Name,
+		Email:          *request.Email,
+		Password:       MD5(request.Password),
+		Follow_count:   0,
+		Follower_count: 0,
+	}
+
+	err = u.Create(user1)
+	if err != nil {
+		return &usermicro.CreateUserResp{
+			Status: false,
+			User:   &usermicro.UserInfo{},
+		}, err
+	}
+	return &usermicro.CreateUserResp{
+		Status: true,
+		User: &usermicro.UserInfo{
+			Id:            int64(user1.ID),
+			Name:          user1.Name,
+			Email:         &user1.Email,
+			FollowCount:   user1.Follow_count,
+			FollowerCount: user1.Follower_count,
+		},
+	}, nil
 }
 
 // UpdateUserMethod implements the UserServiceImpl interface.
 func (s *UserServiceImpl) UpdateUserMethod(ctx context.Context, request *usermicro.UpdateUserReq) (resp *usermicro.UpdateUserResp, err error) {
 	// TODO: Your code here...
-	return
-}
+	u := query.User
 
-// FollowUserMethod implements the UserServiceImpl interface.
-func (s *UserServiceImpl) FollowUserMethod(ctx context.Context, request *usermicro.FollowUserReq) (resp *usermicro.FollowUserResp, err error) {
-	// TODO: Your code here...
-	return
+	user, err := service.QueryUserByIdOrName(request.Id, request.Name)
+	if err != nil {
+		return &usermicro.UpdateUserResp{
+			Status: false,
+		}, err
+	}
+
+	if request.Email != nil {
+		user.Update(u.Email, request.Email)
+	}
+	if request.Password != nil {
+		user.Update(u.Password, MD5(*request.Password))
+	}
+
+	userinstance, err := user.First()
+	if err != nil {
+		return &usermicro.UpdateUserResp{
+			Status: false,
+		}, err
+	}
+
+	return &usermicro.UpdateUserResp{
+		Status: true,
+		User: &usermicro.UserInfo{
+			Id:            int64(userinstance.ID),
+			Name:          userinstance.Name,
+			Email:         &userinstance.Email,
+			FollowCount:   userinstance.Follow_count,
+			FollowerCount: userinstance.Follower_count,
+		},
+	}, nil
 }

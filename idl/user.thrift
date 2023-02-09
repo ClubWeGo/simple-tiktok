@@ -7,7 +7,6 @@ struct UserInfo {
                             // bug，正则验证邮箱无法通过
     4: required i64 follow_count;
     5: required i64 follower_count;
-    6: required bool is_follow;
 }
 
 // login User
@@ -59,20 +58,9 @@ struct UpdateUserResp {
     2: optional UserInfo user; // 如果成功返回用户信息
 }
 
-// FollowUser
-struct FollowUserReq {
-    1: optional i64 id;
-    2: optional string name (vt.min_size = "6", vt.max_size = "30");
-}
-
-struct FollowUserResp {
-    1: required bool status; // 关注数自增逻辑由业务处理
-}
-
 service UserService {
-    GetUserResp GetUserByNameMethod(1: GetUserReq request)
+    GetUserResp GetUserMethod(1: GetUserReq request)
     LoginUserResp LoginUserMethod(1: LoginUserReq request)
     CreateUserResp CreateUserMethod(1: CreateUserReq request)
     UpdateUserResp UpdateUserMethod(1: UpdateUserReq request)
-    FollowUserResp FollowUserMethod(1: FollowUserReq request)
 }

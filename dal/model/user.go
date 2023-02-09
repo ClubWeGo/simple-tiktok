@@ -12,7 +12,6 @@ type User struct {
 	Email          string `gorm:"type:varchar(256)"`                      // max valid email 254
 	Follow_count   int64
 	Follower_count int64
-	Is_follow      bool
 }
 
 // 自定义query

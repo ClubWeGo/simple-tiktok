@@ -19,11 +19,10 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "UserService"
 	handlerType := (*usermicro.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetUserByNameMethod": kitex.NewMethodInfo(getUserByNameMethodHandler, newUserServiceGetUserByNameMethodArgs, newUserServiceGetUserByNameMethodResult, false),
-		"LoginUserMethod":     kitex.NewMethodInfo(loginUserMethodHandler, newUserServiceLoginUserMethodArgs, newUserServiceLoginUserMethodResult, false),
-		"CreateUserMethod":    kitex.NewMethodInfo(createUserMethodHandler, newUserServiceCreateUserMethodArgs, newUserServiceCreateUserMethodResult, false),
-		"UpdateUserMethod":    kitex.NewMethodInfo(updateUserMethodHandler, newUserServiceUpdateUserMethodArgs, newUserServiceUpdateUserMethodResult, false),
-		"FollowUserMethod":    kitex.NewMethodInfo(followUserMethodHandler, newUserServiceFollowUserMethodArgs, newUserServiceFollowUserMethodResult, false),
+		"GetUserMethod":    kitex.NewMethodInfo(getUserMethodHandler, newUserServiceGetUserMethodArgs, newUserServiceGetUserMethodResult, false),
+		"LoginUserMethod":  kitex.NewMethodInfo(loginUserMethodHandler, newUserServiceLoginUserMethodArgs, newUserServiceLoginUserMethodResult, false),
+		"CreateUserMethod": kitex.NewMethodInfo(createUserMethodHandler, newUserServiceCreateUserMethodArgs, newUserServiceCreateUserMethodResult, false),
+		"UpdateUserMethod": kitex.NewMethodInfo(updateUserMethodHandler, newUserServiceUpdateUserMethodArgs, newUserServiceUpdateUserMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "usermicro",
@@ -39,22 +38,22 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	return svcInfo
 }
 
-func getUserByNameMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*usermicro.UserServiceGetUserByNameMethodArgs)
-	realResult := result.(*usermicro.UserServiceGetUserByNameMethodResult)
-	success, err := handler.(usermicro.UserService).GetUserByNameMethod(ctx, realArg.Request)
+func getUserMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*usermicro.UserServiceGetUserMethodArgs)
+	realResult := result.(*usermicro.UserServiceGetUserMethodResult)
+	success, err := handler.(usermicro.UserService).GetUserMethod(ctx, realArg.Request)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newUserServiceGetUserByNameMethodArgs() interface{} {
-	return usermicro.NewUserServiceGetUserByNameMethodArgs()
+func newUserServiceGetUserMethodArgs() interface{} {
+	return usermicro.NewUserServiceGetUserMethodArgs()
 }
 
-func newUserServiceGetUserByNameMethodResult() interface{} {
-	return usermicro.NewUserServiceGetUserByNameMethodResult()
+func newUserServiceGetUserMethodResult() interface{} {
+	return usermicro.NewUserServiceGetUserMethodResult()
 }
 
 func loginUserMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -111,24 +110,6 @@ func newUserServiceUpdateUserMethodResult() interface{} {
 	return usermicro.NewUserServiceUpdateUserMethodResult()
 }
 
-func followUserMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*usermicro.UserServiceFollowUserMethodArgs)
-	realResult := result.(*usermicro.UserServiceFollowUserMethodResult)
-	success, err := handler.(usermicro.UserService).FollowUserMethod(ctx, realArg.Request)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newUserServiceFollowUserMethodArgs() interface{} {
-	return usermicro.NewUserServiceFollowUserMethodArgs()
-}
-
-func newUserServiceFollowUserMethodResult() interface{} {
-	return usermicro.NewUserServiceFollowUserMethodResult()
-}
-
 type kClient struct {
 	c client.Client
 }
@@ -139,11 +120,11 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) GetUserByNameMethod(ctx context.Context, request *usermicro.GetUserReq) (r *usermicro.GetUserResp, err error) {
-	var _args usermicro.UserServiceGetUserByNameMethodArgs
+func (p *kClient) GetUserMethod(ctx context.Context, request *usermicro.GetUserReq) (r *usermicro.GetUserResp, err error) {
+	var _args usermicro.UserServiceGetUserMethodArgs
 	_args.Request = request
-	var _result usermicro.UserServiceGetUserByNameMethodResult
-	if err = p.c.Call(ctx, "GetUserByNameMethod", &_args, &_result); err != nil {
+	var _result usermicro.UserServiceGetUserMethodResult
+	if err = p.c.Call(ctx, "GetUserMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -174,16 +155,6 @@ func (p *kClient) UpdateUserMethod(ctx context.Context, request *usermicro.Updat
 	_args.Request = request
 	var _result usermicro.UserServiceUpdateUserMethodResult
 	if err = p.c.Call(ctx, "UpdateUserMethod", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) FollowUserMethod(ctx context.Context, request *usermicro.FollowUserReq) (r *usermicro.FollowUserResp, err error) {
-	var _args usermicro.UserServiceFollowUserMethodArgs
-	_args.Request = request
-	var _result usermicro.UserServiceFollowUserMethodResult
-	if err = p.c.Call(ctx, "FollowUserMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

@@ -104,17 +104,3 @@ func (p *UpdateUserResp) IsValid() error {
 	}
 	return nil
 }
-func (p *FollowUserReq) IsValid() error {
-	if p.Name != nil {
-		if len(*p.Name) < int(6) {
-			return fmt.Errorf("field Name min_len rule failed, current value: %d", len(*p.Name))
-		}
-		if len(*p.Name) > int(30) {
-			return fmt.Errorf("field Name max_len rule failed, current value: %d", len(*p.Name))
-		}
-	}
-	return nil
-}
-func (p *FollowUserResp) IsValid() error {
-	return nil
-}

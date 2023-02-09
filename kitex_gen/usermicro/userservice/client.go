@@ -11,11 +11,10 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	GetUserByNameMethod(ctx context.Context, request *usermicro.GetUserReq, callOptions ...callopt.Option) (r *usermicro.GetUserResp, err error)
+	GetUserMethod(ctx context.Context, request *usermicro.GetUserReq, callOptions ...callopt.Option) (r *usermicro.GetUserResp, err error)
 	LoginUserMethod(ctx context.Context, request *usermicro.LoginUserReq, callOptions ...callopt.Option) (r *usermicro.LoginUserResp, err error)
 	CreateUserMethod(ctx context.Context, request *usermicro.CreateUserReq, callOptions ...callopt.Option) (r *usermicro.CreateUserResp, err error)
 	UpdateUserMethod(ctx context.Context, request *usermicro.UpdateUserReq, callOptions ...callopt.Option) (r *usermicro.UpdateUserResp, err error)
-	FollowUserMethod(ctx context.Context, request *usermicro.FollowUserReq, callOptions ...callopt.Option) (r *usermicro.FollowUserResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -47,9 +46,9 @@ type kUserServiceClient struct {
 	*kClient
 }
 
-func (p *kUserServiceClient) GetUserByNameMethod(ctx context.Context, request *usermicro.GetUserReq, callOptions ...callopt.Option) (r *usermicro.GetUserResp, err error) {
+func (p *kUserServiceClient) GetUserMethod(ctx context.Context, request *usermicro.GetUserReq, callOptions ...callopt.Option) (r *usermicro.GetUserResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetUserByNameMethod(ctx, request)
+	return p.kClient.GetUserMethod(ctx, request)
 }
 
 func (p *kUserServiceClient) LoginUserMethod(ctx context.Context, request *usermicro.LoginUserReq, callOptions ...callopt.Option) (r *usermicro.LoginUserResp, err error) {
@@ -65,9 +64,4 @@ func (p *kUserServiceClient) CreateUserMethod(ctx context.Context, request *user
 func (p *kUserServiceClient) UpdateUserMethod(ctx context.Context, request *usermicro.UpdateUserReq, callOptions ...callopt.Option) (r *usermicro.UpdateUserResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UpdateUserMethod(ctx, request)
-}
-
-func (p *kUserServiceClient) FollowUserMethod(ctx context.Context, request *usermicro.FollowUserReq, callOptions ...callopt.Option) (r *usermicro.FollowUserResp, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.FollowUserMethod(ctx, request)
 }
