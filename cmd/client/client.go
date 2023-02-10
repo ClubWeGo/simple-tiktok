@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"videomicro/kitex_gen/videomicro"
-	"videomicro/kitex_gen/videomicro/videoservice"
+	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro/videoservice"
 
 	"github.com/cloudwego/kitex/client"
 	etcd "github.com/kitex-contrib/registry-etcd"

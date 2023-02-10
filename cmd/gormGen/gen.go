@@ -2,7 +2,8 @@ package main
 
 import (
 	"log"
-	"videomicro/dal/model"
+
+	"github.com/ClubWeGo/videomicro/dal/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"

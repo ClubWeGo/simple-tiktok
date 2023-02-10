@@ -2,7 +2,8 @@ package dal
 
 import (
 	"log"
-	"videomicro/dal/query"
+
+	"github.com/ClubWeGo/videomicro/dal/query"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

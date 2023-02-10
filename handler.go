@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
-	"videomicro/dal/model"
-	"videomicro/dal/query"
-	videomicro "videomicro/kitex_gen/videomicro"
+
+	"github.com/ClubWeGo/videomicro/dal/model"
+	"github.com/ClubWeGo/videomicro/dal/query"
+	videomicro "github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 )
 
 // VideoServiceImpl implements the last service interface defined in the IDL.

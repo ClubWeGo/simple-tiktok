@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
-	"videomicro/dal"
-	"videomicro/kitex_gen/videomicro/videoservice"
+	"net"
+
+	"github.com/ClubWeGo/videomicro/dal"
+	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro/videoservice"
 
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
@@ -19,9 +21,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	addr, _ := net.ResolveTCPAddr("tcp", "0.0.0.0:10001")
 	svr := videoservice.NewServer(new(VideoServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "videoservice"}),
-		server.WithRegistry(r))
+		server.WithRegistry(r),
+		server.WithServiceAddr(addr))
 
 	err = svr.Run()
 

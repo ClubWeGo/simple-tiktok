@@ -4,9 +4,9 @@ package videoservice
 
 import (
 	"context"
+	videomicro "github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	videomicro "videomicro/kitex_gen/videomicro"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.

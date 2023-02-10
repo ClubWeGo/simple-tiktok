@@ -3,8 +3,8 @@
 package videoservice
 
 import (
+	videomicro "github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 	server "github.com/cloudwego/kitex/server"
-	videomicro "videomicro/kitex_gen/videomicro"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.

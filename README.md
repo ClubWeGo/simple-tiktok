@@ -2,9 +2,9 @@
 
 > 依赖 validator插件 ：`go install github.com/cloudwego/thrift-gen-validator@latest`
 ## 生成or更新服务代码
-`kitex --thrift-plugin validator -module videomicro -service videomicro ./idl/video.thrift`
+`kitex --thrift-plugin validator -module github.com/ClubWeGo/videomicro -service videomicro ./idl/video.thrift`
 
-without validator : `kitex -module videomicro -service videomicro ./idl/video.thrift`
+without validator : `kitex -module github.com/ClubWeGo/videomicro -service videomicro ./idl/video.thrift`
 
 go get github.com/cloudwego/kitex@latest && go mod tidy
 

@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"videomicro/dal/model"
+	"github.com/ClubWeGo/videomicro/dal/model"
 )
 
 func newVideo(db *gorm.DB, opts ...gen.DOOption) video {
