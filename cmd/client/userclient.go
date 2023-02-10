@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"time"
 
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro/userservice"
@@ -46,25 +45,24 @@ func main() {
 	}
 
 	// create user
-	datalist := generateTestData()
+	// datalist := generateTestData()
 
-	for _, user := range datalist {
-		resp, err := client.CreateUserMethod(context.Background(), &usermicro.CreateUserReq{Name: user.Name, Email: &user.Email, Password: user.Password})
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Println(resp)
-		time.Sleep(time.Second * 2)
-	}
+	// for _, user := range datalist {
+	// 	resp, err := client.CreateUserMethod(context.Background(), &usermicro.CreateUserReq{Name: user.Name, Email: &user.Email, Password: user.Password})
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	log.Println(resp)
+	// 	time.Sleep(time.Second * 2)
+	// }
 
 	// // get user
-	// var id int64 = 1
+	// var id int64 = 5
 	// resp1, err := client.GetUserMethod(context.Background(), &usermicro.GetUserReq{Id: &id})
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
 	// log.Println(resp1)
-	// // time.Sleep(time.Second * 3)
 
 	// update user
 	// var id int64 = 1
@@ -76,13 +74,13 @@ func main() {
 	// }
 	// log.Println(resp2)
 
-	// // login user
-	// // var id int64 = 1
-	// var newname = "hah"
-	// var newemail = "144611@qq.com"
-	// resp3, err := client.UpdateUserMethod(context.Background(), &usermicro.UpdateUserReq{Name: &newname, Email: &newemail})
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// log.Println(resp3)
+	// login user
+	// var id int64 = 1
+	var newname = "hah"
+	var Password = "123456"
+	resp3, err := client.LoginUserMethod(context.Background(), &usermicro.LoginUserReq{Name: &newname, Password: Password})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(resp3)
 }

@@ -58,6 +58,7 @@ func (s *UserServiceImpl) LoginUserMethod(ctx context.Context, request *usermicr
 	if err != nil {
 		return &usermicro.LoginUserResp{
 			Status: false,
+			User:   &usermicro.UserInfo{},
 		}, err
 	}
 
@@ -65,17 +66,26 @@ func (s *UserServiceImpl) LoginUserMethod(ctx context.Context, request *usermicr
 	if err != nil {
 		return &usermicro.LoginUserResp{
 			Status: false,
+			User:   &usermicro.UserInfo{},
 		}, err
 	}
 
 	if MD5(request.Password) == userinstance.Password {
-		return &usermicro.LoginUserResp{
+		return &usermicro.LoginUserResp{ // succeed
 			Status: true,
+			User: &usermicro.UserInfo{
+				Id:            int64(userinstance.ID),
+				Name:          userinstance.Name,
+				Email:         &userinstance.Email,
+				FollowCount:   userinstance.Follow_count,
+				FollowerCount: userinstance.Follower_count,
+			},
 		}, err
 	}
 
 	return &usermicro.LoginUserResp{
-		Status: true,
+		Status: false,
+		User:   &usermicro.UserInfo{},
 	}, err
 }
 
