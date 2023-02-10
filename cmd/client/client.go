@@ -21,25 +21,25 @@ type Video struct {
 
 func generateTestData() []Video {
 	data := make([]Video, 0)
-	// Thanks https://www.jianshu.com/p/d5f00ad58572
+	// Thanks https://gist.github.com/jsturgis/3b19447b304616f18657
 
 	data = append(data, Video{
-		"test1", 1, "https://media.w3.org/2010/05/sintel/trailer.mp4", "https://i.imgtg.com/2022/05/06/zJAiC.th.jpg",
+		"Big Buck Bunny tells the story of a giant rabbit", 1, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "https://i.imgtg.com/2022/05/06/zJAiC.th.jpg",
 	})
 	data = append(data, Video{
-		"test2", 2, "http://www.w3school.com.cn/example/html5/mov_bbb.mp4", "https://i.imgtg.com/2022/05/06/zJiVs.th.jpg",
+		"The first Blender Open Movie from 2006", 2, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", "https://i.imgtg.com/2022/05/06/zJiVs.th.jpg",
 	})
 	data = append(data, Video{
-		"test3", 1, "https://www.w3schools.com/html/movie.mp4", "https://i.imgtg.com/2022/05/06/zJNQS.th.jpg",
+		"HBO GO now works with Chromecast", 1, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "https://i.imgtg.com/2022/05/06/zJNQS.th.jpg",
 	})
 	data = append(data, Video{
-		"test4", 2, "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", "https://i.imgtg.com/2022/05/06/zJFbg.th.jpg",
+		"Introducing Chromecast. The easiest way to enjoy online video", 2, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", "https://i.imgtg.com/2022/05/06/zJFbg.th.jpg",
 	})
 	data = append(data, Video{
-		"test5", 3, "https://player.vimeo.com/external/188350983.sd.mp4?s=0bdf01fb5f5c66e43ddae76f573cef2a7786de64&profile_id=164", "https://i.imgtg.com/2022/05/06/zJAiC.th.jpg",
+		"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", 3, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", "https://i.imgtg.com/2022/05/06/zJAiC.th.jpg",
 	})
 	data = append(data, Video{
-		"test6", 1, "https://player.vimeo.com/external/188355959.sd.mp4?s=e5eea0f749282013db81a7e5cd047c57e066e2b9&profile_id=164", "https://i.imgtg.com/2022/05/06/zJK4L.th.png",
+		"Introducing Chromecast. The easiest way to enjoy onlin", 1, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", "https://i.imgtg.com/2022/05/06/zJK4L.th.png",
 	})
 	return data
 }

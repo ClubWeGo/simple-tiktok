@@ -6,7 +6,7 @@
 
 without validator : `kitex -module github.com/ClubWeGo/videomicro -service videomicro ./idl/video.thrift`
 
-go get github.com/cloudwego/kitex@latest && go mod tidy
+`go get github.com/cloudwego/kitex@latest && go mod tidy`
 
 ## gorm相关
 - cmd/generateSchema ：生成sql schema
