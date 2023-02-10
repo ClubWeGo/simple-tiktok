@@ -84,9 +84,14 @@ func (s *UserServiceImpl) CreateUserMethod(ctx context.Context, request *usermic
 	// TODO: Your code here...
 	u := query.User
 
+	var email string
+	if request.Email != nil {
+		email = *request.Email
+	}
+
 	user1 := &model.User{
 		Name:           request.Name,
-		Email:          *request.Email,
+		Email:          email,
 		Password:       MD5(request.Password),
 		Follow_count:   0,
 		Follower_count: 0,
