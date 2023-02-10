@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
-	"usermicro/dal"
-	usermicro "usermicro/kitex_gen/usermicro/userservice"
+	"net"
+
+	"github.com/ClubWeGo/usermicro/dal"
+	usermicro "github.com/ClubWeGo/usermicro/kitex_gen/usermicro/userservice"
 
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
@@ -19,9 +21,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	addr, _ := net.ResolveTCPAddr("tcp", "0.0.0.0:10000")
 	svr := usermicro.NewServer(new(UserServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "userservice"}),
-		server.WithRegistry(r))
+		server.WithRegistry(r),
+		server.WithServiceAddr(addr))
 
 	err = svr.Run()
 

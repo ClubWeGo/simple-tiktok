@@ -3,7 +3,7 @@ namespace go usermicro
 struct UserInfo {
     1: required i64 id;
     2: required string name (vt.min_size = "6", vt.max_size = "30"); // 汉字长度为3，此处限制2~10个汉字
-    3: optional string email //(vt.pattern = "^[A-Za-z0-9-_\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$"); // https://www.jianshu.com/p/5966a2d9df75
+    3: optional string email; //(vt.pattern = "^[A-Za-z0-9-_\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$"); // https://www.jianshu.com/p/5966a2d9df75
                             // bug，正则验证邮箱无法通过
     4: required i64 follow_count;
     5: required i64 follower_count;

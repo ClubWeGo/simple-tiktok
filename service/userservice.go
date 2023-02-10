@@ -2,7 +2,8 @@ package service
 
 import (
 	"errors"
-	"usermicro/dal/query"
+
+	"github.com/ClubWeGo/usermicro/dal/query"
 )
 
 func QueryUserByIdOrName(id *int64, name *string) (query.IUserDo, error) {

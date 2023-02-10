@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"usermicro/kitex_gen/usermicro"
-	"usermicro/kitex_gen/usermicro/userservice"
+	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro/userservice"
 
 	"github.com/cloudwego/kitex/client"
 	etcd "github.com/kitex-contrib/registry-etcd"

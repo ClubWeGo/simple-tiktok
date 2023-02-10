@@ -3,8 +3,8 @@
 package userservice
 
 import (
+	usermicro "github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	server "github.com/cloudwego/kitex/server"
-	usermicro "usermicro/kitex_gen/usermicro"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.

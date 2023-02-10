@@ -2,7 +2,8 @@ package dal
 
 import (
 	"log"
-	"usermicro/dal/query"
+
+	"github.com/ClubWeGo/usermicro/dal/query"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

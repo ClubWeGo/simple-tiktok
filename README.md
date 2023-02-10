@@ -2,11 +2,11 @@
 
 > 依赖 validator插件 ：`go install github.com/cloudwego/thrift-gen-validator@latest`
 ## 生成or更新服务代码
-`kitex --thrift-plugin validator -module usermicro -service usermicro ./idl/user.thrift`
+`kitex --thrift-plugin validator -module github.com/ClubWeGo/usermicro -service usermicro ./idl/user.thrift`
 
-without validator : `kitex -module usermicro -service usermicro ./idl/user.thrift`
+without validator : `kitex -module github.com/ClubWeGo/usermicro -service usermicro ./idl/user.thrift`
 
-go get github.com/cloudwego/kitex@latest && go mod tidy
+注意，一定要先go get下kitex：`go get github.com/cloudwego/kitex@latest && go mod tidy`
 
 ## gorm相关
 - cmd/generateSchema ：生成sql schema

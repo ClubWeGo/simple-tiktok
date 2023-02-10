@@ -1,4 +1,4 @@
-module usermicro
+module github.com/ClubWeGo/usermicro
 
 go 1.19
 
@@ -9,7 +9,7 @@ require (
 	gorm.io/driver/mysql v1.4.6
 	gorm.io/gen v0.3.21
 	gorm.io/gorm v1.24.5
-	gorm.io/plugin/dbresolver v1.3.0
+	gorm.io/plugin/dbresolver v1.4.1
 )
 
 require (

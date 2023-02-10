@@ -4,10 +4,11 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/hex"
-	"usermicro/dal/model"
-	"usermicro/dal/query"
-	usermicro "usermicro/kitex_gen/usermicro"
-	service "usermicro/service"
+
+	"github.com/ClubWeGo/usermicro/dal/model"
+	"github.com/ClubWeGo/usermicro/dal/query"
+	usermicro "github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
+	service "github.com/ClubWeGo/usermicro/service"
 )
 
 func MD5(v string) string {

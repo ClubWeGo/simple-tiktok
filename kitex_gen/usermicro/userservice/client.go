@@ -4,9 +4,9 @@ package userservice
 
 import (
 	"context"
+	usermicro "github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	usermicro "usermicro/kitex_gen/usermicro"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
