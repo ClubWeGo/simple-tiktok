@@ -12,7 +12,7 @@ import (
 var Userclient userservice.Client
 var Videoclient videoservice.Client
 
-func InitMicroServer(r discovery.Resolver) {
+func Init(r discovery.Resolver) {
 	uc, err := userservice.NewClient("userservice", client.WithResolver(r))
 	if err != nil {
 		log.Fatal(err)

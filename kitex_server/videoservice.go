@@ -38,3 +38,22 @@ func GetVideosByAuthorId(id int64) ([]*core.Video, error) {
 	}
 	return videoList, errors.New("kitex-usermicroserver : error to get user") // return a null user
 }
+
+func CreateVideo(title, playUrl, coverUrl string, authorId int64) error {
+	r, err := Videoclient.CreateVideoMethod(context.Background(), &videomicro.CreateVideoReq{
+		Title:    title,
+		AuthorId: authorId,
+		PlayUrl:  playUrl,
+		CoverUrl: coverUrl,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	if r.Status {
+		return nil
+	}
+	println(233)
+	return errors.New("kitex-usermicroserver : upload file information failed")
+}

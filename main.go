@@ -6,19 +6,31 @@ import (
 	"log"
 
 	"github.com/ClubWeGo/douyin/kitex_server"
+	"github.com/ClubWeGo/douyin/minio_server"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	etcd "github.com/kitex-contrib/registry-etcd"
 )
 
 func main() {
+
+	// connect Etcd
 	r, err := etcd.NewEtcdResolver([]string{"0.0.0.0:2379"})
 	if err != nil {
 		log.Fatal(err)
 	}
+	// connect Micro srever
+	kitex_server.Init(r)
 
-	kitex_server.InitMicroServer(r)
+	minioConfig := minio_server.Config{
+		Endpoint:        "192.168.2.6:9000",
+		AccessKeyID:     "minioadmin",
+		SecretAccessKey: "minioadmin",
+		UseSSL:          false,
+	}
+	// init minio
+	minio_server.Init(minioConfig)
 
-	h := server.Default(server.WithMaxRequestBodySize(100 * 1024 * 1024))
+	h := server.Default(server.WithMaxRequestBodySize(20 << 20))
 
 	register(h)
 	h.Spin()
