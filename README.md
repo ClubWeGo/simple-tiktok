@@ -38,6 +38,8 @@
 
 依赖另外两个微服务的代码仓库
 
+(微服务代码更新后，需主动执行来更新代码)
+
 go get github.com/ClubWeGo/videomicro@latest
 
 go get github.com/ClubWeGo/usermicro@latest

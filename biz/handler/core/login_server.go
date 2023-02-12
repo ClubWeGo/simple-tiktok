@@ -38,7 +38,7 @@ func LoginMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp.StatusMsg = &msgsucceed
 	resp.UserID = userid
-	resp.Token = tools.GetToken(userid)
+	resp.Token = tools.GenerateToken(userid)
 
 	c.JSON(consts.StatusOK, resp)
 }

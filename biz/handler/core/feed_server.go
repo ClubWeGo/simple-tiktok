@@ -4,9 +4,11 @@ package core
 
 import (
 	"context"
+	"time"
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
+	"github.com/ClubWeGo/douyin/tools"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -28,11 +30,18 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(core.FeedResp)
 
-	// 本项目没有采用时间作为查询依据，使用offset作为依据，
-	// 存在问题：如果后续有新视频上传，会导致给用户推荐重复视频流 明天修改，微服务改成使用时间查询的方式
-
-	vclient := kitex_server.Videoclient
-	r, err := vclient.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{Offset: 0, Limit: 30})
+	token := req.Token
+	latestTime := time.Now().Unix()
+	if token != nil { // 没有登录时，token是nil，有token才会去获取设备记录的NextTime
+		latestTime, err = tools.GetNextTimeByToken(*token)
+		if err != nil {
+			resp.StatusCode = 1
+			resp.StatusMsg = &msgFailed
+			c.JSON(consts.StatusOK, resp)
+			return
+		}
+	}
+	r, err := kitex_server.Videoclient.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 30})
 	if err != nil {
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
