@@ -1,33 +1,48 @@
 package tools
 
 import (
-	"fmt"
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
 )
 
 var Tokens = "testtoken"
 var UserID int64 = 2
 var NextTime int64 = 1600000000
 
-// 暂时简单生成
+type CustomClaims struct {
+	Id int64 `json:"id"`
+	jwt.RegisteredClaims
+}
+
+var JWTSecret = []byte("defaulthmacsamplesecret") // need set while init
+// ref : https://github.com/golang-jwt/jwt
+
 func GenerateToken(userid int64) string {
-	token := Tokens + fmt.Sprint(userid)
-	return token
+	claims := CustomClaims{
+		userid,
+		jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(168 * time.Hour)), // 一周过期时间
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, _ := token.SignedString(JWTSecret)
+	return tokenString
 }
 
-// Token鉴权,暂时默认通过
-func ValidateToken(token string) (valid bool, err error) {
-	return true, nil // 这里交给后续token去做处理
-}
+// Token鉴权
+func ValidateToken(tokenString string) (valid bool, userid int64, err error) {
+	tokenClaims, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return JWTSecret, nil
+	})
+	if err != nil {
+		return false, 0, err
+	}
 
-func GetUserIdByToken(token string) (userid int64, err error) {
-	// 1. 通过存储token的数据库查询
-	// 2. 反解析token得到userid
-	return UserID, nil
-}
-
-func GetNextTimeByToken(token string) (nextTime int64, err error) {
-	// feed接口存储NextTime标识该用户的历史请求的时间，
-	// 用户下滑刷新需要刷新这个时间戳
-	// 可以通过时间比较来实现，超过几分钟之后，下次请求不使用该NextTime，使用最新时间
-	return NextTime, nil
+	if tokenClaims != nil {
+		if claims, ok := tokenClaims.Claims.(*CustomClaims); ok && tokenClaims.Valid {
+			return true, claims.Id, nil
+		}
+	}
+	return false, 0, err
 }

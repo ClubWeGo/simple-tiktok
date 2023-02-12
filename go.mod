@@ -11,6 +11,7 @@ require (
 	github.com/cloudwego/hertz v0.5.2
 	github.com/cloudwego/kitex v0.4.4
 	github.com/disintegration/imaging v1.6.2
+	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/google/uuid v1.3.0
 	github.com/kitex-contrib/registry-etcd v0.1.0
 	github.com/minio/minio-go/v7 v7.0.47

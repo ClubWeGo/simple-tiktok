@@ -4,11 +4,9 @@ package core
 
 import (
 	"context"
-	"time"
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
-	"github.com/ClubWeGo/douyin/tools"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -30,17 +28,9 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(core.FeedResp)
 
-	token := req.Token
-	latestTime := time.Now().Unix()
-	if token != nil { // 没有登录时，token是nil，有token才会去获取设备记录的NextTime
-		latestTime, err = tools.GetNextTimeByToken(*token)
-		if err != nil {
-			resp.StatusCode = 1
-			resp.StatusMsg = &msgFailed
-			c.JSON(consts.StatusOK, resp)
-			return
-		}
-	}
+	// token := req.Token // 目前该api无需token，后续增加登录定制化内容则需根据token获取其他参数
+	latestTime := *req.LatestTime // app传入的是13位毫秒级时间戳，usermicro需传入纳秒级时间戳
+	latestTime *= 1e6             // 转为纳秒
 	r, err := kitex_server.Videoclient.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 30})
 	if err != nil {
 		resp.StatusCode = 1
@@ -66,6 +56,8 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp.StatusMsg = &msgsucceed
+	nextTimeMs := (*r.NextTime) / 1e6 // 转为毫秒
+	resp.NextTime = &nextTimeMs
 
 	c.JSON(consts.StatusOK, resp)
 }

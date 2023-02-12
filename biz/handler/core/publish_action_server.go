@@ -35,7 +35,7 @@ func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 	// println(req.Title, "|", title) //  | seclee上传的第一个视频
 	resp := new(core.PublishActionResp)
 
-	ifValid, err := tools.ValidateToken(token)
+	ifValid, authorId, err := tools.ValidateToken(token)
 	if err != nil {
 		msgFailed := "无效Token或Token已失效"
 		resp.StatusCode = 1
@@ -93,7 +93,6 @@ func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	authorId, err := tools.GetUserIdByToken(token)
 	err = kitex_server.CreateVideo(title, videourl, coverurl, authorId)
 	if err != nil {
 		resp.StatusCode = 1

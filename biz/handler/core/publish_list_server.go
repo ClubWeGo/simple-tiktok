@@ -25,7 +25,7 @@ func PublishListMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(core.PublishListResp)
 
-	ifValid, err := tools.ValidateToken(req.Token)
+	ifValid, _, err := tools.ValidateToken(req.Token)
 	if err != nil {
 		msgFailed := "无效Token或Token已失效"
 		resp.StatusCode = 1
