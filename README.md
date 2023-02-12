@@ -29,7 +29,7 @@
     创建douyin桶，
     设置douyin桶策略的权限为public
 
-- [ ] feed目前是分页的方式，需要改为题目要求的时间点+limit的方式，videomicro需要同步改动
+- [x] feed目前是分页的方式，需要改为题目要求的时间点+limit的方式，videomicro需要同步改动
 - [ ] 需要加vd校验字段，重新生成带校验的代码
 - [ ] token登录(jwt?)，注意视频上传需要通过token查user，实现token的时候记得实现tools token中的ValidateToken返回对应userid
 - [ ] 可选功能，选哪个？，(基础部分的isfollow与isFavourite)
