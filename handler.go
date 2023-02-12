@@ -109,7 +109,7 @@ func (s *VideoServiceImpl) GetVideosFeedMethod(ctx context.Context, request *vid
 
 	v := query.Video
 	// Desc 倒序查询
-	startTime := time.Unix(request.LatestTime, 0)
+	startTime := time.Unix(0, request.LatestTime)
 	videolist, err := v.Where(v.CreatedAt.Lt(startTime)).Limit(int(request.Limit)).Order(v.CreatedAt.Desc()).Find()
 	if err != nil {
 		return &videomicro.GetVideosFeedResp{
@@ -140,7 +140,7 @@ func (s *VideoServiceImpl) GetVideosFeedMethod(ctx context.Context, request *vid
 		})
 	}
 
-	endTimeUnix := videolist[len(videolist)-1].CreatedAt.Unix()
+	endTimeUnix := videolist[len(videolist)-1].CreatedAt.UnixNano()
 
 	return &videomicro.GetVideosFeedResp{
 		Status:    true,
