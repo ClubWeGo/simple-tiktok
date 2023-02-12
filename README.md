@@ -27,7 +27,7 @@ cd cmd/gormGen && go run gen.go
 
 ## 运行
 - 编译 : sh ./build.sh
-- 运行服务 : sh ./bootstrap.sh
+- 运行服务 : sh ./output/bootstrap.sh
 - 运行client : cd /cmd/client && go run userclient.go
 
 配置信息：

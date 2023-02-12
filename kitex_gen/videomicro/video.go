@@ -1534,8 +1534,6 @@ func (p *GetVideoResp) Field2DeepEqual(src *Video) bool {
 
 type GetVideosByAuthorIdReq struct {
 	AuthorId int64 `thrift:"author_id,1,required" frugal:"1,required,i64" json:"author_id"`
-	Offset   int32 `thrift:"offset,2,required" frugal:"2,required,i32" json:"offset"`
-	Limit    int32 `thrift:"limit,3,required" frugal:"3,required,i32" json:"limit"`
 }
 
 func NewGetVideosByAuthorIdReq() *GetVideosByAuthorIdReq {
@@ -1549,28 +1547,12 @@ func (p *GetVideosByAuthorIdReq) InitDefault() {
 func (p *GetVideosByAuthorIdReq) GetAuthorId() (v int64) {
 	return p.AuthorId
 }
-
-func (p *GetVideosByAuthorIdReq) GetOffset() (v int32) {
-	return p.Offset
-}
-
-func (p *GetVideosByAuthorIdReq) GetLimit() (v int32) {
-	return p.Limit
-}
 func (p *GetVideosByAuthorIdReq) SetAuthorId(val int64) {
 	p.AuthorId = val
-}
-func (p *GetVideosByAuthorIdReq) SetOffset(val int32) {
-	p.Offset = val
-}
-func (p *GetVideosByAuthorIdReq) SetLimit(val int32) {
-	p.Limit = val
 }
 
 var fieldIDToName_GetVideosByAuthorIdReq = map[int16]string{
 	1: "author_id",
-	2: "offset",
-	3: "limit",
 }
 
 func (p *GetVideosByAuthorIdReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1578,8 +1560,6 @@ func (p *GetVideosByAuthorIdReq) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetAuthorId bool = false
-	var issetOffset bool = false
-	var issetLimit bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1606,28 +1586,6 @@ func (p *GetVideosByAuthorIdReq) Read(iprot thrift.TProtocol) (err error) {
 					goto SkipFieldError
 				}
 			}
-		case 2:
-			if fieldTypeId == thrift.I32 {
-				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetOffset = true
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		case 3:
-			if fieldTypeId == thrift.I32 {
-				if err = p.ReadField3(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetLimit = true
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -1644,16 +1602,6 @@ func (p *GetVideosByAuthorIdReq) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetAuthorId {
 		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetOffset {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetLimit {
-		fieldId = 3
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -1683,24 +1631,6 @@ func (p *GetVideosByAuthorIdReq) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GetVideosByAuthorIdReq) ReadField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI32(); err != nil {
-		return err
-	} else {
-		p.Offset = v
-	}
-	return nil
-}
-
-func (p *GetVideosByAuthorIdReq) ReadField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI32(); err != nil {
-		return err
-	} else {
-		p.Limit = v
-	}
-	return nil
-}
-
 func (p *GetVideosByAuthorIdReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("GetVideosByAuthorIdReq"); err != nil {
@@ -1709,14 +1639,6 @@ func (p *GetVideosByAuthorIdReq) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
-			goto WriteFieldError
-		}
-		if err = p.writeField3(oprot); err != nil {
-			fieldId = 3
 			goto WriteFieldError
 		}
 
@@ -1755,40 +1677,6 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *GetVideosByAuthorIdReq) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("offset", thrift.I32, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI32(p.Offset); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
-
-func (p *GetVideosByAuthorIdReq) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("limit", thrift.I32, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI32(p.Limit); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
-}
-
 func (p *GetVideosByAuthorIdReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -1805,32 +1693,12 @@ func (p *GetVideosByAuthorIdReq) DeepEqual(ano *GetVideosByAuthorIdReq) bool {
 	if !p.Field1DeepEqual(ano.AuthorId) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.Offset) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.Limit) {
-		return false
-	}
 	return true
 }
 
 func (p *GetVideosByAuthorIdReq) Field1DeepEqual(src int64) bool {
 
 	if p.AuthorId != src {
-		return false
-	}
-	return true
-}
-func (p *GetVideosByAuthorIdReq) Field2DeepEqual(src int32) bool {
-
-	if p.Offset != src {
-		return false
-	}
-	return true
-}
-func (p *GetVideosByAuthorIdReq) Field3DeepEqual(src int32) bool {
-
-	if p.Limit != src {
 		return false
 	}
 	return true
@@ -2104,8 +1972,8 @@ func (p *GetVideosByAuthorIdResp) Field2DeepEqual(src []*Video) bool {
 }
 
 type GetVideosFeedReq struct {
-	Offset int32 `thrift:"offset,1,required" frugal:"1,required,i32" json:"offset"`
-	Limit  int32 `thrift:"limit,2,required" frugal:"2,required,i32" json:"limit"`
+	LatestTime int64 `thrift:"latest_time,1,required" frugal:"1,required,i64" json:"latest_time"`
+	Limit      int32 `thrift:"limit,2,required" frugal:"2,required,i32" json:"limit"`
 }
 
 func NewGetVideosFeedReq() *GetVideosFeedReq {
@@ -2116,22 +1984,22 @@ func (p *GetVideosFeedReq) InitDefault() {
 	*p = GetVideosFeedReq{}
 }
 
-func (p *GetVideosFeedReq) GetOffset() (v int32) {
-	return p.Offset
+func (p *GetVideosFeedReq) GetLatestTime() (v int64) {
+	return p.LatestTime
 }
 
 func (p *GetVideosFeedReq) GetLimit() (v int32) {
 	return p.Limit
 }
-func (p *GetVideosFeedReq) SetOffset(val int32) {
-	p.Offset = val
+func (p *GetVideosFeedReq) SetLatestTime(val int64) {
+	p.LatestTime = val
 }
 func (p *GetVideosFeedReq) SetLimit(val int32) {
 	p.Limit = val
 }
 
 var fieldIDToName_GetVideosFeedReq = map[int16]string{
-	1: "offset",
+	1: "latest_time",
 	2: "limit",
 }
 
@@ -2139,7 +2007,7 @@ func (p *GetVideosFeedReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetOffset bool = false
+	var issetLatestTime bool = false
 	var issetLimit bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -2157,11 +2025,11 @@ func (p *GetVideosFeedReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetOffset = true
+				issetLatestTime = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -2192,7 +2060,7 @@ func (p *GetVideosFeedReq) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetOffset {
+	if !issetLatestTime {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -2220,10 +2088,10 @@ RequiredFieldNotSetError:
 }
 
 func (p *GetVideosFeedReq) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI32(); err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.Offset = v
+		p.LatestTime = v
 	}
 	return nil
 }
@@ -2271,10 +2139,10 @@ WriteStructEndError:
 }
 
 func (p *GetVideosFeedReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("offset", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("latest_time", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Offset); err != nil {
+	if err := oprot.WriteI64(p.LatestTime); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2317,7 +2185,7 @@ func (p *GetVideosFeedReq) DeepEqual(ano *GetVideosFeedReq) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Offset) {
+	if !p.Field1DeepEqual(ano.LatestTime) {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.Limit) {
@@ -2326,9 +2194,9 @@ func (p *GetVideosFeedReq) DeepEqual(ano *GetVideosFeedReq) bool {
 	return true
 }
 
-func (p *GetVideosFeedReq) Field1DeepEqual(src int32) bool {
+func (p *GetVideosFeedReq) Field1DeepEqual(src int64) bool {
 
-	if p.Offset != src {
+	if p.LatestTime != src {
 		return false
 	}
 	return true
@@ -2343,7 +2211,8 @@ func (p *GetVideosFeedReq) Field2DeepEqual(src int32) bool {
 
 type GetVideosFeedResp struct {
 	Status    bool     `thrift:"status,1,required" frugal:"1,required,bool" json:"status"`
-	VideoList []*Video `thrift:"video_list,2,optional" frugal:"2,optional,list<Video>" json:"video_list,omitempty"`
+	NextTime  *int64   `thrift:"next_time,2,optional" frugal:"2,optional,i64" json:"next_time,omitempty"`
+	VideoList []*Video `thrift:"video_list,3,optional" frugal:"3,optional,list<Video>" json:"video_list,omitempty"`
 }
 
 func NewGetVideosFeedResp() *GetVideosFeedResp {
@@ -2358,6 +2227,15 @@ func (p *GetVideosFeedResp) GetStatus() (v bool) {
 	return p.Status
 }
 
+var GetVideosFeedResp_NextTime_DEFAULT int64
+
+func (p *GetVideosFeedResp) GetNextTime() (v int64) {
+	if !p.IsSetNextTime() {
+		return GetVideosFeedResp_NextTime_DEFAULT
+	}
+	return *p.NextTime
+}
+
 var GetVideosFeedResp_VideoList_DEFAULT []*Video
 
 func (p *GetVideosFeedResp) GetVideoList() (v []*Video) {
@@ -2369,13 +2247,21 @@ func (p *GetVideosFeedResp) GetVideoList() (v []*Video) {
 func (p *GetVideosFeedResp) SetStatus(val bool) {
 	p.Status = val
 }
+func (p *GetVideosFeedResp) SetNextTime(val *int64) {
+	p.NextTime = val
+}
 func (p *GetVideosFeedResp) SetVideoList(val []*Video) {
 	p.VideoList = val
 }
 
 var fieldIDToName_GetVideosFeedResp = map[int16]string{
 	1: "status",
-	2: "video_list",
+	2: "next_time",
+	3: "video_list",
+}
+
+func (p *GetVideosFeedResp) IsSetNextTime() bool {
+	return p.NextTime != nil
 }
 
 func (p *GetVideosFeedResp) IsSetVideoList() bool {
@@ -2414,8 +2300,18 @@ func (p *GetVideosFeedResp) Read(iprot thrift.TProtocol) (err error) {
 				}
 			}
 		case 2:
-			if fieldTypeId == thrift.LIST {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -2469,6 +2365,15 @@ func (p *GetVideosFeedResp) ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetVideosFeedResp) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.NextTime = &v
+	}
+	return nil
+}
+
+func (p *GetVideosFeedResp) ReadField3(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
@@ -2500,6 +2405,10 @@ func (p *GetVideosFeedResp) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 
@@ -2539,8 +2448,27 @@ WriteFieldEndError:
 }
 
 func (p *GetVideosFeedResp) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetNextTime() {
+		if err = oprot.WriteFieldBegin("next_time", thrift.I64, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.NextTime); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *GetVideosFeedResp) writeField3(oprot thrift.TProtocol) (err error) {
 	if p.IsSetVideoList() {
-		if err = oprot.WriteFieldBegin("video_list", thrift.LIST, 2); err != nil {
+		if err = oprot.WriteFieldBegin("video_list", thrift.LIST, 3); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.VideoList)); err != nil {
@@ -2560,9 +2488,9 @@ func (p *GetVideosFeedResp) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *GetVideosFeedResp) String() string {
@@ -2581,7 +2509,10 @@ func (p *GetVideosFeedResp) DeepEqual(ano *GetVideosFeedResp) bool {
 	if !p.Field1DeepEqual(ano.Status) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.VideoList) {
+	if !p.Field2DeepEqual(ano.NextTime) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.VideoList) {
 		return false
 	}
 	return true
@@ -2594,7 +2525,19 @@ func (p *GetVideosFeedResp) Field1DeepEqual(src bool) bool {
 	}
 	return true
 }
-func (p *GetVideosFeedResp) Field2DeepEqual(src []*Video) bool {
+func (p *GetVideosFeedResp) Field2DeepEqual(src *int64) bool {
+
+	if p.NextTime == src {
+		return true
+	} else if p.NextTime == nil || src == nil {
+		return false
+	}
+	if *p.NextTime != *src {
+		return false
+	}
+	return true
+}
+func (p *GetVideosFeedResp) Field3DeepEqual(src []*Video) bool {
 
 	if len(p.VideoList) != len(src) {
 		return false

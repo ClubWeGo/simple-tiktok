@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"time"
 
 	"github.com/ClubWeGo/videomicro/dal/model"
 	"github.com/ClubWeGo/videomicro/dal/query"
@@ -66,8 +67,8 @@ func (s *VideoServiceImpl) GetVideosByAuthorIdMethod(ctx context.Context, reques
 	// TODO: Your code here...
 
 	v := query.Video
-
-	videolist, _, err := v.Where(v.Author_id.Eq(request.AuthorId)).Order(v.CreatedAt).FindByPage(int(request.Offset), int(request.Limit))
+	// return all video by this user, desc
+	videolist, err := v.Where(v.Author_id.Eq(request.AuthorId)).Order(v.CreatedAt.Desc()).Find()
 	if err != nil {
 		return &videomicro.GetVideosByAuthorIdResp{
 			Status: true,
@@ -75,6 +76,14 @@ func (s *VideoServiceImpl) GetVideosByAuthorIdMethod(ctx context.Context, reques
 	}
 
 	respvideolist := make([]*videomicro.Video, 0) //此处需要改进，很低效
+
+	// 如果没有视频，直接返回空信息
+	if len(videolist) == 0 {
+		return &videomicro.GetVideosByAuthorIdResp{
+			Status:    true,
+			VideoList: respvideolist,
+		}, nil
+	}
 
 	for _, video := range videolist {
 		respvideolist = append(respvideolist, &videomicro.Video{
@@ -99,8 +108,9 @@ func (s *VideoServiceImpl) GetVideosFeedMethod(ctx context.Context, request *vid
 	// TODO: Your code here...
 
 	v := query.Video
-	// 加order后是倒叙，默认正序
-	videolist, _, err := v.Order(v.CreatedAt).FindByPage(int(request.Offset), int(request.Limit))
+	// Desc 倒序查询
+	startTime := time.Unix(request.LatestTime, 0)
+	videolist, err := v.Where(v.CreatedAt.Lt(startTime)).Limit(int(request.Limit)).Order(v.CreatedAt.Desc()).Find()
 	if err != nil {
 		return &videomicro.GetVideosFeedResp{
 			Status: true,
@@ -108,6 +118,15 @@ func (s *VideoServiceImpl) GetVideosFeedMethod(ctx context.Context, request *vid
 	}
 
 	respvideolist := make([]*videomicro.Video, 0) //此处需要改进，很低效
+
+	// 如果没有视频，则直接返回空信息，且时间为传入的判断时间
+	if len(videolist) == 0 {
+		return &videomicro.GetVideosFeedResp{
+			Status:    true,
+			NextTime:  &request.LatestTime,
+			VideoList: respvideolist,
+		}, nil
+	}
 
 	for _, video := range videolist {
 		respvideolist = append(respvideolist, &videomicro.Video{
@@ -121,8 +140,11 @@ func (s *VideoServiceImpl) GetVideosFeedMethod(ctx context.Context, request *vid
 		})
 	}
 
+	endTimeUnix := videolist[len(videolist)-1].CreatedAt.Unix()
+
 	return &videomicro.GetVideosFeedResp{
 		Status:    true,
+		NextTime:  &endTimeUnix,
 		VideoList: respvideolist,
 	}, nil
 }

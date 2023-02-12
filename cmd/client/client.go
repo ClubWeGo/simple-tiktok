@@ -55,21 +55,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// create video
-	testdata := generateTestData()
-	for _, video := range testdata {
-		resp, err := client.CreateVideoMethod(context.Background(), &videomicro.CreateVideoReq{
-			Title:    video.Title,
-			AuthorId: video.Author_id,
-			PlayUrl:  video.Play_url,
-			CoverUrl: video.Cover_url,
-		})
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Println(resp)
-		time.Sleep(time.Second * 2)
-	}
+	// // create video
+	// testdata := generateTestData()
+	// for _, video := range testdata {
+	// 	resp, err := client.CreateVideoMethod(context.Background(), &videomicro.CreateVideoReq{
+	// 		Title:    video.Title,
+	// 		AuthorId: video.Author_id,
+	// 		PlayUrl:  video.Play_url,
+	// 		CoverUrl: video.Cover_url,
+	// 	})
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	log.Println(resp)
+	// 	time.Sleep(time.Second * 2)
+	// }
 
 	// // get video
 	// resp1, err := client.GetVideoMethod(context.Background(), &videomicro.GetVideoReq{Id: 23})
@@ -78,15 +78,19 @@ func main() {
 	// }
 	// log.Println(resp1)
 
-	// // getFeed
-	// resp, err := client.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{Offset: 0, Limit: 30})
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// log.Println(resp)
+	// getFeed
+	latestTime := time.Now().Unix()
+	for i := 0; i < 3; i++ {
+		resp, err := client.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 3})
+		if err != nil {
+			log.Fatal(err)
+		}
+		latestTime = *resp.NextTime
+		log.Println(resp)
+	}
 
 	// // getUser's Videos
-	// resp, err := client.GetVideosByAuthorIdMethod(context.Background(), &videomicro.GetVideosByAuthorIdReq{AuthorId: 3, Offset: 0, Limit: 30})
+	// resp, err := client.GetVideosByAuthorIdMethod(context.Background(), &videomicro.GetVideosByAuthorIdReq{AuthorId: 2})
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }

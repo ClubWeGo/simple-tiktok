@@ -34,10 +34,8 @@ struct GetVideoResp {
 // get video list by author id
 struct GetVideosByAuthorIdReq {
     1: required i64 author_id;
-    2: required i32 offset; // 按页查询，比如一页30
-    3: required i32 limit;
 }
-// 返回按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个。
+
 struct GetVideosByAuthorIdResp {
     1: required bool status;
     2: optional list<Video> video_list; 
@@ -45,13 +43,14 @@ struct GetVideosByAuthorIdResp {
 
 // get video feed list
 struct GetVideosFeedReq {
-    1: required i32 offset; // 按页查询，比如一页30
+    1: required i64 latest_time; // hertz端如果有next time则用于latest_time，否则为最新时间的time.Now().Unix()
     2: required i32 limit;
 }
 // 返回按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个。
 struct GetVideosFeedResp {
     1: required bool status;
-    2: optional list<Video> video_list;
+    2: optional i64 next_time;
+    3: optional list<Video> video_list;
 }
 
 // delete video; 鉴权交予业务层处理
