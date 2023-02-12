@@ -37,7 +37,7 @@ func RegisterMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp.StatusMsg = &msgsucceed
-	resp.Token = tools.GetToken(userid)
+	resp.Token = tools.GenerateToken(userid)
 	resp.UserID = userid
 
 	c.JSON(consts.StatusOK, resp)

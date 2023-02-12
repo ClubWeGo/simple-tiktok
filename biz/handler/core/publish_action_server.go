@@ -35,14 +35,21 @@ func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 	// println(req.Title, "|", title) //  | seclee上传的第一个视频
 	resp := new(core.PublishActionResp)
 
-	authorId, ifValidToken := tools.ValidateToken(token)
-	if !ifValidToken {
+	ifValid, err := tools.ValidateToken(token)
+	if err != nil {
+		msgFailed := "无效Token或Token已失效"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
+	if !ifValid {
 		msgFailed := "没有权限发布视频"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
 		return
-	} // 接口是否校验token？
+	}
 
 	msgsucceed := "视频上传成功"
 	msgFailed := "视频上传失败"
@@ -86,6 +93,7 @@ func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	authorId, err := tools.GetUserIdByToken(token)
 	err = kitex_server.CreateVideo(title, videourl, coverurl, authorId)
 	if err != nil {
 		resp.StatusCode = 1

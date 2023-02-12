@@ -11,8 +11,6 @@ import (
 func GetVideosByAuthorId(id int64) ([]*core.Video, error) {
 	r, err := Videoclient.GetVideosByAuthorIdMethod(context.Background(), &videomicro.GetVideosByAuthorIdReq{
 		AuthorId: id,
-		Offset:   0,
-		Limit:    30, // 分页检索改为按时间和个数检索
 	})
 
 	videoList := make([]*core.Video, 0)

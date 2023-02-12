@@ -22,15 +22,15 @@ struct Video {
 
 # Feed
 struct FeedReq {
-    1: optional i64 latest_time; // 请求时间点
-    2: optional string token;
+    1: required i64 latest_time; // 请求时间点
+    2: required string token;
 }
 
 struct FeedResp {
     1: required i32 status_code;  // 0 success; 1 failed
     2: optional string status_msg;
     3: required list<Video> video_list;
-    4: optional i64 next_time; // 本次请求到数据中最早的时间作为下次请求的
+    4: required i64 next_time; // 本次请求到数据中最早的时间作为下次请求的开始时间
 }
 
 service FeedServer {

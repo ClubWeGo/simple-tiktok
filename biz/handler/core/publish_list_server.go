@@ -25,14 +25,21 @@ func PublishListMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(core.PublishListResp)
 
-	_, ifValidToken := tools.ValidateToken(req.Token)
-	if !ifValidToken {
-		msgFailed := "没有权限访问视频列表"
+	ifValid, err := tools.ValidateToken(req.Token)
+	if err != nil {
+		msgFailed := "无效Token或Token已失效"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
 		return
-	} // 接口是否校验token？
+	}
+	if !ifValid {
+		msgFailed := "没有权限发布视频"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
 
 	msgsucceed := "获取用户视频列表成功"
 	msgFailed := "获取用户视频列表失败"
