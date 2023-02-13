@@ -7,7 +7,6 @@ import (
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
-	"github.com/ClubWeGo/douyin/tools"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -25,21 +24,14 @@ func PublishListMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(core.PublishListResp)
 
-	ifValid, _, err := tools.ValidateToken(req.Token)
-	if err != nil {
-		msgFailed := "无效Token或Token已失效"
-		resp.StatusCode = 1
-		resp.StatusMsg = &msgFailed
-		c.JSON(consts.StatusOK, resp)
-		return
-	}
-	if !ifValid {
-		msgFailed := "没有权限发布视频"
-		resp.StatusCode = 1
-		resp.StatusMsg = &msgFailed
-		c.JSON(consts.StatusOK, resp)
-		return
-	}
+	// ifValid, _, err := tools.ValidateToken(req.Token)
+	// if err != nil {
+	// 	msgFailed := "无效Token或Token已失效"
+	// 	resp.StatusCode = 1
+	// 	resp.StatusMsg = &msgFailed
+	// 	c.JSON(consts.StatusOK, resp)
+	// 	return
+	// } // 此接口不需要校验token
 
 	msgsucceed := "获取用户视频列表成功"
 	msgFailed := "获取用户视频列表失败"
