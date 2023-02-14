@@ -163,3 +163,41 @@ func (s *UserServiceImpl) UpdateUserMethod(ctx context.Context, request *usermic
 		},
 	}, nil
 }
+
+// GetUserSetByIdSetMethod implements the UserServiceImpl interface.
+func (s *UserServiceImpl) GetUserSetByIdSetMethod(ctx context.Context, request *usermicro.GetUserSetByIdSetReq) (resp *usermicro.GetUserSetByIdSetResp, err error) {
+	// TODO: Your code here...
+
+	u := query.User
+
+	idSet := request.IdSet
+
+	// 切片互转有内存风险，暂采用最原始的方式转换id格式
+	idSetUint := make([]uint, len(idSet))
+	for index, id := range idSet {
+		idSetUint[index] = uint(id)
+	}
+
+	users, err := u.Where(u.ID.In(idSetUint...)).Find()
+	if err != nil {
+		return &usermicro.GetUserSetByIdSetResp{
+			Status: false,
+		}, err
+	}
+
+	respvideolist := make([]*usermicro.UserInfo, len(users))
+	for index, user := range users {
+		respvideolist[index] = &usermicro.UserInfo{
+			Id:            int64(user.ID),
+			Name:          user.Name,
+			Email:         &user.Email,
+			FollowCount:   user.Follow_count,
+			FollowerCount: user.Follower_count,
+		}
+	}
+
+	return &usermicro.GetUserSetByIdSetResp{
+		Status:  true,
+		UserSet: respvideolist,
+	}, nil
+}

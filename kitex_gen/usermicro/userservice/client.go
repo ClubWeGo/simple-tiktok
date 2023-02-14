@@ -12,6 +12,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	GetUserMethod(ctx context.Context, request *usermicro.GetUserReq, callOptions ...callopt.Option) (r *usermicro.GetUserResp, err error)
+	GetUserSetByIdSetMethod(ctx context.Context, request *usermicro.GetUserSetByIdSetReq, callOptions ...callopt.Option) (r *usermicro.GetUserSetByIdSetResp, err error)
 	LoginUserMethod(ctx context.Context, request *usermicro.LoginUserReq, callOptions ...callopt.Option) (r *usermicro.LoginUserResp, err error)
 	CreateUserMethod(ctx context.Context, request *usermicro.CreateUserReq, callOptions ...callopt.Option) (r *usermicro.CreateUserResp, err error)
 	UpdateUserMethod(ctx context.Context, request *usermicro.UpdateUserReq, callOptions ...callopt.Option) (r *usermicro.UpdateUserResp, err error)
@@ -49,6 +50,11 @@ type kUserServiceClient struct {
 func (p *kUserServiceClient) GetUserMethod(ctx context.Context, request *usermicro.GetUserReq, callOptions ...callopt.Option) (r *usermicro.GetUserResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetUserMethod(ctx, request)
+}
+
+func (p *kUserServiceClient) GetUserSetByIdSetMethod(ctx context.Context, request *usermicro.GetUserSetByIdSetReq, callOptions ...callopt.Option) (r *usermicro.GetUserSetByIdSetResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetUserSetByIdSetMethod(ctx, request)
 }
 
 func (p *kUserServiceClient) LoginUserMethod(ctx context.Context, request *usermicro.LoginUserReq, callOptions ...callopt.Option) (r *usermicro.LoginUserResp, err error) {

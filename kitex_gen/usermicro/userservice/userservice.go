@@ -19,10 +19,11 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "UserService"
 	handlerType := (*usermicro.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetUserMethod":    kitex.NewMethodInfo(getUserMethodHandler, newUserServiceGetUserMethodArgs, newUserServiceGetUserMethodResult, false),
-		"LoginUserMethod":  kitex.NewMethodInfo(loginUserMethodHandler, newUserServiceLoginUserMethodArgs, newUserServiceLoginUserMethodResult, false),
-		"CreateUserMethod": kitex.NewMethodInfo(createUserMethodHandler, newUserServiceCreateUserMethodArgs, newUserServiceCreateUserMethodResult, false),
-		"UpdateUserMethod": kitex.NewMethodInfo(updateUserMethodHandler, newUserServiceUpdateUserMethodArgs, newUserServiceUpdateUserMethodResult, false),
+		"GetUserMethod":           kitex.NewMethodInfo(getUserMethodHandler, newUserServiceGetUserMethodArgs, newUserServiceGetUserMethodResult, false),
+		"GetUserSetByIdSetMethod": kitex.NewMethodInfo(getUserSetByIdSetMethodHandler, newUserServiceGetUserSetByIdSetMethodArgs, newUserServiceGetUserSetByIdSetMethodResult, false),
+		"LoginUserMethod":         kitex.NewMethodInfo(loginUserMethodHandler, newUserServiceLoginUserMethodArgs, newUserServiceLoginUserMethodResult, false),
+		"CreateUserMethod":        kitex.NewMethodInfo(createUserMethodHandler, newUserServiceCreateUserMethodArgs, newUserServiceCreateUserMethodResult, false),
+		"UpdateUserMethod":        kitex.NewMethodInfo(updateUserMethodHandler, newUserServiceUpdateUserMethodArgs, newUserServiceUpdateUserMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "usermicro",
@@ -54,6 +55,24 @@ func newUserServiceGetUserMethodArgs() interface{} {
 
 func newUserServiceGetUserMethodResult() interface{} {
 	return usermicro.NewUserServiceGetUserMethodResult()
+}
+
+func getUserSetByIdSetMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*usermicro.UserServiceGetUserSetByIdSetMethodArgs)
+	realResult := result.(*usermicro.UserServiceGetUserSetByIdSetMethodResult)
+	success, err := handler.(usermicro.UserService).GetUserSetByIdSetMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceGetUserSetByIdSetMethodArgs() interface{} {
+	return usermicro.NewUserServiceGetUserSetByIdSetMethodArgs()
+}
+
+func newUserServiceGetUserSetByIdSetMethodResult() interface{} {
+	return usermicro.NewUserServiceGetUserSetByIdSetMethodResult()
 }
 
 func loginUserMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -125,6 +144,16 @@ func (p *kClient) GetUserMethod(ctx context.Context, request *usermicro.GetUserR
 	_args.Request = request
 	var _result usermicro.UserServiceGetUserMethodResult
 	if err = p.c.Call(ctx, "GetUserMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetUserSetByIdSetMethod(ctx context.Context, request *usermicro.GetUserSetByIdSetReq) (r *usermicro.GetUserSetByIdSetResp, err error) {
+	var _args usermicro.UserServiceGetUserSetByIdSetMethodArgs
+	_args.Request = request
+	var _result usermicro.UserServiceGetUserSetByIdSetMethodResult
+	if err = p.c.Call(ctx, "GetUserSetByIdSetMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
