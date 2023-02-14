@@ -79,9 +79,9 @@ func main() {
 	// log.Println(resp1)
 
 	// getFeed
-	latestTime := time.Now().Unix()
+	latestTime := time.Now().UnixNano() //与rpc通信 统一使用纳秒
 	for i := 0; i < 3; i++ {
-		resp, err := client.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 3})
+		resp, err := client.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 5})
 		if err != nil {
 			log.Fatal(err)
 		}

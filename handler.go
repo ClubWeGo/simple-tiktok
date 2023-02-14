@@ -75,18 +75,10 @@ func (s *VideoServiceImpl) GetVideosByAuthorIdMethod(ctx context.Context, reques
 		}, err
 	}
 
-	respvideolist := make([]*videomicro.Video, 0) //此处需要改进，很低效
+	respvideolist := make([]*videomicro.Video, len(videolist))
 
-	// 如果没有视频，直接返回空信息
-	if len(videolist) == 0 {
-		return &videomicro.GetVideosByAuthorIdResp{
-			Status:    true,
-			VideoList: respvideolist,
-		}, nil
-	}
-
-	for _, video := range videolist {
-		respvideolist = append(respvideolist, &videomicro.Video{
+	for index, video := range videolist {
+		respvideolist[index] = &videomicro.Video{
 			Id:            int64(video.ID),
 			Title:         video.Title,
 			AuthorId:      video.Author_id,
@@ -94,7 +86,7 @@ func (s *VideoServiceImpl) GetVideosByAuthorIdMethod(ctx context.Context, reques
 			CoverUrl:      video.Cover_url,
 			FavoriteCount: video.Favorite_count,
 			CommentCount:  video.Comment_count,
-		})
+		}
 	}
 
 	return &videomicro.GetVideosByAuthorIdResp{
@@ -117,19 +109,10 @@ func (s *VideoServiceImpl) GetVideosFeedMethod(ctx context.Context, request *vid
 		}, err
 	}
 
-	respvideolist := make([]*videomicro.Video, 0) //此处需要改进，很低效
+	respvideolist := make([]*videomicro.Video, len(videolist))
 
-	// 如果没有视频，则直接返回空信息，且时间为传入的判断时间
-	if len(videolist) == 0 {
-		return &videomicro.GetVideosFeedResp{
-			Status:    true,
-			NextTime:  &request.LatestTime,
-			VideoList: respvideolist,
-		}, nil
-	}
-
-	for _, video := range videolist {
-		respvideolist = append(respvideolist, &videomicro.Video{
+	for index, video := range videolist {
+		respvideolist[index] = &videomicro.Video{
 			Id:            int64(video.ID),
 			Title:         video.Title,
 			AuthorId:      video.Author_id,
@@ -137,10 +120,13 @@ func (s *VideoServiceImpl) GetVideosFeedMethod(ctx context.Context, request *vid
 			CoverUrl:      video.Cover_url,
 			FavoriteCount: video.Favorite_count,
 			CommentCount:  video.Comment_count,
-		})
+		}
 	}
 
-	endTimeUnix := videolist[len(videolist)-1].CreatedAt.UnixNano()
+	var endTimeUnix = request.LatestTime // 没有条目，则时间还是之前的，交由hertz端处理
+	if len(videolist) >= 1 {             // 搜到条目，则更新时间
+		endTimeUnix = videolist[len(videolist)-1].CreatedAt.UnixNano()
+	}
 
 	return &videomicro.GetVideosFeedResp{
 		Status:    true,
