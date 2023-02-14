@@ -68,6 +68,12 @@ func (p *GetUserResp) IsValid() error {
 	}
 	return nil
 }
+func (p *GetUserSetByIdSetReq) IsValid() error {
+	return nil
+}
+func (p *GetUserSetByIdSetResp) IsValid() error {
+	return nil
+}
 func (p *CreateUserReq) IsValid() error {
 	if len(p.Name) < int(6) {
 		return fmt.Errorf("field Name min_len rule failed, current value: %d", len(p.Name))

@@ -33,6 +33,16 @@ struct GetUserResp {
     2: optional UserInfo user; // 如果成功返回用户信息
 }
 
+// get user set
+struct GetUserSetByIdSetReq {
+    1: optional list<i64> id_set;  // 批量的id查询批量的用户
+}
+
+struct GetUserSetByIdSetResp {
+    1: required bool status;
+    2: optional list<UserInfo> user_set;
+}
+
 // CreateUser
 struct CreateUserReq {
     1: required string name (vt.min_size = "6", vt.max_size = "30");
@@ -60,6 +70,7 @@ struct UpdateUserResp {
 
 service UserService {
     GetUserResp GetUserMethod(1: GetUserReq request)
+    GetUserSetByIdSetResp GetUserSetByIdSetMethod(1: GetUserSetByIdSetReq request)
     LoginUserResp LoginUserMethod(1: LoginUserReq request)
     CreateUserResp CreateUserMethod(1: CreateUserReq request)
     UpdateUserResp UpdateUserMethod(1: UpdateUserReq request)

@@ -74,13 +74,22 @@ func main() {
 	// }
 	// log.Println(resp2)
 
-	// login user
-	// var id int64 = 1
-	var newname = "hah"
-	var Password = "123456"
-	resp3, err := client.LoginUserMethod(context.Background(), &usermicro.LoginUserReq{Name: &newname, Password: Password})
+	// // login user
+	// // var id int64 = 1
+	// var newname = "hah"
+	// var Password = "123456"
+	// resp3, err := client.LoginUserMethod(context.Background(), &usermicro.LoginUserReq{Name: &newname, Password: Password})
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// log.Println(resp3)
+
+	// get user_set by id_set
+	resp, err := client.GetUserSetByIdSetMethod(context.Background(), &usermicro.GetUserSetByIdSetReq{
+		IdSet: []int64{1, 2, 3},
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(resp3)
+	log.Println(resp)
 }
