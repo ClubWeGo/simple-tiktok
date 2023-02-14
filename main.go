@@ -1,11 +1,10 @@
 package main
 
 import (
-	"log"
-	"net"
-
 	"github.com/ClubWeGo/usermicro/dal"
 	usermicro "github.com/ClubWeGo/usermicro/kitex_gen/usermicro/userservice"
+	"log"
+	"net"
 
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
@@ -13,7 +12,8 @@ import (
 )
 
 func main() {
-	dsn := "tk:123456@tcp(127.0.0.1:3306)/simpletk?charset=utf8&parseTime=True&loc=Local"
+
+	dsn := "root:yutian@mysql+ssh(127.0.0.1:3306)/simpletk?charset=utf8&parseTime=True&loc=Local"
 	dal.InitDB(dsn)
 
 	r, err := etcd.NewEtcdRegistry([]string{"0.0.0.0:2379"})
