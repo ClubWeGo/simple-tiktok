@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-RUN_NAME="interactmicro"
+RUN_NAME="commentmicro"
 
 mkdir -p output/bin
 cp script/* output/
