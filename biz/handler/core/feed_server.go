@@ -4,6 +4,7 @@ package core
 
 import (
 	"context"
+	"time"
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
@@ -28,9 +29,16 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(core.FeedResp)
 
-	// token := req.Token // 目前该api无需token，后续增加登录定制化内容则需根据token获取其他参数
-	latestTime := *req.LatestTime // app传入的是13位毫秒级时间戳，usermicro需传入纳秒级时间戳
-	latestTime *= 1e6             // 转为纳秒
+	// 目前该api无需token，后续增加登录定制化内容则需根据token获取其他参数
+	// var token string
+	// if req.Token != nil { // 可选字段，需要验证是否存在，判断对应指针是否存在
+	// 	token = *req.Token
+	// }
+
+	var latestTime = time.Now().UnixNano()
+	if req.LatestTime != nil {
+		latestTime = (*req.LatestTime) * 1e6 // app传入的是13位毫秒级时间戳，usermicro需传入纳秒级时间戳
+	}
 	r, err := kitex_server.Videoclient.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 30})
 	if err != nil {
 		resp.StatusCode = 1
@@ -57,7 +65,7 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp.StatusMsg = &msgsucceed
 	nextTimeMs := (*r.NextTime) / 1e6 // 转为毫秒
-	resp.NextTime = &nextTimeMs
+	resp.NextTime = nextTimeMs
 
 	c.JSON(consts.StatusOK, resp)
 }

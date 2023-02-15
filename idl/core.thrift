@@ -22,8 +22,8 @@ struct Video {
 
 # Feed
 struct FeedReq {
-    1: required i64 latest_time; // 请求时间点
-    2: required string token;
+    1: optional i64 latest_time; // 请求时间点
+    2: optional string token;
 }
 
 struct FeedResp {
@@ -40,8 +40,8 @@ service FeedServer {
 
 # login
 struct LoginReq {
-    1: required string username;
-    2: required string password;
+    1: required string username (api.vd = "(len($) > 0 && len($) < 33); msg:sprintf('invalid account_type: %v',$)"); // 文档要求32个字符
+    2: required string password (api.vd = "(len($) > 0 && len($) < 33); msg:sprintf('invalid account_type: %v',$)");
 }
 
 struct LoginResp {
@@ -60,7 +60,7 @@ service LoginServer {
 struct PublishActionReq {
     1: required string token;
     2: required binary data;
-    3: required string title;
+    3: required string title; // 虽然没有写，但是标题长度也是得做限制的；需要考虑videomicro的表设计
 }
 
 struct PublishActionResp {
@@ -75,7 +75,7 @@ service PublishActionServer {
 
 # publishList
 struct PublishListReq {
-    1: required i64 user_id;
+    1: required i64 user_id (api.vd = "$>0; msg:sprintf('invalid user_id: %v',$)");
     2: required string token;
 }
 
@@ -92,8 +92,8 @@ service PublishListServer {
 
 # register
 struct RegisterReq {
-    1: required string username;
-    2: optional string password;
+    1: required string username (api.vd = "(len($) > 0 && len($) < 33); msg:sprintf('invalid account_type: %v',$)");
+    2: optional string password (api.vd = "(len($) > 0 && len($) < 33); msg:sprintf('invalid account_type: %v',$)");
 }
 
 struct RegisterResp {
@@ -110,7 +110,7 @@ service RegisterServer {
 
 # userinfo
 struct UserInfoReq {
-    1: required i64 user_id;
+    1: required i64 user_id (api.vd = "$>0; msg:sprintf('invalid user_id: %v',$)");
     2: required string token;
 }
 

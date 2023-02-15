@@ -13,15 +13,15 @@ func GetVideosByAuthorId(id int64) ([]*core.Video, error) {
 		AuthorId: id,
 	})
 
-	videoList := make([]*core.Video, 0)
+	videoList := make([]*core.Video, len(r.VideoList))
 	if err != nil {
 		return videoList, err
 	}
 	if r.Status {
 		author, _ := GetUser(id) // 避免不必要的检索
-		for _, video := range r.VideoList {
+		for index, video := range r.VideoList {
 			// 暂时不做处理，错误返回空对象即可
-			videoList = append(videoList, &core.Video{
+			videoList[index] = &core.Video{
 				ID:            video.Id,
 				Author:        author,
 				PlayURL:       video.PlayUrl,
@@ -30,11 +30,11 @@ func GetVideosByAuthorId(id int64) ([]*core.Video, error) {
 				CommentCount:  video.CommentCount,
 				IsFavorite:    false, // 需要增加喜欢配置
 				Title:         video.Title,
-			})
+			}
 		}
 		return videoList, nil
 	}
-	return videoList, errors.New("kitex-usermicroserver : error to get user") // return a null user
+	return videoList, errors.New("kitex-videomicroserver : error to get video by authorod") // return a null video list
 }
 
 func CreateVideo(title, playUrl, coverUrl string, authorId int64) error {
@@ -52,6 +52,5 @@ func CreateVideo(title, playUrl, coverUrl string, authorId int64) error {
 	if r.Status {
 		return nil
 	}
-	println(233)
-	return errors.New("kitex-usermicroserver : upload file information failed")
+	return errors.New("kitex-videomicroserver : create video failed")
 }
