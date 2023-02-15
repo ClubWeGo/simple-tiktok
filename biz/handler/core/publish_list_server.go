@@ -23,18 +23,30 @@ func PublishListMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	// 测试app中发现，所有的用户详情页都调用了该api
+	// 但是文档要求此api校验用户token权限
+	// 所以现在的效果是只有登录用户可以看到自己的发布列表
+
 	resp := new(core.PublishListResp)
 
-	ifValid, _, err := tools.ValidateToken(req.Token)
+	ifValid, userid, err := tools.ValidateToken(req.Token) // 此接口token为必须字段，所以不需要验证是否为空
 	if err != nil {
-		msgFailed := "无效Token或Token已失效"
+		msgFailed := "非法Token"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	} // 文档要求登录用户查询发布列表，故这里需要鉴权限
+	if !ifValid {
+		// 非法token
+		msgFailed := "无效Token"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
 		return
 	}
-	if !ifValid {
-		msgFailed := "没有权限发布视频"
+	if userid != req.UserID { // UserID为必须字段，所以不需要验证是否为空
+		msgFailed := "你没有权限访问，当前api仅用户本人可见"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)

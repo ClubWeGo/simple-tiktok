@@ -28,7 +28,7 @@ func GetUser(userid int64) (*core.User, error) {
 func RegisterUser(username, password string) (userid int64, err error) {
 	r, err := Userclient.CreateUserMethod(context.Background(), &usermicro.CreateUserReq{
 		Name:     username,
-		Password: password, //加密由user微服务进行
+		Password: password, // 此处传输明文，加密由user微服务进行
 	})
 	if err != nil {
 		return 0, errors.New("kitex-usermicroserver : error to create new user")

@@ -6,10 +6,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var Tokens = "testtoken"
-var UserID int64 = 2
-var NextTime int64 = 1600000000
-
 type CustomClaims struct {
 	Id int64 `json:"id"`
 	jwt.RegisteredClaims
