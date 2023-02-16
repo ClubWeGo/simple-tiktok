@@ -5,8 +5,9 @@ go 1.19
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	github.com/ClubWeGo/usermicro v0.0.0-20230210052926-4095a4e9d2f7
-	github.com/ClubWeGo/videomicro v0.0.0-20230212105952-0feb1cad7d9f
+	github.com/ClubWeGo/relationmicro v0.0.0-20230216103453-7b53cbe6042e
+	github.com/ClubWeGo/usermicro v0.0.0-20230214161119-afa68c10bf79
+	github.com/ClubWeGo/videomicro v0.0.0-20230214163648-819e4cc45d4d
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/hertz v0.5.2
 	github.com/cloudwego/kitex v0.4.4
@@ -14,7 +15,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/google/uuid v1.3.0
 	github.com/kitex-contrib/registry-etcd v0.1.0
-	github.com/minio/minio-go/v7 v7.0.47
+	github.com/minio/minio-go/v7 v7.0.48
 	github.com/u2takey/ffmpeg-go v0.4.1
 )
 
