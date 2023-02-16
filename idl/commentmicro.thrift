@@ -4,23 +4,23 @@ namespace go comment
 struct User {
     1: required i64 id;
     2: required string name;
-    3: optional i64 follow_count;
-    4: optional i64 follower_count;
-    5: required bool is_follow;
+    3: optional i64 follow_count;//关注总数
+    4: optional i64 follower_count;//粉丝总数
+    5: required bool is_follow;//true 已关注 false未关注该视频主
 }
 
 struct Comment {
-    1: required i64 id;
-    2: required User user;
-    3: required string content;
-    4: required string create_date;
+    1: required i64 id; //视频评论id
+    2: required User user;//评论用户的id
+    3: required string content; //评论内容
+    4: required string create_date;//评论发布日期时间 mm-dd
 }
 
 
 # commentList
 struct CommentListReq {
-    1: required string token;
-    2: required i64 video_id;
+    1: required string token;//用户鉴权token
+    2: required i64 video_id;//视频id
 }
 
 struct CommentListResp {
