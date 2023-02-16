@@ -12,7 +12,7 @@ func GetVideosByAuthorId(id int64) ([]*core.Video, error) {
 	r, err := Videoclient.GetVideosByAuthorIdMethod(context.Background(), &videomicro.GetVideosByAuthorIdReq{
 		AuthorId: id,
 	})
-
+	// 如果出错，拿到的是空切片，所以videoList也是空的
 	videoList := make([]*core.Video, len(r.VideoList))
 	if err != nil {
 		return videoList, err

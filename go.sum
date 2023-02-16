@@ -13,10 +13,12 @@ cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiy
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/ClubWeGo/usermicro v0.0.0-20230210052926-4095a4e9d2f7 h1:ApZnCk1sbgW/26OLZwKFpdsPaJ+vfZL/LphlzNz7Ufk=
-github.com/ClubWeGo/usermicro v0.0.0-20230210052926-4095a4e9d2f7/go.mod h1:ymo+Q5FzyxWJy5qQqJeWM5CaCCpebXLJJDuvEUhZm58=
-github.com/ClubWeGo/videomicro v0.0.0-20230212105952-0feb1cad7d9f h1:3Q79+y64EUTfDI0YXtqxOKbNXcvJBKbx6JKMODEWA98=
-github.com/ClubWeGo/videomicro v0.0.0-20230212105952-0feb1cad7d9f/go.mod h1:c1dNt+vAOK1sMH7IDZEfCzHPVDjkOrRiu9+pcekidaU=
+github.com/ClubWeGo/relationmicro v0.0.0-20230216103453-7b53cbe6042e h1:DK+DBcAdrOyskhh++NHQILVuawprEMjb4NcP+i7E8P0=
+github.com/ClubWeGo/relationmicro v0.0.0-20230216103453-7b53cbe6042e/go.mod h1:/Tc8EIH6LqyqIC4lbmoDE7RyWJVBF8tbRSGkG76j/6w=
+github.com/ClubWeGo/usermicro v0.0.0-20230214161119-afa68c10bf79 h1:UDT/uWXwUF6jhv0hSTCXuavaR5VHxv06obnP5q7b/i0=
+github.com/ClubWeGo/usermicro v0.0.0-20230214161119-afa68c10bf79/go.mod h1:t0WQl+w/flpA4yFJoCxdHnCb4cCDLWIStHQgUCSUPt8=
+github.com/ClubWeGo/videomicro v0.0.0-20230214163648-819e4cc45d4d h1:1W4eMqe9U/SJxISMEjAluTzgonGx0CwdFDCGotYvahs=
+github.com/ClubWeGo/videomicro v0.0.0-20230214163648-819e4cc45d4d/go.mod h1:c1dNt+vAOK1sMH7IDZEfCzHPVDjkOrRiu9+pcekidaU=
 github.com/HdrHistogram/hdrhistogram-go v1.1.2/go.mod h1:yDgFjdqOqDEKOvasDdhWNXYg9BVp4O+o5f6V/ehm6Oo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
@@ -298,8 +300,8 @@ github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5
 github.com/miekg/dns v1.0.14/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
 github.com/minio/md5-simd v1.1.2 h1:Gdi1DZK69+ZVMoNHRXJyNcxrMA4dSxoYHZSQbirFg34=
 github.com/minio/md5-simd v1.1.2/go.mod h1:MzdKDxYpY2BT9XQFocsiZf/NKVtR7nkE4RoEpN+20RM=
-github.com/minio/minio-go/v7 v7.0.47 h1:sLiuCKGSIcn/MI6lREmTzX91DX/oRau4ia0j6e6eOSs=
-github.com/minio/minio-go/v7 v7.0.47/go.mod h1:nCrRzjoSUQh8hgKKtu3Y708OLvRLtuASMg2/nvmbarw=
+github.com/minio/minio-go/v7 v7.0.48 h1:VQtYB/2xHW2SlxqhjRlDpvSiSOfGlyFlXZF1EHARPHM=
+github.com/minio/minio-go/v7 v7.0.48/go.mod h1:nCrRzjoSUQh8hgKKtu3Y708OLvRLtuASMg2/nvmbarw=
 github.com/minio/sha256-simd v1.0.0 h1:v1ta+49hkWZyvaKwrQB8elexRqm6Y0aMLjCNsrYxo6g=
 github.com/minio/sha256-simd v1.0.0/go.mod h1:OuYzVNI5vcoYIAmbIvHPl3N3jUzVedXbKy5RFepssQM=
 github.com/mitchellh/cli v1.0.0/go.mod h1:hNIlj7HEI86fIcpObd7a0FcrxTWetlwJDGcceTlRvqc=
