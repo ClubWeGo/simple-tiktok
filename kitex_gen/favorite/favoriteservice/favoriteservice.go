@@ -19,8 +19,9 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "FavoriteService"
 	handlerType := (*favorite.FavoriteService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"FavoriteMethod":     kitex.NewMethodInfo(favoriteMethodHandler, newFavoriteServiceFavoriteMethodArgs, newFavoriteServiceFavoriteMethodResult, false),
-		"FavoriteListMethod": kitex.NewMethodInfo(favoriteListMethodHandler, newFavoriteServiceFavoriteListMethodArgs, newFavoriteServiceFavoriteListMethodResult, false),
+		"FavoriteMethod":         kitex.NewMethodInfo(favoriteMethodHandler, newFavoriteServiceFavoriteMethodArgs, newFavoriteServiceFavoriteMethodResult, false),
+		"FavoriteListMethod":     kitex.NewMethodInfo(favoriteListMethodHandler, newFavoriteServiceFavoriteListMethodArgs, newFavoriteServiceFavoriteListMethodResult, false),
+		"FavoriteRelationMethod": kitex.NewMethodInfo(favoriteRelationMethodHandler, newFavoriteServiceFavoriteRelationMethodArgs, newFavoriteServiceFavoriteRelationMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "favorite",
@@ -72,6 +73,24 @@ func newFavoriteServiceFavoriteListMethodResult() interface{} {
 	return favorite.NewFavoriteServiceFavoriteListMethodResult()
 }
 
+func favoriteRelationMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*favorite.FavoriteServiceFavoriteRelationMethodArgs)
+	realResult := result.(*favorite.FavoriteServiceFavoriteRelationMethodResult)
+	success, err := handler.(favorite.FavoriteService).FavoriteRelationMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newFavoriteServiceFavoriteRelationMethodArgs() interface{} {
+	return favorite.NewFavoriteServiceFavoriteRelationMethodArgs()
+}
+
+func newFavoriteServiceFavoriteRelationMethodResult() interface{} {
+	return favorite.NewFavoriteServiceFavoriteRelationMethodResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -97,6 +116,16 @@ func (p *kClient) FavoriteListMethod(ctx context.Context, request *favorite.Favo
 	_args.Request = request
 	var _result favorite.FavoriteServiceFavoriteListMethodResult
 	if err = p.c.Call(ctx, "FavoriteListMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FavoriteRelationMethod(ctx context.Context, request *favorite.FavoriteRelationReq) (r *favorite.FavoriteRelationResp, err error) {
+	var _args favorite.FavoriteServiceFavoriteRelationMethodArgs
+	_args.Request = request
+	var _result favorite.FavoriteServiceFavoriteRelationMethodResult
+	if err = p.c.Call(ctx, "FavoriteRelationMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

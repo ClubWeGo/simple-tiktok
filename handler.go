@@ -34,3 +34,9 @@ func (s *FavoriteServiceImpl) FavoriteListMethod(ctx context.Context, request *f
 	// TODO: Your code here...
 	return
 }
+
+// FavoriteRelationMethod implements the FavoriteServiceImpl interface.
+func (s *FavoriteServiceImpl) FavoriteRelationMethod(ctx context.Context, request *favorite.FavoriteRelationReq) (resp *favorite.FavoriteRelationResp, err error) {
+	// TODO: Your code here...
+	return
+}

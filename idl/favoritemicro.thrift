@@ -44,8 +44,20 @@ struct FavoriteResp {
     2: optional string status_msg;
 }
 
+struct FavoriteRelationReq {
+    1: required i64 user_id;
+    2: required i64 video_id;
+}
+
+struct FavoriteRelationResp {
+    1: required i32 status_code;
+    2: optional string status_msg;
+    3: required bool is_favorite;
+}
+
 
 service FavoriteService {
     FavoriteResp FavoriteMethod(1: FavoriteReq request);
     FavoriteListResp FavoriteListMethod(1: FavoriteListReq request)
+    FavoriteRelationResp FavoriteRelationMethod(1: FavoriteRelationReq request);
 }
