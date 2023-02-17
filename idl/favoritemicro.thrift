@@ -25,6 +25,7 @@ struct FavoriteResp {
     2: optional string status_msg;
 }
 
+
 struct FavoriteRelationReq {
     1: required i64 user_id;
     2: required i64 video_id;
@@ -37,8 +38,33 @@ struct FavoriteRelationResp {
 }
 
 
+struct VideoFavoriteCountReq {
+    1: required i64 video_id;
+}
+
+struct VideoFavoriteCountResp {
+    1: required i32 status_code;
+    2: optional string status_msg;
+    3: required i64 favorite_count;
+}
+
+
+struct UserFavoriteCountReq {
+    1: required i32 user_id;
+}
+
+struct UserFavoriteCountResp {
+    1: required i32 status_code;
+    2: optional string status_msg;
+    3: required i64 favorite_count;
+    4: required i64 favorited_count;
+}
+
+
 service FavoriteService {
     FavoriteResp FavoriteMethod(1: FavoriteReq request);
     FavoriteListResp FavoriteListMethod(1: FavoriteListReq request)
     FavoriteRelationResp FavoriteRelationMethod(1: FavoriteRelationReq request);
+    VideoFavoriteCountResp VideoFavoriteCountMethod(1: VideoFavoriteCountReq request);
+    UserFavoriteCountResp UserFavoriteCountMethod(1: UserFavoriteCountReq request);
 }

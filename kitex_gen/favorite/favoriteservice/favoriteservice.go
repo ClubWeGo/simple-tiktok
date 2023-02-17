@@ -19,9 +19,11 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "FavoriteService"
 	handlerType := (*favorite.FavoriteService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"FavoriteMethod":         kitex.NewMethodInfo(favoriteMethodHandler, newFavoriteServiceFavoriteMethodArgs, newFavoriteServiceFavoriteMethodResult, false),
-		"FavoriteListMethod":     kitex.NewMethodInfo(favoriteListMethodHandler, newFavoriteServiceFavoriteListMethodArgs, newFavoriteServiceFavoriteListMethodResult, false),
-		"FavoriteRelationMethod": kitex.NewMethodInfo(favoriteRelationMethodHandler, newFavoriteServiceFavoriteRelationMethodArgs, newFavoriteServiceFavoriteRelationMethodResult, false),
+		"FavoriteMethod":           kitex.NewMethodInfo(favoriteMethodHandler, newFavoriteServiceFavoriteMethodArgs, newFavoriteServiceFavoriteMethodResult, false),
+		"FavoriteListMethod":       kitex.NewMethodInfo(favoriteListMethodHandler, newFavoriteServiceFavoriteListMethodArgs, newFavoriteServiceFavoriteListMethodResult, false),
+		"FavoriteRelationMethod":   kitex.NewMethodInfo(favoriteRelationMethodHandler, newFavoriteServiceFavoriteRelationMethodArgs, newFavoriteServiceFavoriteRelationMethodResult, false),
+		"VideoFavoriteCountMethod": kitex.NewMethodInfo(videoFavoriteCountMethodHandler, newFavoriteServiceVideoFavoriteCountMethodArgs, newFavoriteServiceVideoFavoriteCountMethodResult, false),
+		"UserFavoriteCountMethod":  kitex.NewMethodInfo(userFavoriteCountMethodHandler, newFavoriteServiceUserFavoriteCountMethodArgs, newFavoriteServiceUserFavoriteCountMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "favorite",
@@ -91,6 +93,42 @@ func newFavoriteServiceFavoriteRelationMethodResult() interface{} {
 	return favorite.NewFavoriteServiceFavoriteRelationMethodResult()
 }
 
+func videoFavoriteCountMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*favorite.FavoriteServiceVideoFavoriteCountMethodArgs)
+	realResult := result.(*favorite.FavoriteServiceVideoFavoriteCountMethodResult)
+	success, err := handler.(favorite.FavoriteService).VideoFavoriteCountMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newFavoriteServiceVideoFavoriteCountMethodArgs() interface{} {
+	return favorite.NewFavoriteServiceVideoFavoriteCountMethodArgs()
+}
+
+func newFavoriteServiceVideoFavoriteCountMethodResult() interface{} {
+	return favorite.NewFavoriteServiceVideoFavoriteCountMethodResult()
+}
+
+func userFavoriteCountMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*favorite.FavoriteServiceUserFavoriteCountMethodArgs)
+	realResult := result.(*favorite.FavoriteServiceUserFavoriteCountMethodResult)
+	success, err := handler.(favorite.FavoriteService).UserFavoriteCountMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newFavoriteServiceUserFavoriteCountMethodArgs() interface{} {
+	return favorite.NewFavoriteServiceUserFavoriteCountMethodArgs()
+}
+
+func newFavoriteServiceUserFavoriteCountMethodResult() interface{} {
+	return favorite.NewFavoriteServiceUserFavoriteCountMethodResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -126,6 +164,26 @@ func (p *kClient) FavoriteRelationMethod(ctx context.Context, request *favorite.
 	_args.Request = request
 	var _result favorite.FavoriteServiceFavoriteRelationMethodResult
 	if err = p.c.Call(ctx, "FavoriteRelationMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) VideoFavoriteCountMethod(ctx context.Context, request *favorite.VideoFavoriteCountReq) (r *favorite.VideoFavoriteCountResp, err error) {
+	var _args favorite.FavoriteServiceVideoFavoriteCountMethodArgs
+	_args.Request = request
+	var _result favorite.FavoriteServiceVideoFavoriteCountMethodResult
+	if err = p.c.Call(ctx, "VideoFavoriteCountMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UserFavoriteCountMethod(ctx context.Context, request *favorite.UserFavoriteCountReq) (r *favorite.UserFavoriteCountResp, err error) {
+	var _args favorite.FavoriteServiceUserFavoriteCountMethodArgs
+	_args.Request = request
+	var _result favorite.FavoriteServiceUserFavoriteCountMethodResult
+	if err = p.c.Call(ctx, "UserFavoriteCountMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

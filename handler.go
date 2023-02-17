@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/ClubWeGo/favoritemicro/dal/db"
 	favorite "github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
+	"github.com/ClubWeGo/favoritemicro/pack"
 	"log"
 )
 
@@ -13,30 +13,66 @@ type FavoriteServiceImpl struct{}
 
 // FavoriteMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) FavoriteMethod(ctx context.Context, request *favorite.FavoriteReq) (resp *favorite.FavoriteResp, err error) {
-	// TODO: Your code here...
-	//query.Favorite.Create(&query.FavoriteModel{request.Token, request.VideoId})
-	//if request.ActionType == 1 {
-	fmt.Println("add favorite")
-	err = db.AddFavorite(ctx, 1, 1)
-	if err != nil {
-		log.Println(err)
-		return nil, err
+	if request.ActionType == 1 {
+		err = db.AddFavorite(ctx, uint(request.UserId), uint(request.VideoId))
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		return &favorite.FavoriteResp{
+			StatusCode: 0,
+			StatusMsg:  &FavoriteSuccess,
+		}, nil
+	} else {
+		err = db.DeleteFavorite(ctx, uint(request.UserId), uint(request.VideoId))
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		return &favorite.FavoriteResp{
+			StatusCode: 0,
+			StatusMsg:  &FavoriteSuccess,
+		}, nil
 	}
-	//query.Favorite.Create(&query.FavoriteModel{request.Token, request.VideoId})
-	//} else {
-	//query.Favorite.Delete(&query.FavoriteModel{request.Token, request.VideoId})
-	//}
-	return
 }
 
 // FavoriteListMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) FavoriteListMethod(ctx context.Context, request *favorite.FavoriteListReq) (resp *favorite.FavoriteListResp, err error) {
-	// TODO: Your code here...
-	return
+	videoList, err := db.GetFavoriteList(ctx, uint(request.UserId))
+	if err != nil {
+		return nil, err
+	}
+	return &favorite.FavoriteListResp{
+		StatusCode: 0,
+		//StatusMsg:   &FavoriteSuccess,
+		VideoIdList: pack.Favorites(videoList),
+	}, nil
 }
 
 // FavoriteRelationMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) FavoriteRelationMethod(ctx context.Context, request *favorite.FavoriteRelationReq) (resp *favorite.FavoriteRelationResp, err error) {
+	cnt, err := db.GetFavoriteRelation(ctx, uint(request.UserId), uint(request.VideoId))
+	if err != nil {
+		return &favorite.FavoriteRelationResp{
+			StatusCode: 1,
+			IsFavorite: false,
+		}, nil
+	}
+	return &favorite.FavoriteRelationResp{
+		StatusCode: 0,
+		StatusMsg:  &FavoriteSuccess,
+		IsFavorite: cnt > 0,
+	}, nil
+}
+
+// UserFavoriteCountMethod implements the FavoriteServiceImpl interface.
+func (s *FavoriteServiceImpl) UserFavoriteCountMethod(ctx context.Context, request *favorite.UserFavoriteCountReq) (resp *favorite.UserFavoriteCountResp, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// VideoFavoriteCountMethod implements the FavoriteServiceImpl interface.
+func (s *FavoriteServiceImpl) VideoFavoriteCountMethod(ctx context.Context, request *favorite.VideoFavoriteCountReq) (resp *favorite.VideoFavoriteCountResp, err error) {
 	// TODO: Your code here...
 	return
 }
