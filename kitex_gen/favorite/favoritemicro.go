@@ -2109,7 +2109,7 @@ func (p *VideoFavoriteCountResp) Field3DeepEqual(src int64) bool {
 }
 
 type UserFavoriteCountReq struct {
-	UserId int32 `thrift:"user_id,1,required" frugal:"1,required,i32" json:"user_id"`
+	UserId int64 `thrift:"user_id,1,required" frugal:"1,required,i64" json:"user_id"`
 }
 
 func NewUserFavoriteCountReq() *UserFavoriteCountReq {
@@ -2120,10 +2120,10 @@ func (p *UserFavoriteCountReq) InitDefault() {
 	*p = UserFavoriteCountReq{}
 }
 
-func (p *UserFavoriteCountReq) GetUserId() (v int32) {
+func (p *UserFavoriteCountReq) GetUserId() (v int64) {
 	return p.UserId
 }
-func (p *UserFavoriteCountReq) SetUserId(val int32) {
+func (p *UserFavoriteCountReq) SetUserId(val int64) {
 	p.UserId = val
 }
 
@@ -2152,7 +2152,7 @@ func (p *UserFavoriteCountReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2199,7 +2199,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *UserFavoriteCountReq) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI32(); err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		p.UserId = v
@@ -2237,10 +2237,10 @@ WriteStructEndError:
 }
 
 func (p *UserFavoriteCountReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("user_id", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("user_id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.UserId); err != nil {
+	if err := oprot.WriteI64(p.UserId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2272,7 +2272,7 @@ func (p *UserFavoriteCountReq) DeepEqual(ano *UserFavoriteCountReq) bool {
 	return true
 }
 
-func (p *UserFavoriteCountReq) Field1DeepEqual(src int32) bool {
+func (p *UserFavoriteCountReq) Field1DeepEqual(src int64) bool {
 
 	if p.UserId != src {
 		return false

@@ -50,7 +50,7 @@ struct VideoFavoriteCountResp {
 
 
 struct UserFavoriteCountReq {
-    1: required i32 user_id;
+    1: required i64 user_id;
 }
 
 struct UserFavoriteCountResp {
