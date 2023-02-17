@@ -22,8 +22,7 @@ struct Video {
 
 # favoriteList
 struct FavoriteListReq {
-    1: required string token;
-    2: required i64 user_id;
+    1: required i64 user_id;
 }
 
 struct FavoriteListResp {
@@ -35,7 +34,7 @@ struct FavoriteListResp {
 
 # favorite
 struct FavoriteReq {
-    1: required string token;
+    1: required i64 user_id;
     2: required i64 video_id;
     3: required i32 action_type;
 }
