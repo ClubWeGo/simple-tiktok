@@ -2,7 +2,6 @@ package dal
 
 import (
 	"github.com/ClubWeGo/favoritemicro/dal/model"
-	"github.com/ClubWeGo/favoritemicro/dal/query"
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
 	"gorm.io/gorm"
@@ -28,12 +27,12 @@ func Init() {
 	g.UseDB(db) // reuse your gorm db
 
 	// Generate basic type-safe DAO API for struct `model.User` following conventions
-	g.ApplyBasic(model.Favorite{}, model.User{}, model.Video{})
+	g.ApplyBasic(model.Favorite{})
 
 	// Generate Type Safe API with Dynamic SQL defined on Querier interface for `model.User` and `model.Company`
 	//g.ApplyInterface(func(Querier){}, model.User{}, model.Company{})
 
 	// Generate the code
 	g.Execute()
-	query.SetDefault(db)
+	//query.SetDefault(db)
 }
