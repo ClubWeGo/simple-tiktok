@@ -1,6 +1,7 @@
 package kitex_server
 
 import (
+	"github.com/ClubWeGo/favoritemicro/kitex_gen/favorite/favoriteservice"
 	"log"
 
 	"github.com/ClubWeGo/relationmicro/kitex_gen/relation/combineservice"
@@ -13,6 +14,7 @@ import (
 var Userclient userservice.Client
 var Videoclient videoservice.Client
 var Relationclient combineservice.Client
+var FavoriteClient favoriteservice.Client
 
 func Init(r discovery.Resolver) {
 	uc, err := userservice.NewClient("userservice", client.WithResolver(r))
@@ -32,4 +34,10 @@ func Init(r discovery.Resolver) {
 		log.Fatal(err)
 	}
 	Relationclient = rc
+
+	fc, err := favoriteservice.NewClient("favoriteservice", client.WithResolver(r))
+	if err != nil {
+		log.Fatal(err)
+	}
+	FavoriteClient = fc
 }

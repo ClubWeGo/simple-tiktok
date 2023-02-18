@@ -5,6 +5,7 @@ go 1.19
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
+	github.com/ClubWeGo/favoritemicro v0.0.0-20230218084417-fd4c3433fb21
 	github.com/ClubWeGo/relationmicro v0.0.0-20230216103453-7b53cbe6042e
 	github.com/ClubWeGo/usermicro v0.0.0-20230214161119-afa68c10bf79
 	github.com/ClubWeGo/videomicro v0.0.0-20230214163648-819e4cc45d4d

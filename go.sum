@@ -13,6 +13,8 @@ cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiy
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
+github.com/ClubWeGo/favoritemicro v0.0.0-20230218084417-fd4c3433fb21 h1:KJx0Td1UIReUF8Dl6SRK8uh6y+gKg4A+7k41ibfigHU=
+github.com/ClubWeGo/favoritemicro v0.0.0-20230218084417-fd4c3433fb21/go.mod h1:yq3JkyV95cRDwYVrZ3d5WeDvfIzBcAC4eRYCOSH27zM=
 github.com/ClubWeGo/relationmicro v0.0.0-20230216103453-7b53cbe6042e h1:DK+DBcAdrOyskhh++NHQILVuawprEMjb4NcP+i7E8P0=
 github.com/ClubWeGo/relationmicro v0.0.0-20230216103453-7b53cbe6042e/go.mod h1:/Tc8EIH6LqyqIC4lbmoDE7RyWJVBF8tbRSGkG76j/6w=
 github.com/ClubWeGo/usermicro v0.0.0-20230214161119-afa68c10bf79 h1:UDT/uWXwUF6jhv0hSTCXuavaR5VHxv06obnP5q7b/i0=
