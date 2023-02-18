@@ -2,6 +2,8 @@
 
 > 依赖 validator插件 ：`go install github.com/cloudwego/thrift-gen-validator@latest`
 ## 生成or更新服务代码
+> 目前项目微服务不再做字段检查校验，这部分交给业务层单独实现安全机制去处理
+
 `kitex --thrift-plugin validator -module github.com/ClubWeGo/usermicro -service usermicro ./idl/user.thrift`
 
 without validator : `kitex -module github.com/ClubWeGo/usermicro -service usermicro ./idl/user.thrift`

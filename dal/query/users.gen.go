@@ -34,9 +34,14 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.Name = field.NewString(tableName, "name")
 	_user.Password = field.NewString(tableName, "password")
 	_user.Email = field.NewString(tableName, "email")
-	_user.Follow_count = field.NewInt64(tableName, "follow_count")
-	_user.Follower_count = field.NewInt64(tableName, "follower_count")
-	_user.Is_follow = field.NewBool(tableName, "is_follow")
+	_user.FollowCount = field.NewInt64(tableName, "follow_count")
+	_user.FollowerCount = field.NewInt64(tableName, "follower_count")
+	_user.Avatar = field.NewString(tableName, "avatar")
+	_user.BackgroundImage = field.NewString(tableName, "background_image")
+	_user.Signature = field.NewString(tableName, "signature")
+	_user.TotalFavorited = field.NewInt64(tableName, "total_favorited")
+	_user.WorkCount = field.NewInt64(tableName, "work_count")
+	_user.FavoriteCount = field.NewInt64(tableName, "favorite_count")
 
 	_user.fillFieldMap()
 
@@ -46,17 +51,22 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 type user struct {
 	userDo
 
-	ALL            field.Asterisk
-	ID             field.Uint
-	CreatedAt      field.Time
-	UpdatedAt      field.Time
-	DeletedAt      field.Field
-	Name           field.String
-	Password       field.String
-	Email          field.String
-	Follow_count   field.Int64
-	Follower_count field.Int64
-	Is_follow      field.Bool
+	ALL             field.Asterisk
+	ID              field.Uint
+	CreatedAt       field.Time
+	UpdatedAt       field.Time
+	DeletedAt       field.Field
+	Name            field.String
+	Password        field.String
+	Email           field.String
+	FollowCount     field.Int64
+	FollowerCount   field.Int64
+	Avatar          field.String
+	BackgroundImage field.String
+	Signature       field.String
+	TotalFavorited  field.Int64
+	WorkCount       field.Int64
+	FavoriteCount   field.Int64
 
 	fieldMap map[string]field.Expr
 }
@@ -80,9 +90,14 @@ func (u *user) updateTableName(table string) *user {
 	u.Name = field.NewString(table, "name")
 	u.Password = field.NewString(table, "password")
 	u.Email = field.NewString(table, "email")
-	u.Follow_count = field.NewInt64(table, "follow_count")
-	u.Follower_count = field.NewInt64(table, "follower_count")
-	u.Is_follow = field.NewBool(table, "is_follow")
+	u.FollowCount = field.NewInt64(table, "follow_count")
+	u.FollowerCount = field.NewInt64(table, "follower_count")
+	u.Avatar = field.NewString(table, "avatar")
+	u.BackgroundImage = field.NewString(table, "background_image")
+	u.Signature = field.NewString(table, "signature")
+	u.TotalFavorited = field.NewInt64(table, "total_favorited")
+	u.WorkCount = field.NewInt64(table, "work_count")
+	u.FavoriteCount = field.NewInt64(table, "favorite_count")
 
 	u.fillFieldMap()
 
@@ -99,7 +114,7 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 10)
+	u.fieldMap = make(map[string]field.Expr, 15)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["created_at"] = u.CreatedAt
 	u.fieldMap["updated_at"] = u.UpdatedAt
@@ -107,9 +122,14 @@ func (u *user) fillFieldMap() {
 	u.fieldMap["name"] = u.Name
 	u.fieldMap["password"] = u.Password
 	u.fieldMap["email"] = u.Email
-	u.fieldMap["follow_count"] = u.Follow_count
-	u.fieldMap["follower_count"] = u.Follower_count
-	u.fieldMap["is_follow"] = u.Is_follow
+	u.fieldMap["follow_count"] = u.FollowCount
+	u.fieldMap["follower_count"] = u.FollowerCount
+	u.fieldMap["avatar"] = u.Avatar
+	u.fieldMap["background_image"] = u.BackgroundImage
+	u.fieldMap["signature"] = u.Signature
+	u.fieldMap["total_favorited"] = u.TotalFavorited
+	u.fieldMap["work_count"] = u.WorkCount
+	u.fieldMap["favorite_count"] = u.FavoriteCount
 }
 
 func (u user) clone(db *gorm.DB) user {

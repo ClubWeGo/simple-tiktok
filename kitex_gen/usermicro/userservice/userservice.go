@@ -24,6 +24,9 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"LoginUserMethod":         kitex.NewMethodInfo(loginUserMethodHandler, newUserServiceLoginUserMethodArgs, newUserServiceLoginUserMethodResult, false),
 		"CreateUserMethod":        kitex.NewMethodInfo(createUserMethodHandler, newUserServiceCreateUserMethodArgs, newUserServiceCreateUserMethodResult, false),
 		"UpdateUserMethod":        kitex.NewMethodInfo(updateUserMethodHandler, newUserServiceUpdateUserMethodArgs, newUserServiceUpdateUserMethodResult, false),
+		"UpdateRelationMethod":    kitex.NewMethodInfo(updateRelationMethodHandler, newUserServiceUpdateRelationMethodArgs, newUserServiceUpdateRelationMethodResult, false),
+		"UpdateInteractionMethod": kitex.NewMethodInfo(updateInteractionMethodHandler, newUserServiceUpdateInteractionMethodArgs, newUserServiceUpdateInteractionMethodResult, false),
+		"UpdateWorkMethod":        kitex.NewMethodInfo(updateWorkMethodHandler, newUserServiceUpdateWorkMethodArgs, newUserServiceUpdateWorkMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "usermicro",
@@ -129,6 +132,60 @@ func newUserServiceUpdateUserMethodResult() interface{} {
 	return usermicro.NewUserServiceUpdateUserMethodResult()
 }
 
+func updateRelationMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*usermicro.UserServiceUpdateRelationMethodArgs)
+	realResult := result.(*usermicro.UserServiceUpdateRelationMethodResult)
+	success, err := handler.(usermicro.UserService).UpdateRelationMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceUpdateRelationMethodArgs() interface{} {
+	return usermicro.NewUserServiceUpdateRelationMethodArgs()
+}
+
+func newUserServiceUpdateRelationMethodResult() interface{} {
+	return usermicro.NewUserServiceUpdateRelationMethodResult()
+}
+
+func updateInteractionMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*usermicro.UserServiceUpdateInteractionMethodArgs)
+	realResult := result.(*usermicro.UserServiceUpdateInteractionMethodResult)
+	success, err := handler.(usermicro.UserService).UpdateInteractionMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceUpdateInteractionMethodArgs() interface{} {
+	return usermicro.NewUserServiceUpdateInteractionMethodArgs()
+}
+
+func newUserServiceUpdateInteractionMethodResult() interface{} {
+	return usermicro.NewUserServiceUpdateInteractionMethodResult()
+}
+
+func updateWorkMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*usermicro.UserServiceUpdateWorkMethodArgs)
+	realResult := result.(*usermicro.UserServiceUpdateWorkMethodResult)
+	success, err := handler.(usermicro.UserService).UpdateWorkMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceUpdateWorkMethodArgs() interface{} {
+	return usermicro.NewUserServiceUpdateWorkMethodArgs()
+}
+
+func newUserServiceUpdateWorkMethodResult() interface{} {
+	return usermicro.NewUserServiceUpdateWorkMethodResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -184,6 +241,36 @@ func (p *kClient) UpdateUserMethod(ctx context.Context, request *usermicro.Updat
 	_args.Request = request
 	var _result usermicro.UserServiceUpdateUserMethodResult
 	if err = p.c.Call(ctx, "UpdateUserMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateRelationMethod(ctx context.Context, request *usermicro.UpdateRelationCacheReq) (r *usermicro.UpdateRelationCacheResp, err error) {
+	var _args usermicro.UserServiceUpdateRelationMethodArgs
+	_args.Request = request
+	var _result usermicro.UserServiceUpdateRelationMethodResult
+	if err = p.c.Call(ctx, "UpdateRelationMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateInteractionMethod(ctx context.Context, request *usermicro.UpdateInteractionCacheReq) (r *usermicro.UpdateInteractionCacheResp, err error) {
+	var _args usermicro.UserServiceUpdateInteractionMethodArgs
+	_args.Request = request
+	var _result usermicro.UserServiceUpdateInteractionMethodResult
+	if err = p.c.Call(ctx, "UpdateInteractionMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateWorkMethod(ctx context.Context, request *usermicro.UpdateWorkCacheReq) (r *usermicro.UpdateWorkCacheResp, err error) {
+	var _args usermicro.UserServiceUpdateWorkMethodArgs
+	_args.Request = request
+	var _result usermicro.UserServiceUpdateWorkMethodResult
+	if err = p.c.Call(ctx, "UpdateWorkMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
