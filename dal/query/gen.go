@@ -16,34 +16,39 @@ import (
 )
 
 var (
-	Q     = new(Query)
-	Video *video
+	Q          = new(Query)
+	Video      *video
+	VideoCount *videoCount
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Video = &Q.Video
+	VideoCount = &Q.VideoCount
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:    db,
-		Video: newVideo(db, opts...),
+		db:         db,
+		Video:      newVideo(db, opts...),
+		VideoCount: newVideoCount(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Video video
+	Video      video
+	VideoCount videoCount
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:    db,
-		Video: q.Video.clone(db),
+		db:         db,
+		Video:      q.Video.clone(db),
+		VideoCount: q.VideoCount.clone(db),
 	}
 }
 
@@ -57,18 +62,21 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:    db,
-		Video: q.Video.replaceDB(db),
+		db:         db,
+		Video:      q.Video.replaceDB(db),
+		VideoCount: q.VideoCount.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Video IVideoDo
+	Video      IVideoDo
+	VideoCount IVideoCountDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Video: q.Video.WithContext(ctx),
+		Video:      q.Video.WithContext(ctx),
+		VideoCount: q.VideoCount.WithContext(ctx),
 	}
 }
 

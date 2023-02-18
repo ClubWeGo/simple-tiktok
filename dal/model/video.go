@@ -14,3 +14,11 @@ type Video struct {
 	Favorite_count int64  `gorm:"not null"`
 	Comment_count  int64  `gorm:"not null"`
 }
+
+// 记录用户有多少视频，根据上传记录实时更新字段
+type VideoCount struct {
+	gorm.Model // 自动创建id, created_at, updated_at, deleted_at(用于软删除 Unscoped:https://www.cnblogs.com/guodd/p/14934448.html)
+
+	Author_id  int64 `gorm:"type:varchar(128);not null;uniqueIndex"` // md5 128
+	Work_count int64 `gorm:"not null"`
+}

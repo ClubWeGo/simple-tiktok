@@ -12,11 +12,13 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	CreateVideoMethod(ctx context.Context, request *videomicro.CreateVideoReq, callOptions ...callopt.Option) (r *videomicro.CreateVideoResp, err error)
-	GetVideoMethod(ctx context.Context, request *videomicro.GetVideoReq, callOptions ...callopt.Option) (r *videomicro.GetVideoResp, err error)
+	GetVideoAuthorIdMethod(ctx context.Context, request *videomicro.GetVideoAuthorIdReq, callOptions ...callopt.Option) (r *videomicro.GetVideoAuthorIdResp, err error)
 	GetVideosByAuthorIdMethod(ctx context.Context, request *videomicro.GetVideosByAuthorIdReq, callOptions ...callopt.Option) (r *videomicro.GetVideosByAuthorIdResp, err error)
+	GetVideoSetByIdSetMethod(ctx context.Context, request *videomicro.GetVideoSetByIdSetReq, callOptions ...callopt.Option) (r *videomicro.GetVideoSetByIdSetResp, err error)
 	GetVideosFeedMethod(ctx context.Context, request *videomicro.GetVideosFeedReq, callOptions ...callopt.Option) (r *videomicro.GetVideosFeedResp, err error)
 	UpdateVideoMethod(ctx context.Context, request *videomicro.UpdateVideoReq, callOptions ...callopt.Option) (r *videomicro.UpdateVideoResp, err error)
 	DeleteVideoMethod(ctx context.Context, request *videomicro.DeleteVideoReq, callOptions ...callopt.Option) (r *videomicro.DeleteVideoResp, err error)
+	GetUserVideoCountMethod(ctx context.Context, request *videomicro.GetUserVideoCountReq, callOptions ...callopt.Option) (r *videomicro.GetUserVideoCountResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -53,14 +55,19 @@ func (p *kVideoServiceClient) CreateVideoMethod(ctx context.Context, request *vi
 	return p.kClient.CreateVideoMethod(ctx, request)
 }
 
-func (p *kVideoServiceClient) GetVideoMethod(ctx context.Context, request *videomicro.GetVideoReq, callOptions ...callopt.Option) (r *videomicro.GetVideoResp, err error) {
+func (p *kVideoServiceClient) GetVideoAuthorIdMethod(ctx context.Context, request *videomicro.GetVideoAuthorIdReq, callOptions ...callopt.Option) (r *videomicro.GetVideoAuthorIdResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetVideoMethod(ctx, request)
+	return p.kClient.GetVideoAuthorIdMethod(ctx, request)
 }
 
 func (p *kVideoServiceClient) GetVideosByAuthorIdMethod(ctx context.Context, request *videomicro.GetVideosByAuthorIdReq, callOptions ...callopt.Option) (r *videomicro.GetVideosByAuthorIdResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetVideosByAuthorIdMethod(ctx, request)
+}
+
+func (p *kVideoServiceClient) GetVideoSetByIdSetMethod(ctx context.Context, request *videomicro.GetVideoSetByIdSetReq, callOptions ...callopt.Option) (r *videomicro.GetVideoSetByIdSetResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetVideoSetByIdSetMethod(ctx, request)
 }
 
 func (p *kVideoServiceClient) GetVideosFeedMethod(ctx context.Context, request *videomicro.GetVideosFeedReq, callOptions ...callopt.Option) (r *videomicro.GetVideosFeedResp, err error) {
@@ -76,4 +83,9 @@ func (p *kVideoServiceClient) UpdateVideoMethod(ctx context.Context, request *vi
 func (p *kVideoServiceClient) DeleteVideoMethod(ctx context.Context, request *videomicro.DeleteVideoReq, callOptions ...callopt.Option) (r *videomicro.DeleteVideoResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DeleteVideoMethod(ctx, request)
+}
+
+func (p *kVideoServiceClient) GetUserVideoCountMethod(ctx context.Context, request *videomicro.GetUserVideoCountReq, callOptions ...callopt.Option) (r *videomicro.GetUserVideoCountResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetUserVideoCountMethod(ctx, request)
 }

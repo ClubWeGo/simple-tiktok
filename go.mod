@@ -5,8 +5,10 @@ go 1.19
 require (
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.4.4
+	github.com/go-sql-driver/mysql v1.7.0
 	github.com/kitex-contrib/registry-etcd v0.1.0
-	gorm.io/driver/mysql v1.4.6
+	golang.org/x/crypto v0.0.0-20221005025214-4161e89ecf1b
+	gorm.io/driver/mysql v1.4.7
 	gorm.io/gen v0.3.21
 	gorm.io/gorm v1.24.5
 	gorm.io/plugin/dbresolver v1.4.1
@@ -22,7 +24,6 @@ require (
 	github.com/cloudwego/thriftgo v0.2.4 // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
-	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/pprof v0.0.0-20220608213341-c488b8fa1db3 // indirect
