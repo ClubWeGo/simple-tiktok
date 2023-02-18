@@ -1,15 +1,20 @@
 namespace go favorite
 
 
+struct BaseResp {
+    1: required i32 status_code;
+    2: optional string status_msg;
+}
+
+
 # favoriteList
 struct FavoriteListReq {
     1: required i64 user_id;
 }
 
 struct FavoriteListResp {
-    1: required i32 status_code;
-    2: optional string status_msg;
-    3: required list<i64> video_id_list;
+    1: required BaseResp base_resp
+    2: required list<i64> video_id_list;
 }
 
 
@@ -21,8 +26,7 @@ struct FavoriteReq {
 }
 
 struct FavoriteResp {
-    1: required i32 status_code;
-    2: optional string status_msg;
+    1: required BaseResp base_resp;
 }
 
 
@@ -32,9 +36,8 @@ struct FavoriteRelationReq {
 }
 
 struct FavoriteRelationResp {
-    1: required i32 status_code;
-    2: optional string status_msg;
-    3: required bool is_favorite;
+    1: required BaseResp base_resp;
+    2: required bool is_favorite;
 }
 
 
@@ -43,9 +46,8 @@ struct VideoFavoriteCountReq {
 }
 
 struct VideoFavoriteCountResp {
-    1: required i32 status_code;
-    2: optional string status_msg;
-    3: required i64 favorite_count;
+    1: required BaseResp base_resp;
+    2: required i64 favorite_count;
 }
 
 
@@ -54,10 +56,9 @@ struct UserFavoriteCountReq {
 }
 
 struct UserFavoriteCountResp {
-    1: required i32 status_code;
-    2: optional string status_msg;
-    3: required i64 favorite_count;
-    4: required i64 favorited_count;
+    1: required BaseResp base_resp
+    2: required i64 favorite_count;
+    3: required i64 favorited_count;
 }
 
 
