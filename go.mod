@@ -7,8 +7,8 @@ replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 require (
 	github.com/ClubWeGo/favoritemicro v0.0.0-20230218084417-fd4c3433fb21
 	github.com/ClubWeGo/relationmicro v0.0.0-20230216103453-7b53cbe6042e
-	github.com/ClubWeGo/usermicro v0.0.0-20230214161119-afa68c10bf79
-	github.com/ClubWeGo/videomicro v0.0.0-20230214163648-819e4cc45d4d
+	github.com/ClubWeGo/usermicro v0.0.0-20230218161017-d68d94d1dac8
+	github.com/ClubWeGo/videomicro v0.0.0-20230218142838-4e63ecd438ca
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/hertz v0.5.2
 	github.com/cloudwego/kitex v0.4.4
@@ -17,10 +17,13 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/kitex-contrib/registry-etcd v0.1.0
 	github.com/minio/minio-go/v7 v7.0.48
+	github.com/prometheus/common v0.26.0
 	github.com/u2takey/ffmpeg-go v0.4.1
 )
 
 require (
+	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
+	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/aws/aws-sdk-go v1.38.20 // indirect
 	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect
 	github.com/bytedance/gopkg v0.0.0-20220531084716-665b4f21126f // indirect
@@ -75,6 +78,7 @@ require (
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
 	google.golang.org/grpc v1.41.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
+	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
 	gopkg.in/ini.v1 v1.66.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
