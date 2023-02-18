@@ -9,10 +9,11 @@ const (
 	SuccessCode                = 0
 	ServiceErrCode             = 10001
 	ParamErrCode               = 10002
-	UserAlreadyExistErrCode    = 10003
+	RecodeAlreadyExistErrCode  = 10003
 	AuthorizationFailedErrCode = 10004
 	DBErrCode                  = 10005
 	RPCErrCode                 = 10006
+	RecordNotExistErrCode      = 10007
 )
 
 type ErrNo struct {
@@ -37,7 +38,8 @@ var (
 	Success                = NewErrNo(SuccessCode, "Success")
 	ServiceErr             = NewErrNo(ServiceErrCode, "Service is unable to start successfully")
 	ParamErr               = NewErrNo(ParamErrCode, "Wrong Parameter has been given")
-	UserAlreadyExistErr    = NewErrNo(UserAlreadyExistErrCode, "User already exists")
+	RecordAlreadyExistErr  = NewErrNo(RecodeAlreadyExistErrCode, "Record already exists")
+	RecordNotExistErr      = NewErrNo(RecordNotExistErrCode, "Record not exists")
 	AuthorizationFailedErr = NewErrNo(AuthorizationFailedErrCode, "Authorization failed")
 	DBErr                  = NewErrNo(DBErrCode, "DB error")
 	RPCErr                 = NewErrNo(RPCErrCode, "RPC error")

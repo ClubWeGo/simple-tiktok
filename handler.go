@@ -24,7 +24,7 @@ func (s *FavoriteServiceImpl) FavoriteMethod(ctx context.Context, request *favor
 		}
 		err = db.AddFavorite(ctx, request.UserId, request.VideoId, authorId)
 		if err != nil {
-			resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
+			resp.BaseResp = pack.BuildBaseResp(err)
 			return resp, nil
 		}
 		log.Println("点赞成功")
@@ -33,7 +33,7 @@ func (s *FavoriteServiceImpl) FavoriteMethod(ctx context.Context, request *favor
 	} else if request.ActionType == 2 {
 		err = db.DeleteFavorite(ctx, request.UserId, request.VideoId)
 		if err != nil {
-			resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
+			resp.BaseResp = pack.BuildBaseResp(err)
 			return resp, nil
 		}
 		resp.BaseResp = pack.BuildBaseResp(errno.Success.WithMessage("取消点赞"))
@@ -61,14 +61,14 @@ func (s *FavoriteServiceImpl) FavoriteListMethod(ctx context.Context, request *f
 // FavoriteRelationMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) FavoriteRelationMethod(ctx context.Context, request *favorite.FavoriteRelationReq) (resp *favorite.FavoriteRelationResp, err error) {
 	resp = &favorite.FavoriteRelationResp{}
-	cnt, err := db.GetFavoriteRelation(ctx, request.UserId, request.VideoId)
+	res, err := db.GetFavoriteRelation(ctx, request.UserId, request.VideoId)
 	if err != nil {
-		resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
+		resp.BaseResp = pack.BuildBaseResp(err)
 		resp.IsFavorite = false
 		return resp, nil
 	}
-	resp.BaseResp = pack.BuildBaseResp(errno.Success)
-	resp.IsFavorite = cnt > 0
+	resp.BaseResp = pack.BuildBaseResp(errno.Success.WithMessage("已点赞"))
+	resp.IsFavorite = res
 	return resp, nil
 }
 
@@ -91,7 +91,7 @@ func (s *FavoriteServiceImpl) VideoFavoriteCountMethod(ctx context.Context, requ
 	resp = &favorite.VideoFavoriteCountResp{}
 	cnt, err := db.CountVideoFavorite(ctx, request.VideoId)
 	if err != nil {
-		resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
+		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.BaseResp = pack.BuildBaseResp(errno.Success)
