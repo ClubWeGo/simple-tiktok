@@ -5,6 +5,7 @@ package relation
 import (
 	"context"
 	"github.com/ClubWeGo/douyin/kitex_server"
+	"github.com/ClubWeGo/douyin/tools"
 
 	relation "github.com/ClubWeGo/douyin/biz/model/relation"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -23,23 +24,22 @@ func FollowerListMethod(ctx context.Context, c *app.RequestContext) {
 	}
 	resp := new(relation.FollowerListResp)
 
-	myUid := int64(2006)
-	//// 鉴权
-	//ifvalid, myUid, err := tools.ValidateToken(req.Token)
-	//if err != nil {
-	//	msgFailed := "非法token"
-	//	resp.StatusCode = 1
-	//	resp.StatusMsg = &msgFailed
-	//	c.JSON(consts.StatusOK, resp)
-	//	return
-	//}
-	//if !ifvalid {
-	//	msgFailed := "token无效"
-	//	resp.StatusCode = 1
-	//	resp.StatusMsg = &msgFailed
-	//	c.JSON(consts.StatusOK, resp)
-	//	return
-	//}
+	// 鉴权
+	ifvalid, myUid, err := tools.ValidateToken(req.Token)
+	if err != nil {
+		msgFailed := "非法token"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
+	if !ifvalid {
+		msgFailed := "token无效"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
 	// 获取粉丝列表
 	followerList, err := kitex_server.GetFollowerList(myUid, req.UserID)
 	if err != nil {
