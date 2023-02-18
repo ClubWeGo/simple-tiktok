@@ -9,8 +9,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitUser(db *gorm.DB) {
+func InitVideo(db *gorm.DB) {
 	err := db.AutoMigrate(&model.Video{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = db.AutoMigrate(&model.VideoCount{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,5 +38,5 @@ func main() {
 		return
 	}
 
-	InitUser(db)
+	InitVideo(db)
 }

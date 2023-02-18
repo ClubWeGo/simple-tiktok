@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/ClubWeGo/videomicro/dal/model"
+	"github.com/ClubWeGo/videomicro/dal/pack"
 	"github.com/ClubWeGo/videomicro/dal/query"
 	videomicro "github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 )
@@ -22,43 +23,27 @@ func (s *VideoServiceImpl) CreateVideoMethod(ctx context.Context, request *video
 		Author_id:      request.AuthorId,
 		Cover_url:      request.CoverUrl,
 		Play_url:       request.PlayUrl,
-		Favorite_count: 0,
-		Comment_count:  0,
+		Favorite_count: 0, // 初始为0
+		Comment_count:  0, // 初始为0
 	}
 	err = v.Create(video)
+
 	if err != nil {
 		return &videomicro.CreateVideoResp{
 			Status: false,
 		}, err
 	}
+
+	// 发布视频，更新作者的作品计数
+	err = pack.AddCount(request.AuthorId)
+	if err != nil {
+		return &videomicro.CreateVideoResp{
+			Status: true,
+		}, err // 携带错误，但是创建成功
+	}
+
 	return &videomicro.CreateVideoResp{
 		Status: true,
-	}, nil
-}
-
-// GetVideoMethod implements the VideoServiceImpl interface.
-func (s *VideoServiceImpl) GetVideoMethod(ctx context.Context, request *videomicro.GetVideoReq) (resp *videomicro.GetVideoResp, err error) {
-	// TODO: Your code here...
-
-	v := query.Video
-
-	video, err := v.Where(v.ID.Eq(uint(request.Id))).First()
-	if err != nil {
-		return &videomicro.GetVideoResp{
-			Status: false,
-		}, err
-	}
-	return &videomicro.GetVideoResp{
-		Status: true,
-		Video: &videomicro.Video{
-			Id:            int64(video.ID),
-			Title:         video.Title,
-			AuthorId:      video.Author_id,
-			PlayUrl:       video.Play_url,
-			CoverUrl:      video.Cover_url,
-			FavoriteCount: video.Favorite_count,
-			CommentCount:  video.Comment_count,
-		},
 	}, nil
 }
 
@@ -140,14 +125,26 @@ func (s *VideoServiceImpl) DeleteVideoMethod(ctx context.Context, request *video
 	// TODO: Your code here...
 
 	v := query.Video
-
-	_, err = v.Where(v.ID.Eq(uint(request.Id))).Delete(&model.Video{}) // 软删除
-
+	videoAuthor, err := v.Select(v.Author_id).Where(v.ID.Eq(uint(request.VideoId))).First()
 	if err != nil {
 		return &videomicro.DeleteVideoResp{
 			Status: false,
 		}, err
 	}
+	_, err = v.Where(v.ID.Eq(uint(request.VideoId))).Delete(&model.Video{}) // 软删除
+	if err != nil {
+		return &videomicro.DeleteVideoResp{
+			Status: false,
+		}, err
+	}
+
+	err = pack.DecCount(videoAuthor.Author_id)
+	if err != nil {
+		return &videomicro.DeleteVideoResp{
+			Status: true,
+		}, err // 携带错误，但是删除成功
+	}
+
 	return &videomicro.DeleteVideoResp{
 		Status: true,
 	}, err
@@ -158,19 +155,103 @@ func (s *VideoServiceImpl) UpdateVideoMethod(ctx context.Context, request *video
 	// TODO: Your code here...
 
 	v := query.Video
+	// 只查询要更新的字段，后续增加字段这里需要修改
+	video := v.Select(v.Title).Where(v.ID.Eq(uint(request.Id)))
 
-	video := v.Where(v.ID.Eq(uint(request.Id)))
-
+	var title string
 	if request.Title != nil {
-		_, err := video.Update(v.Title, request.Title)
-		if err != nil {
-			return &videomicro.UpdateVideoResp{
-				Status: false,
-			}, err
-		}
+		title = *request.Title
+	}
+
+	// 更新数据
+	_, err = video.Updates(model.Video{
+		Title: title,
+	})
+	if err != nil {
+		return &videomicro.UpdateVideoResp{
+			Status: false, // 更新失败
+		}, err
 	}
 
 	return &videomicro.UpdateVideoResp{
 		Status: true,
 	}, err
+}
+
+// GetUserVideoCountMethod implements the VideoServiceImpl interface.
+func (s *VideoServiceImpl) GetUserVideoCountMethod(ctx context.Context, request *videomicro.GetUserVideoCountReq) (resp *videomicro.GetUserVideoCountResp, err error) {
+	// TODO: Your code here...
+	vc := query.VideoCount
+
+	videoCount, err := vc.Select(vc.Work_count).Where(vc.Author_id.Eq(request.AuthorId)).First()
+	if err != nil {
+		return &videomicro.GetUserVideoCountResp{
+			Status: false,
+			Count:  0,
+		}, err
+	}
+	return &videomicro.GetUserVideoCountResp{
+		Status: true,
+		Count:  videoCount.Work_count,
+	}, nil
+}
+
+// GetVideoAuthorIdMethod implements the VideoServiceImpl interface.
+func (s *VideoServiceImpl) GetVideoAuthorIdMethod(ctx context.Context, request *videomicro.GetVideoAuthorIdReq) (resp *videomicro.GetVideoAuthorIdResp, err error) {
+	// TODO: Your code here...
+	v := query.Video
+	// 只查询要的字段，后续增加字段这里需要修改
+	video, err := v.Select(v.Author_id).Where(v.ID.Eq(uint(request.Id))).First()
+	if err != nil {
+		return &videomicro.GetVideoAuthorIdResp{
+			Status:   false,
+			AuthorId: 0,
+		}, err
+	}
+
+	return &videomicro.GetVideoAuthorIdResp{
+		Status:   true,
+		AuthorId: video.Author_id,
+	}, nil
+}
+
+// GetVideoSetByIdSetMethod implements the VideoServiceImpl interface.
+func (s *VideoServiceImpl) GetVideoSetByIdSetMethod(ctx context.Context, request *videomicro.GetVideoSetByIdSetReq) (resp *videomicro.GetVideoSetByIdSetResp, err error) {
+	// TODO: Your code here...
+	v := query.Video
+
+	idSet := request.IdSet
+
+	// 切片互转有内存风险，暂采用最原始的方式转换id格式
+	idSetUint := make([]uint, len(idSet))
+	for index, id := range idSet {
+		idSetUint[index] = uint(id)
+	}
+
+	// in 批量查询
+	videos, err := v.Where(v.ID.In(idSetUint...)).Find()
+	if err != nil {
+		return &videomicro.GetVideoSetByIdSetResp{
+			Status: false,
+		}, err
+	}
+
+	// 批量转换格式
+	respvideolist := make([]*videomicro.Video, len(videos))
+	for index, video := range videos {
+		respvideolist[index] = &videomicro.Video{
+			Id:            int64(video.ID),
+			Title:         video.Title,
+			AuthorId:      video.Author_id,
+			PlayUrl:       video.Play_url,
+			CoverUrl:      video.Cover_url,
+			FavoriteCount: video.Favorite_count,
+			CommentCount:  video.Comment_count,
+		}
+	}
+
+	return &videomicro.GetVideoSetByIdSetResp{
+		Status:   true,
+		VideoSet: respvideolist,
+	}, nil
 }

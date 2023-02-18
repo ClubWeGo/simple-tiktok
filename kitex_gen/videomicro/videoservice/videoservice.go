@@ -20,11 +20,13 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	handlerType := (*videomicro.VideoService)(nil)
 	methods := map[string]kitex.MethodInfo{
 		"CreateVideoMethod":         kitex.NewMethodInfo(createVideoMethodHandler, newVideoServiceCreateVideoMethodArgs, newVideoServiceCreateVideoMethodResult, false),
-		"GetVideoMethod":            kitex.NewMethodInfo(getVideoMethodHandler, newVideoServiceGetVideoMethodArgs, newVideoServiceGetVideoMethodResult, false),
+		"GetVideoAuthorIdMethod":    kitex.NewMethodInfo(getVideoAuthorIdMethodHandler, newVideoServiceGetVideoAuthorIdMethodArgs, newVideoServiceGetVideoAuthorIdMethodResult, false),
 		"GetVideosByAuthorIdMethod": kitex.NewMethodInfo(getVideosByAuthorIdMethodHandler, newVideoServiceGetVideosByAuthorIdMethodArgs, newVideoServiceGetVideosByAuthorIdMethodResult, false),
+		"GetVideoSetByIdSetMethod":  kitex.NewMethodInfo(getVideoSetByIdSetMethodHandler, newVideoServiceGetVideoSetByIdSetMethodArgs, newVideoServiceGetVideoSetByIdSetMethodResult, false),
 		"GetVideosFeedMethod":       kitex.NewMethodInfo(getVideosFeedMethodHandler, newVideoServiceGetVideosFeedMethodArgs, newVideoServiceGetVideosFeedMethodResult, false),
 		"UpdateVideoMethod":         kitex.NewMethodInfo(updateVideoMethodHandler, newVideoServiceUpdateVideoMethodArgs, newVideoServiceUpdateVideoMethodResult, false),
 		"DeleteVideoMethod":         kitex.NewMethodInfo(deleteVideoMethodHandler, newVideoServiceDeleteVideoMethodArgs, newVideoServiceDeleteVideoMethodResult, false),
+		"GetUserVideoCountMethod":   kitex.NewMethodInfo(getUserVideoCountMethodHandler, newVideoServiceGetUserVideoCountMethodArgs, newVideoServiceGetUserVideoCountMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "videomicro",
@@ -58,22 +60,22 @@ func newVideoServiceCreateVideoMethodResult() interface{} {
 	return videomicro.NewVideoServiceCreateVideoMethodResult()
 }
 
-func getVideoMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*videomicro.VideoServiceGetVideoMethodArgs)
-	realResult := result.(*videomicro.VideoServiceGetVideoMethodResult)
-	success, err := handler.(videomicro.VideoService).GetVideoMethod(ctx, realArg.Request)
+func getVideoAuthorIdMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*videomicro.VideoServiceGetVideoAuthorIdMethodArgs)
+	realResult := result.(*videomicro.VideoServiceGetVideoAuthorIdMethodResult)
+	success, err := handler.(videomicro.VideoService).GetVideoAuthorIdMethod(ctx, realArg.Request)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newVideoServiceGetVideoMethodArgs() interface{} {
-	return videomicro.NewVideoServiceGetVideoMethodArgs()
+func newVideoServiceGetVideoAuthorIdMethodArgs() interface{} {
+	return videomicro.NewVideoServiceGetVideoAuthorIdMethodArgs()
 }
 
-func newVideoServiceGetVideoMethodResult() interface{} {
-	return videomicro.NewVideoServiceGetVideoMethodResult()
+func newVideoServiceGetVideoAuthorIdMethodResult() interface{} {
+	return videomicro.NewVideoServiceGetVideoAuthorIdMethodResult()
 }
 
 func getVideosByAuthorIdMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -92,6 +94,24 @@ func newVideoServiceGetVideosByAuthorIdMethodArgs() interface{} {
 
 func newVideoServiceGetVideosByAuthorIdMethodResult() interface{} {
 	return videomicro.NewVideoServiceGetVideosByAuthorIdMethodResult()
+}
+
+func getVideoSetByIdSetMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*videomicro.VideoServiceGetVideoSetByIdSetMethodArgs)
+	realResult := result.(*videomicro.VideoServiceGetVideoSetByIdSetMethodResult)
+	success, err := handler.(videomicro.VideoService).GetVideoSetByIdSetMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newVideoServiceGetVideoSetByIdSetMethodArgs() interface{} {
+	return videomicro.NewVideoServiceGetVideoSetByIdSetMethodArgs()
+}
+
+func newVideoServiceGetVideoSetByIdSetMethodResult() interface{} {
+	return videomicro.NewVideoServiceGetVideoSetByIdSetMethodResult()
 }
 
 func getVideosFeedMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -148,6 +168,24 @@ func newVideoServiceDeleteVideoMethodResult() interface{} {
 	return videomicro.NewVideoServiceDeleteVideoMethodResult()
 }
 
+func getUserVideoCountMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*videomicro.VideoServiceGetUserVideoCountMethodArgs)
+	realResult := result.(*videomicro.VideoServiceGetUserVideoCountMethodResult)
+	success, err := handler.(videomicro.VideoService).GetUserVideoCountMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newVideoServiceGetUserVideoCountMethodArgs() interface{} {
+	return videomicro.NewVideoServiceGetUserVideoCountMethodArgs()
+}
+
+func newVideoServiceGetUserVideoCountMethodResult() interface{} {
+	return videomicro.NewVideoServiceGetUserVideoCountMethodResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -168,11 +206,11 @@ func (p *kClient) CreateVideoMethod(ctx context.Context, request *videomicro.Cre
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetVideoMethod(ctx context.Context, request *videomicro.GetVideoReq) (r *videomicro.GetVideoResp, err error) {
-	var _args videomicro.VideoServiceGetVideoMethodArgs
+func (p *kClient) GetVideoAuthorIdMethod(ctx context.Context, request *videomicro.GetVideoAuthorIdReq) (r *videomicro.GetVideoAuthorIdResp, err error) {
+	var _args videomicro.VideoServiceGetVideoAuthorIdMethodArgs
 	_args.Request = request
-	var _result videomicro.VideoServiceGetVideoMethodResult
-	if err = p.c.Call(ctx, "GetVideoMethod", &_args, &_result); err != nil {
+	var _result videomicro.VideoServiceGetVideoAuthorIdMethodResult
+	if err = p.c.Call(ctx, "GetVideoAuthorIdMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -183,6 +221,16 @@ func (p *kClient) GetVideosByAuthorIdMethod(ctx context.Context, request *videom
 	_args.Request = request
 	var _result videomicro.VideoServiceGetVideosByAuthorIdMethodResult
 	if err = p.c.Call(ctx, "GetVideosByAuthorIdMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetVideoSetByIdSetMethod(ctx context.Context, request *videomicro.GetVideoSetByIdSetReq) (r *videomicro.GetVideoSetByIdSetResp, err error) {
+	var _args videomicro.VideoServiceGetVideoSetByIdSetMethodArgs
+	_args.Request = request
+	var _result videomicro.VideoServiceGetVideoSetByIdSetMethodResult
+	if err = p.c.Call(ctx, "GetVideoSetByIdSetMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -213,6 +261,16 @@ func (p *kClient) DeleteVideoMethod(ctx context.Context, request *videomicro.Del
 	_args.Request = request
 	var _result videomicro.VideoServiceDeleteVideoMethodResult
 	if err = p.c.Call(ctx, "DeleteVideoMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetUserVideoCountMethod(ctx context.Context, request *videomicro.GetUserVideoCountReq) (r *videomicro.GetUserVideoCountResp, err error) {
+	var _args videomicro.VideoServiceGetUserVideoCountMethodArgs
+	_args.Request = request
+	var _result videomicro.VideoServiceGetUserVideoCountMethodResult
+	if err = p.c.Call(ctx, "GetUserVideoCountMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

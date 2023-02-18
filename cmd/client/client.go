@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"time"
 
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro/videoservice"
@@ -32,15 +31,6 @@ func generateTestData() []Video {
 	data = append(data, Video{
 		"HBO GO now works with Chromecast", 1, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "https://i.imgtg.com/2022/05/06/zJNQS.th.jpg",
 	})
-	data = append(data, Video{
-		"Introducing Chromecast. The easiest way to enjoy online video", 2, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", "https://i.imgtg.com/2022/05/06/zJFbg.th.jpg",
-	})
-	data = append(data, Video{
-		"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", 3, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", "https://i.imgtg.com/2022/05/06/zJAiC.th.jpg",
-	})
-	data = append(data, Video{
-		"Introducing Chromecast. The easiest way to enjoy onlin", 1, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", "https://i.imgtg.com/2022/05/06/zJK4L.th.png",
-	})
 	return data
 }
 
@@ -57,7 +47,7 @@ func main() {
 
 	// // create video
 	// testdata := generateTestData()
-	// for _, video := range testdata {
+	// for _, video := range testdata[:1] {
 	// 	resp, err := client.CreateVideoMethod(context.Background(), &videomicro.CreateVideoReq{
 	// 		Title:    video.Title,
 	// 		AuthorId: video.Author_id,
@@ -72,25 +62,27 @@ func main() {
 	// }
 
 	// // get video
-	// resp1, err := client.GetVideoMethod(context.Background(), &videomicro.GetVideoReq{Id: 23})
+	// resp1, err := client.GetVideoSetByIdSetMethod(context.Background(), &videomicro.GetVideoSetByIdSetReq{
+	// 	IdSet: []int64{1, 2, 5}, // 对于不存在的id，会没有这一项内容
+	// })
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
 	// log.Println(resp1)
 
-	// getFeed
-	latestTime := time.Now().UnixNano() //与rpc通信 统一使用纳秒
-	for i := 0; i < 3; i++ {
-		resp, err := client.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 5})
-		if err != nil {
-			log.Fatal(err)
-		}
-		latestTime = *resp.NextTime
-		log.Println(resp)
-	}
+	// // getFeed
+	// latestTime := time.Now().UnixNano() //与rpc通信 统一使用纳秒
+	// for i := 0; i < 3; i++ {
+	// 	resp, err := client.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 5})
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	latestTime = *resp.NextTime
+	// 	log.Println(resp)
+	// }
 
 	// // getUser's Videos
-	// resp, err := client.GetVideosByAuthorIdMethod(context.Background(), &videomicro.GetVideosByAuthorIdReq{AuthorId: 2})
+	// resp, err := client.GetVideosByAuthorIdMethod(context.Background(), &videomicro.GetVideosByAuthorIdReq{AuthorId: 1})
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
@@ -98,16 +90,35 @@ func main() {
 
 	// // // update video
 	// newtitle := "newtitlefor23"
-	// resp2, err := client.UpdateVideoMethod(context.Background(), &videomicro.UpdateVideoReq{Id: 23, Title: &newtitle})
-	// if err != nil {
+	// resp2, err := client.UpdateVideoMethod(context.Background(), &videomicro.UpdateVideoReq{Id: 11, Title: &newtitle})
+	// if err != nil { // 如果传一个错误id进去，返回也是成功，但是不存在修改
 	// 	log.Fatal(err)
 	// }
 	// log.Println(resp2)
 
 	// // delete video
-	// resp, err := client.DeleteVideoMethod(context.Background(), &videomicro.DeleteVideoReq{Id: 23})
+	// resp, err := client.DeleteVideoMethod(context.Background(), &videomicro.DeleteVideoReq{VideoId: 23})
+	// if err != nil { // 删除一个不存在的id，record not found
+	// 	log.Fatal(err)
+	// }
+	// log.Println(resp)
+
+	// // 获取用户发布的视频数
+	// resp, err := client.GetUserVideoCountMethod(context.Background(), &videomicro.GetUserVideoCountReq{
+	// 	AuthorId: 1,
+	// })
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
 	// log.Println(resp)
+
+	// 获取视频对应作者id
+	resp, err := client.GetVideoAuthorIdMethod(context.Background(), &videomicro.GetVideoAuthorIdReq{
+		Id: 12,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(resp)
+
 }

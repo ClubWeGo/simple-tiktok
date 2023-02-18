@@ -28,6 +28,8 @@ func main() {
 
 	g.ApplyBasic(model.Video{})
 
+	g.ApplyBasic(model.VideoCount{})
+
 	// g.ApplyInterface(func(model.UserMethod) {}, model.User{})
 
 	g.Execute()
