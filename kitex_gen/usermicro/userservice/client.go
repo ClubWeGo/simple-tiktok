@@ -16,6 +16,9 @@ type Client interface {
 	LoginUserMethod(ctx context.Context, request *usermicro.LoginUserReq, callOptions ...callopt.Option) (r *usermicro.LoginUserResp, err error)
 	CreateUserMethod(ctx context.Context, request *usermicro.CreateUserReq, callOptions ...callopt.Option) (r *usermicro.CreateUserResp, err error)
 	UpdateUserMethod(ctx context.Context, request *usermicro.UpdateUserReq, callOptions ...callopt.Option) (r *usermicro.UpdateUserResp, err error)
+	UpdateRelationMethod(ctx context.Context, request *usermicro.UpdateRelationCacheReq, callOptions ...callopt.Option) (r *usermicro.UpdateRelationCacheResp, err error)
+	UpdateInteractionMethod(ctx context.Context, request *usermicro.UpdateInteractionCacheReq, callOptions ...callopt.Option) (r *usermicro.UpdateInteractionCacheResp, err error)
+	UpdateWorkMethod(ctx context.Context, request *usermicro.UpdateWorkCacheReq, callOptions ...callopt.Option) (r *usermicro.UpdateWorkCacheResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -70,4 +73,19 @@ func (p *kUserServiceClient) CreateUserMethod(ctx context.Context, request *user
 func (p *kUserServiceClient) UpdateUserMethod(ctx context.Context, request *usermicro.UpdateUserReq, callOptions ...callopt.Option) (r *usermicro.UpdateUserResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UpdateUserMethod(ctx, request)
+}
+
+func (p *kUserServiceClient) UpdateRelationMethod(ctx context.Context, request *usermicro.UpdateRelationCacheReq, callOptions ...callopt.Option) (r *usermicro.UpdateRelationCacheResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateRelationMethod(ctx, request)
+}
+
+func (p *kUserServiceClient) UpdateInteractionMethod(ctx context.Context, request *usermicro.UpdateInteractionCacheReq, callOptions ...callopt.Option) (r *usermicro.UpdateInteractionCacheResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateInteractionMethod(ctx, request)
+}
+
+func (p *kUserServiceClient) UpdateWorkMethod(ctx context.Context, request *usermicro.UpdateWorkCacheReq, callOptions ...callopt.Option) (r *usermicro.UpdateWorkCacheResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateWorkMethod(ctx, request)
 }
