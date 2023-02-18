@@ -4,8 +4,9 @@ package relation
 
 import (
 	"context"
-
 	relation "github.com/ClubWeGo/douyin/biz/model/relation"
+	"github.com/ClubWeGo/douyin/kitex_server"
+	"github.com/ClubWeGo/douyin/tools"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -22,6 +23,31 @@ func RelationMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(relation.RelationResp)
+	//userId := int64(1111)
+	// 鉴权
+	ifvalid, userId, err := tools.ValidateToken(req.Token)
+	if err != nil {
+		msgFailed := "非法token"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
+	if !ifvalid {
+		msgFailed := "token无效"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
 
+	err = kitex_server.Follow(userId, req.ToUserID, req.ActionType)
+	if err != nil {
+		msgFailed := err.Error()
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
 	c.JSON(consts.StatusOK, resp)
 }
