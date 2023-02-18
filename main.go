@@ -22,9 +22,9 @@ func main() {
 	kitex_server.Init(r)
 
 	minioConfig := minio_server.Config{
-		Endpoint:        "192.168.2.6:9000",
-		AccessKeyID:     "minioadmin",
-		SecretAccessKey: "minioadmin",
+		Endpoint:        "193.122.125.229:9000",
+		AccessKeyID:     "clubwego",
+		SecretAccessKey: "simpletiktok",
 		UseSSL:          false,
 	}
 	// init minio
