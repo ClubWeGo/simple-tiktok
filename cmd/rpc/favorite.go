@@ -1,4 +1,4 @@
-package main
+package rpc
 
 import (
 	"context"
@@ -15,7 +15,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//clt, err := favoriteservice.NewClient("favoriteservice", client.WithHostPorts("0.0.0.0:8888"))
+	//clt, err := favoriteservice.NewClient("favoriteservice", rpc.WithHostPorts("0.0.0.0:8888"))
 	clt, err := favoriteservice.NewClient("favoriteservice", client.WithResolver(resolver))
 	if err != nil {
 		log.Fatal(err)
