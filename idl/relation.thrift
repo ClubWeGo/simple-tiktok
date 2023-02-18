@@ -1,12 +1,6 @@
 namespace go relation
+include "core.thrift"
 
-struct User {
-    1: required i64 id;
-    2: required string name;
-    3: optional i64 follow_count;
-    4: optional i64 follower_count;
-    5: required bool is_follow;
-}
 
 
 # followList
@@ -18,7 +12,7 @@ struct FollowListReq {
 struct FollowListResp {
     1: required i32 status_code;
     2: optional string status_msg;
-    3: list<User> user_list;
+    3: list<core.User> user_list;
 }
 
 service FollowListService {
@@ -35,7 +29,7 @@ struct FollowerListReq {
 struct FollowerListResp {
     1: required i32 status_code;
     2: optional string status_msg;
-    3: list<User> user_list;
+    3: list<core.User> user_list;
 }
 
 service FollowerListService {
@@ -52,7 +46,7 @@ struct FriendListReq {
 struct FriendListResp {
     1: required i32 status_code;
     2: optional string status_msg;
-    3: list<User> user_list;
+    3: list<core.User> user_list;
 }
 
 service FriendListService {
@@ -87,7 +81,7 @@ struct Message {
 
 # Get P2P Messages
 struct MessageChatReq {
-    1: required string token; 
+    1: required string token;
     2: required i64 to_user_id;
 }
 
@@ -103,7 +97,7 @@ service MessageChatService {
 
 # Send Messages
 struct MessageActionReq {
-    1: required string token; 
+    1: required string token;
     2: required i64 to_user_id;
     3: required i32 action_type; // 1 表示发送消息
     4: required string content; // 消息内容
