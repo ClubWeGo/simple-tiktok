@@ -137,7 +137,14 @@ func (s *UserServiceImpl) CreateUserMethod(ctx context.Context, request *usermic
 		}, err
 	}
 
-	id := int64(user.ID) // 这样其实不好
+	createdUser, err := u.Select(u.ID).Where(u.Name.Eq(newUser.Name)).First()
+	if err != nil {
+		return &usermicro.CreateUserResp{
+			Status: false,
+		}, err
+	}
+
+	id := int64(createdUser.ID) // 这样其实不好
 	return &usermicro.CreateUserResp{
 		Status: true,
 		UserId: &id,
