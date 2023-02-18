@@ -7,7 +7,7 @@ import (
 )
 
 func BuildBaseResp(err error) (resp *favorite.BaseResp) {
-	var e errno.ErrNo
+	e := errno.ErrNo{}
 	if err == nil {
 		e = errno.Success
 	} else if errors.As(err, &e) {
@@ -15,6 +15,7 @@ func BuildBaseResp(err error) (resp *favorite.BaseResp) {
 	} else {
 		e = errno.ServiceErr.WithMessage(err.Error())
 	}
+	resp = &favorite.BaseResp{}
 	resp.StatusCode = e.ErrCode
 	resp.StatusMsg = &e.ErrMsg
 	return

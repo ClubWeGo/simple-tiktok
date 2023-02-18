@@ -7,6 +7,7 @@ import (
 	favorite "github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
 	"github.com/ClubWeGo/favoritemicro/pack"
 	"github.com/ClubWeGo/favoritemicro/pkg/errno"
+	"log"
 )
 
 // FavoriteServiceImpl implements the last service interface defined in the IDL.
@@ -14,6 +15,7 @@ type FavoriteServiceImpl struct{}
 
 // FavoriteMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) FavoriteMethod(ctx context.Context, request *favorite.FavoriteReq) (resp *favorite.FavoriteResp, err error) {
+	resp = &favorite.FavoriteResp{}
 	if request.ActionType == 1 {
 		authorId, err := rpc.GetAuthorId(ctx, request.VideoId)
 		if err != nil {
@@ -25,9 +27,11 @@ func (s *FavoriteServiceImpl) FavoriteMethod(ctx context.Context, request *favor
 			resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
 			return resp, nil
 		}
+		log.Println("点赞成功")
 		resp.BaseResp = pack.BuildBaseResp(errno.Success.WithMessage("点赞成功"))
 		return resp, nil
 	} else if request.ActionType == 2 {
+		err = db.DeleteFavorite(ctx, request.UserId, request.VideoId)
 		if err != nil {
 			resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
 			return resp, nil
@@ -42,6 +46,7 @@ func (s *FavoriteServiceImpl) FavoriteMethod(ctx context.Context, request *favor
 
 // FavoriteListMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) FavoriteListMethod(ctx context.Context, request *favorite.FavoriteListReq) (resp *favorite.FavoriteListResp, err error) {
+	resp = &favorite.FavoriteListResp{}
 	favoriteList, err := db.GetFavoriteList(ctx, request.UserId)
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
@@ -55,6 +60,7 @@ func (s *FavoriteServiceImpl) FavoriteListMethod(ctx context.Context, request *f
 
 // FavoriteRelationMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) FavoriteRelationMethod(ctx context.Context, request *favorite.FavoriteRelationReq) (resp *favorite.FavoriteRelationResp, err error) {
+	resp = &favorite.FavoriteRelationResp{}
 	cnt, err := db.GetFavoriteRelation(ctx, request.UserId, request.VideoId)
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
@@ -68,6 +74,7 @@ func (s *FavoriteServiceImpl) FavoriteRelationMethod(ctx context.Context, reques
 
 // UserFavoriteCountMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) UserFavoriteCountMethod(ctx context.Context, request *favorite.UserFavoriteCountReq) (resp *favorite.UserFavoriteCountResp, err error) {
+	resp = &favorite.UserFavoriteCountResp{}
 	favoriteCnt, favoritedCnt, err := db.CountUserFavorite(ctx, request.UserId)
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
@@ -81,6 +88,7 @@ func (s *FavoriteServiceImpl) UserFavoriteCountMethod(ctx context.Context, reque
 
 // VideoFavoriteCountMethod implements the FavoriteServiceImpl interface.
 func (s *FavoriteServiceImpl) VideoFavoriteCountMethod(ctx context.Context, request *favorite.VideoFavoriteCountReq) (resp *favorite.VideoFavoriteCountResp, err error) {
+	resp = &favorite.VideoFavoriteCountResp{}
 	cnt, err := db.CountVideoFavorite(ctx, request.VideoId)
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(errno.DBErr.WithMessage(err.Error()))
