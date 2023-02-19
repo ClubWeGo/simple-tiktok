@@ -3311,6 +3311,244 @@ func (p *DeleteVideoResp) Field1DeepEqual(src bool) bool {
 	return true
 }
 
+type VideoCount struct {
+	Id    int64 `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
+	Count int64 `thrift:"count,2,required" frugal:"2,required,i64" json:"count"`
+}
+
+func NewVideoCount() *VideoCount {
+	return &VideoCount{}
+}
+
+func (p *VideoCount) InitDefault() {
+	*p = VideoCount{}
+}
+
+func (p *VideoCount) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *VideoCount) GetCount() (v int64) {
+	return p.Count
+}
+func (p *VideoCount) SetId(val int64) {
+	p.Id = val
+}
+func (p *VideoCount) SetCount(val int64) {
+	p.Count = val
+}
+
+var fieldIDToName_VideoCount = map[int16]string{
+	1: "id",
+	2: "count",
+}
+
+func (p *VideoCount) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetId bool = false
+	var issetCount bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetId = true
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetCount = true
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetId {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetCount {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_VideoCount[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_VideoCount[fieldId]))
+}
+
+func (p *VideoCount) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Id = v
+	}
+	return nil
+}
+
+func (p *VideoCount) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Count = v
+	}
+	return nil
+}
+
+func (p *VideoCount) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("VideoCount"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *VideoCount) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Id); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *VideoCount) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("count", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Count); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *VideoCount) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("VideoCount(%+v)", *p)
+}
+
+func (p *VideoCount) DeepEqual(ano *VideoCount) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Count) {
+		return false
+	}
+	return true
+}
+
+func (p *VideoCount) Field1DeepEqual(src int64) bool {
+
+	if p.Id != src {
+		return false
+	}
+	return true
+}
+func (p *VideoCount) Field2DeepEqual(src int64) bool {
+
+	if p.Count != src {
+		return false
+	}
+	return true
+}
+
 type GetVideoCountSetByIdUserSetReq struct {
 	AuthorIdSet []int64 `thrift:"author_id_set,1,required" frugal:"1,required,list<i64>" json:"author_id_set"`
 }
@@ -3511,8 +3749,8 @@ func (p *GetVideoCountSetByIdUserSetReq) Field1DeepEqual(src []int64) bool {
 }
 
 type GetVideoCountSetByIdUserSetResp struct {
-	Status   bool    `thrift:"status,1,required" frugal:"1,required,bool" json:"status"`
-	CountSet []int64 `thrift:"count_set,2,required" frugal:"2,required,list<i64>" json:"count_set"`
+	Status   bool          `thrift:"status,1,required" frugal:"1,required,bool" json:"status"`
+	CountSet []*VideoCount `thrift:"count_set,2,required" frugal:"2,required,list<VideoCount>" json:"count_set"`
 }
 
 func NewGetVideoCountSetByIdUserSetResp() *GetVideoCountSetByIdUserSetResp {
@@ -3527,13 +3765,13 @@ func (p *GetVideoCountSetByIdUserSetResp) GetStatus() (v bool) {
 	return p.Status
 }
 
-func (p *GetVideoCountSetByIdUserSetResp) GetCountSet() (v []int64) {
+func (p *GetVideoCountSetByIdUserSetResp) GetCountSet() (v []*VideoCount) {
 	return p.CountSet
 }
 func (p *GetVideoCountSetByIdUserSetResp) SetStatus(val bool) {
 	p.Status = val
 }
-func (p *GetVideoCountSetByIdUserSetResp) SetCountSet(val []int64) {
+func (p *GetVideoCountSetByIdUserSetResp) SetCountSet(val []*VideoCount) {
 	p.CountSet = val
 }
 
@@ -3640,13 +3878,11 @@ func (p *GetVideoCountSetByIdUserSetResp) ReadField2(iprot thrift.TProtocol) err
 	if err != nil {
 		return err
 	}
-	p.CountSet = make([]int64, 0, size)
+	p.CountSet = make([]*VideoCount, 0, size)
 	for i := 0; i < size; i++ {
-		var _elem int64
-		if v, err := iprot.ReadI64(); err != nil {
+		_elem := NewVideoCount()
+		if err := _elem.Read(iprot); err != nil {
 			return err
-		} else {
-			_elem = v
 		}
 
 		p.CountSet = append(p.CountSet, _elem)
@@ -3711,11 +3947,11 @@ func (p *GetVideoCountSetByIdUserSetResp) writeField2(oprot thrift.TProtocol) (e
 	if err = oprot.WriteFieldBegin("count_set", thrift.LIST, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteListBegin(thrift.I64, len(p.CountSet)); err != nil {
+	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.CountSet)); err != nil {
 		return err
 	}
 	for _, v := range p.CountSet {
-		if err := oprot.WriteI64(v); err != nil {
+		if err := v.Write(oprot); err != nil {
 			return err
 		}
 	}
@@ -3761,14 +3997,14 @@ func (p *GetVideoCountSetByIdUserSetResp) Field1DeepEqual(src bool) bool {
 	}
 	return true
 }
-func (p *GetVideoCountSetByIdUserSetResp) Field2DeepEqual(src []int64) bool {
+func (p *GetVideoCountSetByIdUserSetResp) Field2DeepEqual(src []*VideoCount) bool {
 
 	if len(p.CountSet) != len(src) {
 		return false
 	}
 	for i, v := range p.CountSet {
 		_src := src[i]
-		if v != _src {
+		if !v.DeepEqual(_src) {
 			return false
 		}
 	}
