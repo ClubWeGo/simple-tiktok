@@ -54,3 +54,13 @@ func CreateVideo(title, playUrl, coverUrl string, authorId int64) error {
 	}
 	return errors.New("kitex-videomicroserver : create video failed")
 }
+
+func GetVideoCountSetByUserIdSet(idSet []int64) ([]int64, error) {
+	resp, err := Videoclient.GetVideoCountSetByIdUserSetMethod(context.Background(), &videomicro.GetVideoCountSetByIdUserSetReq{
+		AuthorIdSet: idSet,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return resp.CountSet, nil
+}
