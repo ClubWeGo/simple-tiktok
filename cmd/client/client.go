@@ -47,7 +47,7 @@ func main() {
 
 	// // create video
 	// testdata := generateTestData()
-	// for _, video := range testdata[:1] {
+	// for _, video := range testdata[1:] {
 	// 	resp, err := client.CreateVideoMethod(context.Background(), &videomicro.CreateVideoReq{
 	// 		Title:    video.Title,
 	// 		AuthorId: video.Author_id,
@@ -72,7 +72,7 @@ func main() {
 
 	// // getFeed
 	// latestTime := time.Now().UnixNano() //与rpc通信 统一使用纳秒
-	// for i := 0; i < 3; i++ {
+	// for i := 0; i < 1; i++ {
 	// 	resp, err := client.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 5})
 	// 	if err != nil {
 	// 		log.Fatal(err)
@@ -103,22 +103,22 @@ func main() {
 	// }
 	// log.Println(resp)
 
-	// // 获取用户发布的视频数
-	// resp, err := client.GetUserVideoCountMethod(context.Background(), &videomicro.GetUserVideoCountReq{
-	// 	AuthorId: 1,
-	// })
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// log.Println(resp)
-
-	// 获取视频对应作者id
-	resp, err := client.GetVideoAuthorIdMethod(context.Background(), &videomicro.GetVideoAuthorIdReq{
-		Id: 12,
+	// 获取用户发布的视频数
+	resp, err := client.GetVideoCountSetByIdUserSetMethod(context.Background(), &videomicro.GetVideoCountSetByIdUserSetReq{
+		AuthorIdSet: []int64{1, 2},
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println(resp)
+
+	// // 获取视频对应作者id
+	// resp, err := client.GetVideoAuthorIdMethod(context.Background(), &videomicro.GetVideoAuthorIdReq{
+	// 	Id: 12,
+	// })
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// log.Println(resp)
 
 }
