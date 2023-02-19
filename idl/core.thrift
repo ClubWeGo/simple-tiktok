@@ -6,6 +6,12 @@ struct User {
     3: required i64 follow_count;
     4: required i64 follower_count;
     5: required bool is_follow;
+    6: required string avatar;
+    7: required string background_image;
+    8: required string signature;
+    9: required string total_favourited;
+    10: required i64 work_count;
+    11: required i64 favorite_count;
 }
 
 struct Video {

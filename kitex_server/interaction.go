@@ -2,6 +2,7 @@ package kitex_server
 
 import (
 	"context"
+
 	"github.com/ClubWeGo/douyin/biz/model/interaction"
 	"github.com/ClubWeGo/douyin/tools/errno"
 	"github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
@@ -78,4 +79,9 @@ func CountUserFavorite(ctx context.Context, uid int64) (int64, int64, error) {
 		return 0, 0, errno.RPCErr
 	}
 	return res.FavoriteCount, res.FavoritedCount, nil
+}
+
+// TODO : 传入userId切片，批量查询user对应的favorite， total_favorited
+func GetFavoriteCountByUserIdSet(idSet []int64) (favoriteSet, favoritedSet []int64, err error) {
+	return []int64{}, []int64{}, nil
 }

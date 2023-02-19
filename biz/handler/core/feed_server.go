@@ -47,6 +47,25 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	// author 相关的查询
+	// 批量查询author: Userclient.GetUserSetByIdSetMethod()
+
+	// 批量查询author作品数，Work_count 从video服务
+	kitex_server.Videoclient.GetVideoCountSetByIdUserSetMethod(context.Background(), &videomicro.GetVideoCountSetByIdUserSetReq{})
+
+	// 批量查询 favorite_count, total_favourited 从favorite服务: kitex_server.FavoriteClient.UserFavoriteCountMethod()
+
+	// 批量查询 is_follow, 从relation服务
+
+	// 批量查询 follow_count， follower_cout 从relation服务
+
+	// video 相关的查询
+	// 批量查询video favorite_count: FavoriteClient.VideoFavoriteCountMethod() ，出入视频id
+
+	// 查询video comment_count  : 该接口目前没有
+
+	// 查询isFavorite: FavoriteClient.FavoriteRelation()，传入当前 查询用户的token对应id 与 视频id
+
 	resp.VideoList = make([]*core.Video, 0)
 	for _, video := range r.VideoList {
 		author, _ := kitex_server.GetUser(video.AuthorId)
@@ -58,7 +77,7 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 			CoverURL:      video.CoverUrl,
 			FavoriteCount: video.FavoriteCount,
 			CommentCount:  video.CommentCount,
-			IsFavorite:    false, // 需要增加喜欢配置
+			IsFavorite:    false, // 需要增加喜欢配置 // TODO：增加
 			Title:         video.Title,
 		})
 	}

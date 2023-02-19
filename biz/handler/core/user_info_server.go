@@ -27,7 +27,20 @@ func UserInfoMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(core.UserInfoResp)
 
+	// 从User服务拿User信息
 	user, err := kitex_server.GetUser(req.UserID)
+
+	// 从video服务拿最新的用户作品数量
+	// WorkCountSet, err := kitex_server.GetVideoCountSetByUserIdSet([]int64{req.UserID})
+
+	// 批量查询 favorite_count, total_favourited 从favorite服务: kitex_server.FavoriteClient.UserFavoriteCountMethod()
+	// favoriteSet, favoritedSet, err := kitex_server.GetFavoriteCountByUserIdSet([]int64{req.UserID})
+
+	// 批量查询 is_follow, 从relation服务
+	// isFollowSet, err := kitex_server.GetIsFollowSetByUserIdSet([]int64{req.UserID})
+
+	// 批量查询 follow_count， follower_cout 从relation服务
+
 	if err != nil {
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
