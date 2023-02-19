@@ -250,14 +250,17 @@ func (s *VideoServiceImpl) GetVideoCountSetByIdUserSetMethod(ctx context.Context
 	if err != nil {
 		return &videomicro.GetVideoCountSetByIdUserSetResp{
 			Status:   false,
-			CountSet: []int64{}, // 没查到为空
+			CountSet: []*videomicro.VideoCount{}, // 没查到为空
 		}, err
 	}
 
 	// 批量转换格式
-	respvideoCountslist := make([]int64, len(videoCounts))
+	respvideoCountslist := make([]*videomicro.VideoCount, len(videoCounts))
 	for index, videoCount := range videoCounts {
-		respvideoCountslist[index] = videoCount.Work_count
+		respvideoCountslist[index] = &videomicro.VideoCount{
+			Id:    videoCount.Author_id,
+			Count: videoCount.Work_count,
+		}
 	}
 
 	return &videomicro.GetVideoCountSetByIdUserSetResp{

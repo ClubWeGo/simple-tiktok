@@ -2674,6 +2674,199 @@ func (p *DeleteVideoResp) field1Length() int {
 	return l
 }
 
+func (p *VideoCount) FastRead(buf []byte) (int, error) {
+	var err error
+	var offset int
+	var l int
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetId bool = false
+	var issetCount bool = false
+	_, l, err = bthrift.Binary.ReadStructBegin(buf)
+	offset += l
+	if err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, l, err = bthrift.Binary.ReadFieldBegin(buf[offset:])
+		offset += l
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField1(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+				issetId = true
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField2(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+				issetCount = true
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+			offset += l
+			if err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		l, err = bthrift.Binary.ReadFieldEnd(buf[offset:])
+		offset += l
+		if err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	l, err = bthrift.Binary.ReadStructEnd(buf[offset:])
+	offset += l
+	if err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetId {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetCount {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return offset, nil
+ReadStructBeginError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_VideoCount[fieldId]), err)
+SkipFieldError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+ReadFieldEndError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return offset, thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_VideoCount[fieldId]))
+}
+
+func (p *VideoCount) FastReadField1(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.Id = v
+
+	}
+	return offset, nil
+}
+
+func (p *VideoCount) FastReadField2(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.Count = v
+
+	}
+	return offset, nil
+}
+
+// for compatibility
+func (p *VideoCount) FastWrite(buf []byte) int {
+	return 0
+}
+
+func (p *VideoCount) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "VideoCount")
+	if p != nil {
+		offset += p.fastWriteField1(buf[offset:], binaryWriter)
+		offset += p.fastWriteField2(buf[offset:], binaryWriter)
+	}
+	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
+	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
+	return offset
+}
+
+func (p *VideoCount) BLength() int {
+	l := 0
+	l += bthrift.Binary.StructBeginLength("VideoCount")
+	if p != nil {
+		l += p.field1Length()
+		l += p.field2Length()
+	}
+	l += bthrift.Binary.FieldStopLength()
+	l += bthrift.Binary.StructEndLength()
+	return l
+}
+
+func (p *VideoCount) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "id", thrift.I64, 1)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.Id)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *VideoCount) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "count", thrift.I64, 2)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.Count)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *VideoCount) field1Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("id", thrift.I64, 1)
+	l += bthrift.Binary.I64Length(p.Id)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *VideoCount) field2Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("count", thrift.I64, 2)
+	l += bthrift.Binary.I64Length(p.Count)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
 func (p *GetVideoCountSetByIdUserSetReq) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
@@ -2960,16 +3153,13 @@ func (p *GetVideoCountSetByIdUserSetResp) FastReadField2(buf []byte) (int, error
 	if err != nil {
 		return offset, err
 	}
-	p.CountSet = make([]int64, 0, size)
+	p.CountSet = make([]*VideoCount, 0, size)
 	for i := 0; i < size; i++ {
-		var _elem int64
-		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+		_elem := NewVideoCount()
+		if l, err := _elem.FastRead(buf[offset:]); err != nil {
 			return offset, err
 		} else {
 			offset += l
-
-			_elem = v
-
 		}
 
 		p.CountSet = append(p.CountSet, _elem)
@@ -3024,14 +3214,13 @@ func (p *GetVideoCountSetByIdUserSetResp) fastWriteField2(buf []byte, binaryWrit
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "count_set", thrift.LIST, 2)
 	listBeginOffset := offset
-	offset += bthrift.Binary.ListBeginLength(thrift.I64, 0)
+	offset += bthrift.Binary.ListBeginLength(thrift.STRUCT, 0)
 	var length int
 	for _, v := range p.CountSet {
 		length++
-		offset += bthrift.Binary.WriteI64(buf[offset:], v)
-
+		offset += v.FastWriteNocopy(buf[offset:], binaryWriter)
 	}
-	bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.I64, length)
+	bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.STRUCT, length)
 	offset += bthrift.Binary.WriteListEnd(buf[offset:])
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -3049,9 +3238,10 @@ func (p *GetVideoCountSetByIdUserSetResp) field1Length() int {
 func (p *GetVideoCountSetByIdUserSetResp) field2Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("count_set", thrift.LIST, 2)
-	l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.CountSet))
-	var tmpV int64
-	l += bthrift.Binary.I64Length(int64(tmpV)) * len(p.CountSet)
+	l += bthrift.Binary.ListBeginLength(thrift.STRUCT, len(p.CountSet))
+	for _, v := range p.CountSet {
+		l += v.BLength()
+	}
 	l += bthrift.Binary.ListEndLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
