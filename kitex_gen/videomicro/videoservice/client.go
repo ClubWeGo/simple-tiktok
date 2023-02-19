@@ -18,7 +18,7 @@ type Client interface {
 	GetVideosFeedMethod(ctx context.Context, request *videomicro.GetVideosFeedReq, callOptions ...callopt.Option) (r *videomicro.GetVideosFeedResp, err error)
 	UpdateVideoMethod(ctx context.Context, request *videomicro.UpdateVideoReq, callOptions ...callopt.Option) (r *videomicro.UpdateVideoResp, err error)
 	DeleteVideoMethod(ctx context.Context, request *videomicro.DeleteVideoReq, callOptions ...callopt.Option) (r *videomicro.DeleteVideoResp, err error)
-	GetUserVideoCountMethod(ctx context.Context, request *videomicro.GetUserVideoCountReq, callOptions ...callopt.Option) (r *videomicro.GetUserVideoCountResp, err error)
+	GetVideoCountSetByIdUserSetMethod(ctx context.Context, request *videomicro.GetVideoCountSetByIdUserSetReq, callOptions ...callopt.Option) (r *videomicro.GetVideoCountSetByIdUserSetResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -85,7 +85,7 @@ func (p *kVideoServiceClient) DeleteVideoMethod(ctx context.Context, request *vi
 	return p.kClient.DeleteVideoMethod(ctx, request)
 }
 
-func (p *kVideoServiceClient) GetUserVideoCountMethod(ctx context.Context, request *videomicro.GetUserVideoCountReq, callOptions ...callopt.Option) (r *videomicro.GetUserVideoCountResp, err error) {
+func (p *kVideoServiceClient) GetVideoCountSetByIdUserSetMethod(ctx context.Context, request *videomicro.GetVideoCountSetByIdUserSetReq, callOptions ...callopt.Option) (r *videomicro.GetVideoCountSetByIdUserSetResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetUserVideoCountMethod(ctx, request)
+	return p.kClient.GetVideoCountSetByIdUserSetMethod(ctx, request)
 }

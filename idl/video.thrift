@@ -78,13 +78,13 @@ struct DeleteVideoResp {
 }
 
 // 统计用户的发布视频数量
-struct GetUserVideoCountReq {
-    1: required i64 author_id;
+struct GetVideoCountSetByIdUserSetReq {
+    1: required list<i64> author_id_set;
 }
 
-struct GetUserVideoCountResp {
+struct GetVideoCountSetByIdUserSetResp {
     1: required bool status;
-    2: required i64 count;
+    2: required list<i64> count_set;
 }
 
 // 批量查询视频；传入视频id切片，返回视频对象切片;如果查询单挑视频，传入一个id
@@ -107,6 +107,6 @@ service VideoService {
     DeleteVideoResp DeleteVideoMethod(1: DeleteVideoReq request)
 
     // 获取用户的作品数量接口
-    GetUserVideoCountResp GetUserVideoCountMethod(1: GetUserVideoCountReq request)
+    GetVideoCountSetByIdUserSetResp GetVideoCountSetByIdUserSetMethod(1: GetVideoCountSetByIdUserSetReq request)
 }
 

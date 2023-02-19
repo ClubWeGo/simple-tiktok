@@ -19,14 +19,14 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "VideoService"
 	handlerType := (*videomicro.VideoService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CreateVideoMethod":         kitex.NewMethodInfo(createVideoMethodHandler, newVideoServiceCreateVideoMethodArgs, newVideoServiceCreateVideoMethodResult, false),
-		"GetVideoAuthorIdMethod":    kitex.NewMethodInfo(getVideoAuthorIdMethodHandler, newVideoServiceGetVideoAuthorIdMethodArgs, newVideoServiceGetVideoAuthorIdMethodResult, false),
-		"GetVideosByAuthorIdMethod": kitex.NewMethodInfo(getVideosByAuthorIdMethodHandler, newVideoServiceGetVideosByAuthorIdMethodArgs, newVideoServiceGetVideosByAuthorIdMethodResult, false),
-		"GetVideoSetByIdSetMethod":  kitex.NewMethodInfo(getVideoSetByIdSetMethodHandler, newVideoServiceGetVideoSetByIdSetMethodArgs, newVideoServiceGetVideoSetByIdSetMethodResult, false),
-		"GetVideosFeedMethod":       kitex.NewMethodInfo(getVideosFeedMethodHandler, newVideoServiceGetVideosFeedMethodArgs, newVideoServiceGetVideosFeedMethodResult, false),
-		"UpdateVideoMethod":         kitex.NewMethodInfo(updateVideoMethodHandler, newVideoServiceUpdateVideoMethodArgs, newVideoServiceUpdateVideoMethodResult, false),
-		"DeleteVideoMethod":         kitex.NewMethodInfo(deleteVideoMethodHandler, newVideoServiceDeleteVideoMethodArgs, newVideoServiceDeleteVideoMethodResult, false),
-		"GetUserVideoCountMethod":   kitex.NewMethodInfo(getUserVideoCountMethodHandler, newVideoServiceGetUserVideoCountMethodArgs, newVideoServiceGetUserVideoCountMethodResult, false),
+		"CreateVideoMethod":                 kitex.NewMethodInfo(createVideoMethodHandler, newVideoServiceCreateVideoMethodArgs, newVideoServiceCreateVideoMethodResult, false),
+		"GetVideoAuthorIdMethod":            kitex.NewMethodInfo(getVideoAuthorIdMethodHandler, newVideoServiceGetVideoAuthorIdMethodArgs, newVideoServiceGetVideoAuthorIdMethodResult, false),
+		"GetVideosByAuthorIdMethod":         kitex.NewMethodInfo(getVideosByAuthorIdMethodHandler, newVideoServiceGetVideosByAuthorIdMethodArgs, newVideoServiceGetVideosByAuthorIdMethodResult, false),
+		"GetVideoSetByIdSetMethod":          kitex.NewMethodInfo(getVideoSetByIdSetMethodHandler, newVideoServiceGetVideoSetByIdSetMethodArgs, newVideoServiceGetVideoSetByIdSetMethodResult, false),
+		"GetVideosFeedMethod":               kitex.NewMethodInfo(getVideosFeedMethodHandler, newVideoServiceGetVideosFeedMethodArgs, newVideoServiceGetVideosFeedMethodResult, false),
+		"UpdateVideoMethod":                 kitex.NewMethodInfo(updateVideoMethodHandler, newVideoServiceUpdateVideoMethodArgs, newVideoServiceUpdateVideoMethodResult, false),
+		"DeleteVideoMethod":                 kitex.NewMethodInfo(deleteVideoMethodHandler, newVideoServiceDeleteVideoMethodArgs, newVideoServiceDeleteVideoMethodResult, false),
+		"GetVideoCountSetByIdUserSetMethod": kitex.NewMethodInfo(getVideoCountSetByIdUserSetMethodHandler, newVideoServiceGetVideoCountSetByIdUserSetMethodArgs, newVideoServiceGetVideoCountSetByIdUserSetMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "videomicro",
@@ -168,22 +168,22 @@ func newVideoServiceDeleteVideoMethodResult() interface{} {
 	return videomicro.NewVideoServiceDeleteVideoMethodResult()
 }
 
-func getUserVideoCountMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*videomicro.VideoServiceGetUserVideoCountMethodArgs)
-	realResult := result.(*videomicro.VideoServiceGetUserVideoCountMethodResult)
-	success, err := handler.(videomicro.VideoService).GetUserVideoCountMethod(ctx, realArg.Request)
+func getVideoCountSetByIdUserSetMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*videomicro.VideoServiceGetVideoCountSetByIdUserSetMethodArgs)
+	realResult := result.(*videomicro.VideoServiceGetVideoCountSetByIdUserSetMethodResult)
+	success, err := handler.(videomicro.VideoService).GetVideoCountSetByIdUserSetMethod(ctx, realArg.Request)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newVideoServiceGetUserVideoCountMethodArgs() interface{} {
-	return videomicro.NewVideoServiceGetUserVideoCountMethodArgs()
+func newVideoServiceGetVideoCountSetByIdUserSetMethodArgs() interface{} {
+	return videomicro.NewVideoServiceGetVideoCountSetByIdUserSetMethodArgs()
 }
 
-func newVideoServiceGetUserVideoCountMethodResult() interface{} {
-	return videomicro.NewVideoServiceGetUserVideoCountMethodResult()
+func newVideoServiceGetVideoCountSetByIdUserSetMethodResult() interface{} {
+	return videomicro.NewVideoServiceGetVideoCountSetByIdUserSetMethodResult()
 }
 
 type kClient struct {
@@ -266,11 +266,11 @@ func (p *kClient) DeleteVideoMethod(ctx context.Context, request *videomicro.Del
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetUserVideoCountMethod(ctx context.Context, request *videomicro.GetUserVideoCountReq) (r *videomicro.GetUserVideoCountResp, err error) {
-	var _args videomicro.VideoServiceGetUserVideoCountMethodArgs
+func (p *kClient) GetVideoCountSetByIdUserSetMethod(ctx context.Context, request *videomicro.GetVideoCountSetByIdUserSetReq) (r *videomicro.GetVideoCountSetByIdUserSetResp, err error) {
+	var _args videomicro.VideoServiceGetVideoCountSetByIdUserSetMethodArgs
 	_args.Request = request
-	var _result videomicro.VideoServiceGetUserVideoCountMethodResult
-	if err = p.c.Call(ctx, "GetUserVideoCountMethod", &_args, &_result); err != nil {
+	var _result videomicro.VideoServiceGetVideoCountSetByIdUserSetMethodResult
+	if err = p.c.Call(ctx, "GetVideoCountSetByIdUserSetMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

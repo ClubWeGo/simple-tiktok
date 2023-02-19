@@ -178,24 +178,6 @@ func (s *VideoServiceImpl) UpdateVideoMethod(ctx context.Context, request *video
 	}, err
 }
 
-// GetUserVideoCountMethod implements the VideoServiceImpl interface.
-func (s *VideoServiceImpl) GetUserVideoCountMethod(ctx context.Context, request *videomicro.GetUserVideoCountReq) (resp *videomicro.GetUserVideoCountResp, err error) {
-	// TODO: Your code here...
-	vc := query.VideoCount
-
-	videoCount, err := vc.Select(vc.Work_count).Where(vc.Author_id.Eq(request.AuthorId)).First()
-	if err != nil {
-		return &videomicro.GetUserVideoCountResp{
-			Status: false,
-			Count:  0,
-		}, err
-	}
-	return &videomicro.GetUserVideoCountResp{
-		Status: true,
-		Count:  videoCount.Work_count,
-	}, nil
-}
-
 // GetVideoAuthorIdMethod implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) GetVideoAuthorIdMethod(ctx context.Context, request *videomicro.GetVideoAuthorIdReq) (resp *videomicro.GetVideoAuthorIdResp, err error) {
 	// TODO: Your code here...
@@ -253,5 +235,33 @@ func (s *VideoServiceImpl) GetVideoSetByIdSetMethod(ctx context.Context, request
 	return &videomicro.GetVideoSetByIdSetResp{
 		Status:   true,
 		VideoSet: respvideolist,
+	}, nil
+}
+
+// GetVideoCountSetByIdUserSetMethod implements the VideoServiceImpl interface.
+func (s *VideoServiceImpl) GetVideoCountSetByIdUserSetMethod(ctx context.Context, request *videomicro.GetVideoCountSetByIdUserSetReq) (resp *videomicro.GetVideoCountSetByIdUserSetResp, err error) {
+	// TODO: Your code here...
+	vc := query.VideoCount
+
+	idSet := request.AuthorIdSet
+
+	// in 批量查询
+	videoCounts, err := vc.Select(vc.Work_count).Where(vc.Author_id.In(idSet...)).Find()
+	if err != nil {
+		return &videomicro.GetVideoCountSetByIdUserSetResp{
+			Status:   false,
+			CountSet: []int64{}, // 没查到为空
+		}, err
+	}
+
+	// 批量转换格式
+	respvideoCountslist := make([]int64, len(videoCounts))
+	for index, videoCount := range videoCounts {
+		respvideoCountslist[index] = videoCount.Work_count
+	}
+
+	return &videomicro.GetVideoCountSetByIdUserSetResp{
+		Status:   true,
+		CountSet: respvideoCountslist,
 	}, nil
 }
