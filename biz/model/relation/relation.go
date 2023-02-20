@@ -5,9 +5,11 @@ package relation
 import (
 	"context"
 	"fmt"
+	"github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
+<<<<<<< HEAD
 type User struct {
 	ID              int64   `thrift:"id,1,required" form:"id,required" json:"id,required" query:"id,required"`
 	Name            string  `thrift:"name,2,required" form:"name,required" json:"name,required" query:"name,required"`
@@ -715,6 +717,8 @@ func (p *User) String() string {
 	return fmt.Sprintf("User(%+v)", *p)
 }
 
+=======
+>>>>>>> 8563607bdd664d6d1ed1bb1a786b655ea52aba58
 // followList
 type FollowListReq struct {
 	Token  string `thrift:"token,1,required" form:"token,required" json:"token,required" query:"token,required"`
@@ -915,9 +919,9 @@ func (p *FollowListReq) String() string {
 }
 
 type FollowListResp struct {
-	StatusCode int32   `thrift:"status_code,1,required" form:"status_code,required" json:"status_code,required" query:"status_code,required"`
-	StatusMsg  *string `thrift:"status_msg,2,optional" form:"status_msg" json:"status_msg,omitempty" query:"status_msg"`
-	UserList   []*User `thrift:"user_list,3" form:"user_list" json:"user_list" query:"user_list"`
+	StatusCode int32        `thrift:"status_code,1,required" form:"status_code,required" json:"status_code,required" query:"status_code,required"`
+	StatusMsg  *string      `thrift:"status_msg,2,optional" form:"status_msg" json:"status_msg,omitempty" query:"status_msg"`
+	UserList   []*core.User `thrift:"user_list,3" form:"user_list" json:"user_list" query:"user_list"`
 }
 
 func NewFollowListResp() *FollowListResp {
@@ -937,7 +941,7 @@ func (p *FollowListResp) GetStatusMsg() (v string) {
 	return *p.StatusMsg
 }
 
-func (p *FollowListResp) GetUserList() (v []*User) {
+func (p *FollowListResp) GetUserList() (v []*core.User) {
 	return p.UserList
 }
 
@@ -1061,9 +1065,9 @@ func (p *FollowListResp) ReadField3(iprot thrift.TProtocol) error {
 	if err != nil {
 		return err
 	}
-	p.UserList = make([]*User, 0, size)
+	p.UserList = make([]*core.User, 0, size)
 	for i := 0; i < size; i++ {
-		_elem := NewUser()
+		_elem := core.NewUser()
 		if err := _elem.Read(iprot); err != nil {
 			return err
 		}
@@ -1381,9 +1385,9 @@ func (p *FollowerListReq) String() string {
 }
 
 type FollowerListResp struct {
-	StatusCode int32   `thrift:"status_code,1,required" form:"status_code,required" json:"status_code,required" query:"status_code,required"`
-	StatusMsg  *string `thrift:"status_msg,2,optional" form:"status_msg" json:"status_msg,omitempty" query:"status_msg"`
-	UserList   []*User `thrift:"user_list,3" form:"user_list" json:"user_list" query:"user_list"`
+	StatusCode int32        `thrift:"status_code,1,required" form:"status_code,required" json:"status_code,required" query:"status_code,required"`
+	StatusMsg  *string      `thrift:"status_msg,2,optional" form:"status_msg" json:"status_msg,omitempty" query:"status_msg"`
+	UserList   []*core.User `thrift:"user_list,3" form:"user_list" json:"user_list" query:"user_list"`
 }
 
 func NewFollowerListResp() *FollowerListResp {
@@ -1403,7 +1407,7 @@ func (p *FollowerListResp) GetStatusMsg() (v string) {
 	return *p.StatusMsg
 }
 
-func (p *FollowerListResp) GetUserList() (v []*User) {
+func (p *FollowerListResp) GetUserList() (v []*core.User) {
 	return p.UserList
 }
 
@@ -1527,9 +1531,9 @@ func (p *FollowerListResp) ReadField3(iprot thrift.TProtocol) error {
 	if err != nil {
 		return err
 	}
-	p.UserList = make([]*User, 0, size)
+	p.UserList = make([]*core.User, 0, size)
 	for i := 0; i < size; i++ {
-		_elem := NewUser()
+		_elem := core.NewUser()
 		if err := _elem.Read(iprot); err != nil {
 			return err
 		}
@@ -1847,9 +1851,9 @@ func (p *FriendListReq) String() string {
 }
 
 type FriendListResp struct {
-	StatusCode int32   `thrift:"status_code,1,required" form:"status_code,required" json:"status_code,required" query:"status_code,required"`
-	StatusMsg  *string `thrift:"status_msg,2,optional" form:"status_msg" json:"status_msg,omitempty" query:"status_msg"`
-	UserList   []*User `thrift:"user_list,3" form:"user_list" json:"user_list" query:"user_list"`
+	StatusCode int32        `thrift:"status_code,1,required" form:"status_code,required" json:"status_code,required" query:"status_code,required"`
+	StatusMsg  *string      `thrift:"status_msg,2,optional" form:"status_msg" json:"status_msg,omitempty" query:"status_msg"`
+	UserList   []*core.User `thrift:"user_list,3" form:"user_list" json:"user_list" query:"user_list"`
 }
 
 func NewFriendListResp() *FriendListResp {
@@ -1869,7 +1873,7 @@ func (p *FriendListResp) GetStatusMsg() (v string) {
 	return *p.StatusMsg
 }
 
-func (p *FriendListResp) GetUserList() (v []*User) {
+func (p *FriendListResp) GetUserList() (v []*core.User) {
 	return p.UserList
 }
 
@@ -1993,9 +1997,9 @@ func (p *FriendListResp) ReadField3(iprot thrift.TProtocol) error {
 	if err != nil {
 		return err
 	}
-	p.UserList = make([]*User, 0, size)
+	p.UserList = make([]*core.User, 0, size)
 	for i := 0; i < size; i++ {
-		_elem := NewUser()
+		_elem := core.NewUser()
 		if err := _elem.Read(iprot); err != nil {
 			return err
 		}

@@ -20,7 +20,7 @@ import (
 func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	// var req core.PublishActionReq
-	// err = c.BindAndValidate(&req)  // 这里hertz通过thirft生成的代码，对binary类型校验通不过
+	// err = c.BindAndValidate(&req)  // hertz通过thirft生成的代码，对binary类型校验通不过
 	// println("0000")
 	// println(err.Error())
 	// if err != nil {
