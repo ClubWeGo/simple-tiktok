@@ -47,7 +47,7 @@ struct VideoFavoriteCountReq {
 
 struct VideoFavoriteCountResp {
     1: required BaseResp base_resp;
-    2: required i64 favorite_count;
+    2: required i64 favorite_count;  // 被点赞数量
 }
 
 
@@ -57,8 +57,29 @@ struct UserFavoriteCountReq {
 
 struct UserFavoriteCountResp {
     1: required BaseResp base_resp
-    2: required i64 favorite_count;
-    3: required i64 favorited_count;
+    2: required i64 favorite_count;  // 点赞数量
+    3: required i64 favorited_count;  // 被点赞数量
+}
+
+
+struct VideosFavoriteCountReq {
+    1: required list<i64> video_id_list;
+}
+
+struct VideosFavoriteCountResp {
+    1: required BaseResp base_resp;
+    2: required list<i64> favorite_count_list;
+}
+
+
+struct UsersFavoriteCountReq {
+    1: required list<i64> user_id_list;
+}
+
+struct UsersFavoriteCountResp {
+    1: required BaseResp base_resp;
+    2: required list<i64> favorite_count_list;
+    3: required list<i64> favorited_count_list;
 }
 
 
@@ -68,4 +89,6 @@ service FavoriteService {
     FavoriteRelationResp FavoriteRelationMethod(1: FavoriteRelationReq request);
     VideoFavoriteCountResp VideoFavoriteCountMethod(1: VideoFavoriteCountReq request);
     UserFavoriteCountResp UserFavoriteCountMethod(1: UserFavoriteCountReq request);
+    VideosFavoriteCountResp VideosFavoriteCountMethod(1: VideosFavoriteCountReq request);
+    UsersFavoriteCountResp UsersFavoriteCountMethod(1: UsersFavoriteCountReq request);
 }

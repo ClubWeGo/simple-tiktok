@@ -98,3 +98,15 @@ func (s *FavoriteServiceImpl) VideoFavoriteCountMethod(ctx context.Context, requ
 	resp.FavoriteCount = cnt
 	return resp, nil
 }
+
+// VideosFavoriteCountMethod implements the FavoriteServiceImpl interface.
+func (s *FavoriteServiceImpl) VideosFavoriteCountMethod(ctx context.Context, request *favorite.VideosFavoriteCountReq) (resp *favorite.VideosFavoriteCountResp, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// UsersFavoriteCountMethod implements the FavoriteServiceImpl interface.
+func (s *FavoriteServiceImpl) UsersFavoriteCountMethod(ctx context.Context, request *favorite.UsersFavoriteCountReq) (resp *favorite.UsersFavoriteCountResp, err error) {
+	// TODO: Your code here...
+	return
+}

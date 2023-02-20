@@ -16,6 +16,8 @@ type Client interface {
 	FavoriteRelationMethod(ctx context.Context, request *favorite.FavoriteRelationReq, callOptions ...callopt.Option) (r *favorite.FavoriteRelationResp, err error)
 	VideoFavoriteCountMethod(ctx context.Context, request *favorite.VideoFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.VideoFavoriteCountResp, err error)
 	UserFavoriteCountMethod(ctx context.Context, request *favorite.UserFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.UserFavoriteCountResp, err error)
+	VideosFavoriteCountMethod(ctx context.Context, request *favorite.VideosFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.VideosFavoriteCountResp, err error)
+	UsersFavoriteCountMethod(ctx context.Context, request *favorite.UsersFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.UsersFavoriteCountResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -70,4 +72,14 @@ func (p *kFavoriteServiceClient) VideoFavoriteCountMethod(ctx context.Context, r
 func (p *kFavoriteServiceClient) UserFavoriteCountMethod(ctx context.Context, request *favorite.UserFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.UserFavoriteCountResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UserFavoriteCountMethod(ctx, request)
+}
+
+func (p *kFavoriteServiceClient) VideosFavoriteCountMethod(ctx context.Context, request *favorite.VideosFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.VideosFavoriteCountResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.VideosFavoriteCountMethod(ctx, request)
+}
+
+func (p *kFavoriteServiceClient) UsersFavoriteCountMethod(ctx context.Context, request *favorite.UsersFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.UsersFavoriteCountResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UsersFavoriteCountMethod(ctx, request)
 }
