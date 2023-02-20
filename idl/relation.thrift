@@ -237,4 +237,3 @@ struct MessageActionResp {
 service MessageActionService {
     MessageActionResp MessageActionMethod(1: MessageActionReq request) (api.post="/douyin/message/action/")
 }
->>>>>>> 8563607bdd664d6d1ed1bb1a786b655ea52aba58
