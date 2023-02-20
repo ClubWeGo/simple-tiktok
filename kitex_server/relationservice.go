@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/prometheus/common/log"
-
+	"github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/biz/model/relation"
 	relationserver "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
+	"github.com/prometheus/common/log"
 )
 
 // 响应码
@@ -95,7 +95,7 @@ func Follow(myUid int64, targetUid int64, actionType int32) error {
 }
 
 // 获取关注列表
-func GetFollowList(myUid int64, targetUid int64) ([]*relation.User, error) {
+func GetFollowList(myUid int64, targetUid int64) ([]*core.User, error) {
 	resp, err := Relationclient.GetFollowListMethod(context.Background(), &relationserver.GetFollowListReq{MyId: &myUid, TargetId: targetUid})
 	if err != nil {
 		log.Errorf("rpc请求relation服务失败，详情:%s", err)
@@ -103,13 +103,13 @@ func GetFollowList(myUid int64, targetUid int64) ([]*relation.User, error) {
 	}
 	switch resp.StatusCode {
 	case SUCCESS:
-		userList := make([]*relation.User, len(resp.UserList))
+		userList := make([]*core.User, len(resp.UserList))
 		for i, user := range resp.GetUserList() {
-			userList[i] = &relation.User{
+			userList[i] = &core.User{
 				ID:            user.Id,
 				Name:          user.Name,
-				FollowCount:   &user.FollowCount,
-				FollowerCount: &user.FollowerCount,
+				FollowCount:   user.FollowCount,
+				FollowerCount: user.FollowerCount,
 				IsFollow:      user.IsFollow,
 			}
 		}
@@ -127,7 +127,7 @@ func GetFollowList(myUid int64, targetUid int64) ([]*relation.User, error) {
 }
 
 // 粉丝列表
-func GetFollowerList(myUid int64, targetUid int64) ([]*relation.User, error) {
+func GetFollowerList(myUid int64, targetUid int64) ([]*core.User, error) {
 	resp, err := Relationclient.GetFollowerListMethod(context.Background(), &relationserver.GetFollowerListReq{MyId: &myUid, TargetId: targetUid})
 	if err != nil {
 		log.Errorf("rpc请求relation服务失败，详情:%s", err)
@@ -135,13 +135,13 @@ func GetFollowerList(myUid int64, targetUid int64) ([]*relation.User, error) {
 	}
 	switch resp.StatusCode {
 	case SUCCESS:
-		userList := make([]*relation.User, len(resp.UserList))
+		userList := make([]*core.User, len(resp.UserList))
 		for i, user := range resp.GetUserList() {
-			userList[i] = &relation.User{
+			userList[i] = &core.User{
 				ID:            user.Id,
 				Name:          user.Name,
-				FollowCount:   &user.FollowCount,
-				FollowerCount: &user.FollowerCount,
+				FollowCount:   user.FollowCount,
+				FollowerCount: user.FollowerCount,
 				IsFollow:      user.IsFollow,
 			}
 		}
