@@ -19,7 +19,7 @@ struct Comment {
 
 # commentList
 struct CommentListReq {
-    1: required string token;//用户鉴权token
+    1: required i64 user_id;
     2: required i64 video_id;//视频id
 }
 

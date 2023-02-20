@@ -1,13 +1,12 @@
 package model
-import(
+
+import (
 	"gorm.io/gorm"
 )
 
-type comment struct{
+type Comment struct {
 	gorm.Model
-	videoid int64 `gorm:"type:varchar(128);not null;index"`  \\视频id
-	videouserid int64 `gorm:"type:varchar(128);not null;index"` \\视频主id
-	commentuserid int64 `gorm:"not null"`
-	content	string `gorm:"type:varchar(256)"`
-	is_follow bool
+	VideoID int    `gorm:"index:idx_videoid;not null"`
+	UserID  int    `gorm:"index:idx_userid;not null"`
+	Content string `gorm:"type:varchar(255);not null"`
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/ClubWeGo/commentmicro/utils"
 	"log"
 
 	"github.com/ClubWeGo/commentmicro/dal/model"
@@ -10,13 +11,14 @@ import (
 )
 
 func InitComment(db *gorm.DB) {
-	err := db.AutoMigrate(&model.comment{})
+	err := db.AutoMigrate(&model.Comment{})
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func main() {
+	utils.RegisterSSH()
 	var datetimePrecision = 2
 	dsn := "tk:123456@tcp(127.0.0.1:3306)/simpletk?charset=utf8&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.New(mysql.Config{

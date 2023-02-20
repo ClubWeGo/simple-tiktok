@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/ClubWeGo/commentmicro/utils"
 	"log"
 
 	"github.com/ClubWeGo/commentmicro/dal/model"
@@ -16,8 +17,10 @@ func main() {
 		OutPath: "../../dal/query",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 	})
-
+	//dsn := "root:12345678@tcp(127.0.0.1:3306)/simpletk?charset=utf8&parseTime=True&loc=Local"
 	dsn := "tk:123456@tcp(127.0.0.1:3306)/simpletk?charset=utf8&parseTime=True&loc=Local"
+
+	utils.RegisterSSH()
 	db, err := gorm.Open(mysql.Open(dsn))
 	if err != nil {
 		log.Fatal(err)
@@ -26,7 +29,7 @@ func main() {
 
 	g.UseDB(db)
 
-	g.ApplyBasic(model.User{})
+	g.ApplyBasic(model.Comment{})
 
 	// g.ApplyInterface(func(model.UserMethod) {}, model.User{})
 
