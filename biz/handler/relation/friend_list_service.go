@@ -4,6 +4,8 @@ package relation
 
 import (
 	"context"
+	"github.com/ClubWeGo/douyin/kitex_server"
+	"github.com/ClubWeGo/douyin/tools"
 
 	relation "github.com/ClubWeGo/douyin/biz/model/relation"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -20,8 +22,34 @@ func FriendListMethod(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	resp := new(relation.FollowerListResp)
 
-	resp := new(relation.FriendListResp)
+	// 鉴权
+	ifvalid, myUid, err := tools.ValidateToken(req.Token)
+	if err != nil {
+		msgFailed := "非法token"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
+	if !ifvalid {
+		msgFailed := "token无效"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
+	// 获取好友列表
+	friendList, err := kitex_server.GetFriendList(myUid, req.UserID)
+	if err != nil {
+		errMsg := err.Error()
+		resp.StatusCode = 1
+		resp.StatusMsg = &errMsg
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
 
+	resp.UserList = friendList
 	c.JSON(consts.StatusOK, resp)
 }
