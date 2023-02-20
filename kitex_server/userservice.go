@@ -3,9 +3,9 @@ package kitex_server
 import (
 	"context"
 	"errors"
+	"github.com/prometheus/common/log"
 	"strconv"
 	"sync"
-
 	"github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
@@ -142,6 +142,7 @@ func RegisterUser(username, password string) (userid int64, err error) {
 		Password: password, // 此处传输明文，加密由user微服务进行
 	})
 	if err != nil {
+		log.Errorf("注册error：%s", err)
 		return 0, err
 	}
 
