@@ -126,3 +126,9 @@ func (s *FavoriteServiceImpl) UsersFavoriteCountMethod(ctx context.Context,
 	resp.FavoriteCountMap = favoriteMap
 	return
 }
+
+// FavoriteRelationsMethod implements the FavoriteServiceImpl interface.
+func (s *FavoriteServiceImpl) FavoriteRelationsMethod(ctx context.Context, request *favorite.FavoriteRelationsReq) (resp *favorite.FavoriteRelationsResp, err error) {
+	// TODO: Your code here...
+	return
+}

@@ -14,6 +14,7 @@ type Client interface {
 	FavoriteMethod(ctx context.Context, request *favorite.FavoriteReq, callOptions ...callopt.Option) (r *favorite.FavoriteResp, err error)
 	FavoriteListMethod(ctx context.Context, request *favorite.FavoriteListReq, callOptions ...callopt.Option) (r *favorite.FavoriteListResp, err error)
 	FavoriteRelationMethod(ctx context.Context, request *favorite.FavoriteRelationReq, callOptions ...callopt.Option) (r *favorite.FavoriteRelationResp, err error)
+	FavoriteRelationsMethod(ctx context.Context, request *favorite.FavoriteRelationsReq, callOptions ...callopt.Option) (r *favorite.FavoriteRelationsResp, err error)
 	VideoFavoriteCountMethod(ctx context.Context, request *favorite.VideoFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.VideoFavoriteCountResp, err error)
 	UserFavoriteCountMethod(ctx context.Context, request *favorite.UserFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.UserFavoriteCountResp, err error)
 	VideosFavoriteCountMethod(ctx context.Context, request *favorite.VideosFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.VideosFavoriteCountResp, err error)
@@ -62,6 +63,11 @@ func (p *kFavoriteServiceClient) FavoriteListMethod(ctx context.Context, request
 func (p *kFavoriteServiceClient) FavoriteRelationMethod(ctx context.Context, request *favorite.FavoriteRelationReq, callOptions ...callopt.Option) (r *favorite.FavoriteRelationResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.FavoriteRelationMethod(ctx, request)
+}
+
+func (p *kFavoriteServiceClient) FavoriteRelationsMethod(ctx context.Context, request *favorite.FavoriteRelationsReq, callOptions ...callopt.Option) (r *favorite.FavoriteRelationsResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FavoriteRelationsMethod(ctx, request)
 }
 
 func (p *kFavoriteServiceClient) VideoFavoriteCountMethod(ctx context.Context, request *favorite.VideoFavoriteCountReq, callOptions ...callopt.Option) (r *favorite.VideoFavoriteCountResp, err error) {

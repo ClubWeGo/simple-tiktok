@@ -41,6 +41,17 @@ struct FavoriteRelationResp {
 }
 
 
+struct FavoriteRelationsReq {
+    1: required i64 user_id;
+    2: required list<i64> video_id_list;
+}
+
+struct FavoriteRelationsResp {
+    1: required BaseResp base_resp;
+    2: required map<i64, bool> is_favorites;
+}
+
+
 struct VideoFavoriteCountReq {
     1: required i64 video_id;
 }
@@ -86,6 +97,7 @@ service FavoriteService {
     FavoriteResp FavoriteMethod(1: FavoriteReq request);
     FavoriteListResp FavoriteListMethod(1: FavoriteListReq request)
     FavoriteRelationResp FavoriteRelationMethod(1: FavoriteRelationReq request);
+    FavoriteRelationsResp FavoriteRelationsMethod(1: FavoriteRelationsReq request);
     VideoFavoriteCountResp VideoFavoriteCountMethod(1: VideoFavoriteCountReq request);
     UserFavoriteCountResp UserFavoriteCountMethod(1: UserFavoriteCountReq request);
     VideosFavoriteCountResp VideosFavoriteCountMethod(1: VideosFavoriteCountReq request);

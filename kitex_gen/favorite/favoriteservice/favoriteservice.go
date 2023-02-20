@@ -22,6 +22,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"FavoriteMethod":            kitex.NewMethodInfo(favoriteMethodHandler, newFavoriteServiceFavoriteMethodArgs, newFavoriteServiceFavoriteMethodResult, false),
 		"FavoriteListMethod":        kitex.NewMethodInfo(favoriteListMethodHandler, newFavoriteServiceFavoriteListMethodArgs, newFavoriteServiceFavoriteListMethodResult, false),
 		"FavoriteRelationMethod":    kitex.NewMethodInfo(favoriteRelationMethodHandler, newFavoriteServiceFavoriteRelationMethodArgs, newFavoriteServiceFavoriteRelationMethodResult, false),
+		"FavoriteRelationsMethod":   kitex.NewMethodInfo(favoriteRelationsMethodHandler, newFavoriteServiceFavoriteRelationsMethodArgs, newFavoriteServiceFavoriteRelationsMethodResult, false),
 		"VideoFavoriteCountMethod":  kitex.NewMethodInfo(videoFavoriteCountMethodHandler, newFavoriteServiceVideoFavoriteCountMethodArgs, newFavoriteServiceVideoFavoriteCountMethodResult, false),
 		"UserFavoriteCountMethod":   kitex.NewMethodInfo(userFavoriteCountMethodHandler, newFavoriteServiceUserFavoriteCountMethodArgs, newFavoriteServiceUserFavoriteCountMethodResult, false),
 		"VideosFavoriteCountMethod": kitex.NewMethodInfo(videosFavoriteCountMethodHandler, newFavoriteServiceVideosFavoriteCountMethodArgs, newFavoriteServiceVideosFavoriteCountMethodResult, false),
@@ -93,6 +94,24 @@ func newFavoriteServiceFavoriteRelationMethodArgs() interface{} {
 
 func newFavoriteServiceFavoriteRelationMethodResult() interface{} {
 	return favorite.NewFavoriteServiceFavoriteRelationMethodResult()
+}
+
+func favoriteRelationsMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*favorite.FavoriteServiceFavoriteRelationsMethodArgs)
+	realResult := result.(*favorite.FavoriteServiceFavoriteRelationsMethodResult)
+	success, err := handler.(favorite.FavoriteService).FavoriteRelationsMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newFavoriteServiceFavoriteRelationsMethodArgs() interface{} {
+	return favorite.NewFavoriteServiceFavoriteRelationsMethodArgs()
+}
+
+func newFavoriteServiceFavoriteRelationsMethodResult() interface{} {
+	return favorite.NewFavoriteServiceFavoriteRelationsMethodResult()
 }
 
 func videoFavoriteCountMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -202,6 +221,16 @@ func (p *kClient) FavoriteRelationMethod(ctx context.Context, request *favorite.
 	_args.Request = request
 	var _result favorite.FavoriteServiceFavoriteRelationMethodResult
 	if err = p.c.Call(ctx, "FavoriteRelationMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FavoriteRelationsMethod(ctx context.Context, request *favorite.FavoriteRelationsReq) (r *favorite.FavoriteRelationsResp, err error) {
+	var _args favorite.FavoriteServiceFavoriteRelationsMethodArgs
+	_args.Request = request
+	var _result favorite.FavoriteServiceFavoriteRelationsMethodResult
+	if err = p.c.Call(ctx, "FavoriteRelationsMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
