@@ -246,7 +246,7 @@ func (s *VideoServiceImpl) GetVideoCountSetByIdUserSetMethod(ctx context.Context
 	idSet := request.AuthorIdSet
 
 	// in 批量查询
-	videoCounts, err := vc.Select(vc.Work_count).Where(vc.Author_id.In(idSet...)).Find()
+	videoCounts, err := vc.Select(vc.Author_id, vc.Work_count).Where(vc.Author_id.In(idSet...)).Find()
 	if err != nil {
 		return &videomicro.GetVideoCountSetByIdUserSetResp{
 			Status:   false,
