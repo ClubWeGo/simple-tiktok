@@ -30,7 +30,7 @@ func main() {
 	// init minio
 	minio_server.Init(minioConfig)
 
-	h := server.Default(server.WithMaxRequestBodySize(20 << 20))
+	h := server.Default(server.WithMaxRequestBodySize(100 * 1024 * 1024))
 
 	register(h)
 	h.Spin()

@@ -8,7 +8,7 @@ require (
 	github.com/ClubWeGo/favoritemicro v0.0.0-20230218084417-fd4c3433fb21
 	github.com/ClubWeGo/relationmicro v0.0.0-20230218072559-b17f0bf612ed
 	github.com/ClubWeGo/usermicro v0.0.0-20230218161017-d68d94d1dac8
-	github.com/ClubWeGo/videomicro v0.0.0-20230219034144-566fb1b6207a
+	github.com/ClubWeGo/videomicro v0.0.0-20230219154644-a1694e2abf99
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/hertz v0.5.2
 	github.com/cloudwego/kitex v0.4.4

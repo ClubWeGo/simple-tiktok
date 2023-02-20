@@ -176,3 +176,8 @@ func VerifyFollowParam(myUid int64, targetUid int64, actionType int32) *string {
 	}
 	return nil
 }
+
+// TODO : .GetIsFollowSetByUserIdSet
+func GetIsFollowSetByUserIdSet(idSet []int64) (isFollowSet []int64, err error) {
+	return []int64{}, nil
+}

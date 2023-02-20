@@ -4,9 +4,11 @@ package core
 
 import (
 	"context"
+	"sync"
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
+	"github.com/ClubWeGo/douyin/tools"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -27,28 +29,50 @@ func UserInfoMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(core.UserInfoResp)
 
-	// 从User服务拿User信息
-	user, err := kitex_server.GetUser(req.UserID)
-
-	// 从video服务拿最新的用户作品数量
-	// WorkCountSet, err := kitex_server.GetVideoCountSetByUserIdSet([]int64{req.UserID})
-
-	// 批量查询 favorite_count, total_favourited 从favorite服务: kitex_server.FavoriteClient.UserFavoriteCountMethod()
-	// favoriteSet, favoritedSet, err := kitex_server.GetFavoriteCountByUserIdSet([]int64{req.UserID})
-
-	// 批量查询 is_follow, 从relation服务
-	// isFollowSet, err := kitex_server.GetIsFollowSetByUserIdSet([]int64{req.UserID})
-
-	// 批量查询 follow_count， follower_cout 从relation服务
-
+	ifValid, currentUserId, err := tools.ValidateToken(req.Token)
 	if err != nil {
+		msgFailed := "无效Token或Token已失效"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msgFailed
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
+	if !ifValid {
+		msgFailed := "没有权限查看信息"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
 		return
 	}
 
+	// 从User服务拿User信息
+	wg := &sync.WaitGroup{}
+
+	// 获取最新的用户信息
+	respLatestAuthorMap := make(chan map[int64]core.User, 1)
+	defer close(respLatestAuthorMap)
+	respLatestAuthorMapError := make(chan []error, 1)
+	defer close(respLatestAuthorMapError)
+	wg.Add(1)
+	go kitex_server.GetUserLatestMap([]int64{req.UserID}, currentUserId, respLatestAuthorMap, wg, respLatestAuthorMapError)
+
+	// 等待数据
+	wg.Wait()
+	// 处理协程错误
+	AuthorMap := <-respLatestAuthorMap
+
+	errSlice := <-respLatestAuthorMapError
+	for _, errItem := range errSlice {
+		if errItem != nil {
+			resp.StatusCode = 1
+			resp.StatusMsg = &msgFailed
+			c.JSON(consts.StatusOK, resp)
+			return
+		}
+	}
+
+	user := AuthorMap[req.UserID]
 	resp.StatusMsg = &msgsucceed
-	resp.User = user
+	resp.User = &user
 	c.JSON(consts.StatusOK, resp)
 }
