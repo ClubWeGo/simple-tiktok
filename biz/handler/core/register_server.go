@@ -7,6 +7,7 @@ import (
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
+	"github.com/ClubWeGo/douyin/minio_server"
 	"github.com/ClubWeGo/douyin/tools"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -23,12 +24,20 @@ func RegisterMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	// TODO : 缓存记录ip地址和注册api调用次数，限制统一设备短时间太多的注册，预防黑灰产。
+	// TODO : 注册字段过滤 : 注入，敏感词，
+
 	msgsucceed := "注册成功"
 	msgFailed := "注册失败"
 
 	resp := new(core.RegisterResp)
 
-	userid, err := kitex_server.RegisterUser(req.Username, *req.Password)
+	// 题目要求的基础注册功能
+	// userid, err := kitex_server.RegisterUser(req.Username, *req.Password)
+	// 附带个人设置的注册功能
+	var testBackgroundImage = "http://" + minio_server.GlobalConfig.Endpoint + "/douyin/" + "backgroud.jpg"
+	var testAvatar = "http://" + minio_server.GlobalConfig.Endpoint + "/douyin/" + "0019534761_20.jpg"
+	userid, err := kitex_server.RegisterUserALL(req.Username, *req.Password, nil, nil, &testBackgroundImage, &testAvatar)
 	if err != nil {
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed

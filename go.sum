@@ -28,6 +28,8 @@ github.com/ClubWeGo/videomicro v0.0.0-20230218142838-4e63ecd438ca h1:sp1kKw7f/45
 github.com/ClubWeGo/videomicro v0.0.0-20230218142838-4e63ecd438ca/go.mod h1:SJiohnvP4Dk+iAO/cili779usv4VDj8eIX9RUEN4Cms=
 github.com/ClubWeGo/videomicro v0.0.0-20230219034144-566fb1b6207a h1:+5leZMgy9Nj+aOkPfVKQhIt51XAVHCEW6h6JFbf/+ak=
 github.com/ClubWeGo/videomicro v0.0.0-20230219034144-566fb1b6207a/go.mod h1:SJiohnvP4Dk+iAO/cili779usv4VDj8eIX9RUEN4Cms=
+github.com/ClubWeGo/videomicro v0.0.0-20230219154644-a1694e2abf99 h1:oY0N5NZxvcnaerEKlFiGRp7Nj4xgeREjgl0DMHCR/n8=
+github.com/ClubWeGo/videomicro v0.0.0-20230219154644-a1694e2abf99/go.mod h1:SJiohnvP4Dk+iAO/cili779usv4VDj8eIX9RUEN4Cms=
 github.com/HdrHistogram/hdrhistogram-go v1.1.2/go.mod h1:yDgFjdqOqDEKOvasDdhWNXYg9BVp4O+o5f6V/ehm6Oo=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=

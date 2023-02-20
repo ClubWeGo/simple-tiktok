@@ -4,11 +4,12 @@ package core
 
 import (
 	"context"
+	"log"
 	"time"
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/ClubWeGo/douyin/tools"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -24,67 +25,45 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	// TODO : 记录ip地址和注册api调用次数，限制统一设备短时间太多的请求，预防爬虫。
+
 	msgsucceed := "获取视频流成功"
 	msgFailed := "获取视频流失败"
 
 	resp := new(core.FeedResp)
 
+	// 字段处理
 	// 目前该api无需token，后续增加登录定制化内容则需根据token获取其他参数
-	// var token string
-	// if req.Token != nil { // 可选字段，需要验证是否存在，判断对应指针是否存在
-	// 	token = *req.Token
-	// }
+	var currentUserId int64
+	if req.Token != nil { // 可选字段，需要验证是否存在，判断对应指针是否存在
+		_, currentUserId, err = tools.ValidateToken(*req.Token) //
+		if err != nil {
+			currentUserId = 0
+			// "无效Token或Token已失效, 此处不做约束，继续执行代码"
+		}
+	}
 
 	var latestTime = time.Now().UnixNano()
 	if req.LatestTime != nil {
 		latestTime = (*req.LatestTime) * 1e6 // app传入的是13位毫秒级时间戳，usermicro需传入纳秒级时间戳
 	}
-	r, err := kitex_server.Videoclient.GetVideosFeedMethod(context.Background(), &videomicro.GetVideosFeedReq{LatestTime: latestTime, Limit: 30})
+
+	// TODO : 缓存命中逻辑
+
+	// 缓存未命中，去后端调api
+	resultList, nextTime, err := kitex_server.GetFeed(latestTime, currentUserId, 30)
 	if err != nil {
+		log.Println(err)
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
 		return
 	}
 
-	// author 相关的查询
-	// 批量查询author: Userclient.GetUserSetByIdSetMethod()
-
-	// 批量查询author作品数，Work_count 从video服务
-	kitex_server.Videoclient.GetVideoCountSetByIdUserSetMethod(context.Background(), &videomicro.GetVideoCountSetByIdUserSetReq{})
-
-	// 批量查询 favorite_count, total_favourited 从favorite服务: kitex_server.FavoriteClient.UserFavoriteCountMethod()
-
-	// 批量查询 is_follow, 从relation服务
-
-	// 批量查询 follow_count， follower_cout 从relation服务
-
-	// video 相关的查询
-	// 批量查询video favorite_count: FavoriteClient.VideoFavoriteCountMethod() ，出入视频id
-
-	// 查询video comment_count  : 该接口目前没有
-
-	// 查询isFavorite: FavoriteClient.FavoriteRelation()，传入当前 查询用户的token对应id 与 视频id
-
-	resp.VideoList = make([]*core.Video, 0)
-	for _, video := range r.VideoList {
-		author, _ := kitex_server.GetUser(video.AuthorId)
-		// 暂时不做处理，错误返回空对象即可
-		resp.VideoList = append(resp.VideoList, &core.Video{
-			ID:            video.Id,
-			Author:        author,
-			PlayURL:       video.PlayUrl,
-			CoverURL:      video.CoverUrl,
-			FavoriteCount: video.FavoriteCount,
-			CommentCount:  video.CommentCount,
-			IsFavorite:    false, // 需要增加喜欢配置 // TODO：增加
-			Title:         video.Title,
-		})
-	}
+	resp.VideoList = resultList
 
 	resp.StatusMsg = &msgsucceed
-	nextTimeMs := (*r.NextTime) / 1e6 // 转为毫秒
-	resp.NextTime = nextTimeMs
+	resp.NextTime = nextTime / 1e6
 
 	c.JSON(consts.StatusOK, resp)
 }
