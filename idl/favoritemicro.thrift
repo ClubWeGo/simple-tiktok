@@ -68,7 +68,7 @@ struct VideosFavoriteCountReq {
 
 struct VideosFavoriteCountResp {
     1: required BaseResp base_resp;
-    2: required list<i64> favorite_count_list;
+    2: required map<i64, i64> favorite_count_map;
 }
 
 
@@ -78,8 +78,7 @@ struct UsersFavoriteCountReq {
 
 struct UsersFavoriteCountResp {
     1: required BaseResp base_resp;
-    2: required list<i64> favorite_count_list;
-    3: required list<i64> favorited_count_list;
+    3: required map<i64, list<i64>> favorite_count_map;
 }
 
 

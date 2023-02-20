@@ -2771,8 +2771,8 @@ func (p *VideosFavoriteCountReq) Field1DeepEqual(src []int64) bool {
 }
 
 type VideosFavoriteCountResp struct {
-	BaseResp          *BaseResp `thrift:"base_resp,1,required" frugal:"1,required,BaseResp" json:"base_resp"`
-	FavoriteCountList []int64   `thrift:"favorite_count_list,2,required" frugal:"2,required,list<i64>" json:"favorite_count_list"`
+	BaseResp         *BaseResp       `thrift:"base_resp,1,required" frugal:"1,required,BaseResp" json:"base_resp"`
+	FavoriteCountMap map[int64]int64 `thrift:"favorite_count_map,2,required" frugal:"2,required,map<i64:i64>" json:"favorite_count_map"`
 }
 
 func NewVideosFavoriteCountResp() *VideosFavoriteCountResp {
@@ -2792,19 +2792,19 @@ func (p *VideosFavoriteCountResp) GetBaseResp() (v *BaseResp) {
 	return p.BaseResp
 }
 
-func (p *VideosFavoriteCountResp) GetFavoriteCountList() (v []int64) {
-	return p.FavoriteCountList
+func (p *VideosFavoriteCountResp) GetFavoriteCountMap() (v map[int64]int64) {
+	return p.FavoriteCountMap
 }
 func (p *VideosFavoriteCountResp) SetBaseResp(val *BaseResp) {
 	p.BaseResp = val
 }
-func (p *VideosFavoriteCountResp) SetFavoriteCountList(val []int64) {
-	p.FavoriteCountList = val
+func (p *VideosFavoriteCountResp) SetFavoriteCountMap(val map[int64]int64) {
+	p.FavoriteCountMap = val
 }
 
 var fieldIDToName_VideosFavoriteCountResp = map[int16]string{
 	1: "base_resp",
-	2: "favorite_count_list",
+	2: "favorite_count_map",
 }
 
 func (p *VideosFavoriteCountResp) IsSetBaseResp() bool {
@@ -2816,7 +2816,7 @@ func (p *VideosFavoriteCountResp) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetBaseResp bool = false
-	var issetFavoriteCountList bool = false
+	var issetFavoriteCountMap bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2844,11 +2844,11 @@ func (p *VideosFavoriteCountResp) Read(iprot thrift.TProtocol) (err error) {
 				}
 			}
 		case 2:
-			if fieldTypeId == thrift.LIST {
+			if fieldTypeId == thrift.MAP {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetFavoriteCountList = true
+				issetFavoriteCountMap = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -2873,7 +2873,7 @@ func (p *VideosFavoriteCountResp) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetFavoriteCountList {
+	if !issetFavoriteCountMap {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -2904,22 +2904,29 @@ func (p *VideosFavoriteCountResp) ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *VideosFavoriteCountResp) ReadField2(iprot thrift.TProtocol) error {
-	_, size, err := iprot.ReadListBegin()
+	_, _, size, err := iprot.ReadMapBegin()
 	if err != nil {
 		return err
 	}
-	p.FavoriteCountList = make([]int64, 0, size)
+	p.FavoriteCountMap = make(map[int64]int64, size)
 	for i := 0; i < size; i++ {
-		var _elem int64
+		var _key int64
 		if v, err := iprot.ReadI64(); err != nil {
 			return err
 		} else {
-			_elem = v
+			_key = v
 		}
 
-		p.FavoriteCountList = append(p.FavoriteCountList, _elem)
+		var _val int64
+		if v, err := iprot.ReadI64(); err != nil {
+			return err
+		} else {
+			_val = v
+		}
+
+		p.FavoriteCountMap[_key] = _val
 	}
-	if err := iprot.ReadListEnd(); err != nil {
+	if err := iprot.ReadMapEnd(); err != nil {
 		return err
 	}
 	return nil
@@ -2976,18 +2983,23 @@ WriteFieldEndError:
 }
 
 func (p *VideosFavoriteCountResp) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("favorite_count_list", thrift.LIST, 2); err != nil {
+	if err = oprot.WriteFieldBegin("favorite_count_map", thrift.MAP, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteListBegin(thrift.I64, len(p.FavoriteCountList)); err != nil {
+	if err := oprot.WriteMapBegin(thrift.I64, thrift.I64, len(p.FavoriteCountMap)); err != nil {
 		return err
 	}
-	for _, v := range p.FavoriteCountList {
+	for k, v := range p.FavoriteCountMap {
+
+		if err := oprot.WriteI64(k); err != nil {
+			return err
+		}
+
 		if err := oprot.WriteI64(v); err != nil {
 			return err
 		}
 	}
-	if err := oprot.WriteListEnd(); err != nil {
+	if err := oprot.WriteMapEnd(); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -3016,7 +3028,7 @@ func (p *VideosFavoriteCountResp) DeepEqual(ano *VideosFavoriteCountResp) bool {
 	if !p.Field1DeepEqual(ano.BaseResp) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.FavoriteCountList) {
+	if !p.Field2DeepEqual(ano.FavoriteCountMap) {
 		return false
 	}
 	return true
@@ -3029,13 +3041,13 @@ func (p *VideosFavoriteCountResp) Field1DeepEqual(src *BaseResp) bool {
 	}
 	return true
 }
-func (p *VideosFavoriteCountResp) Field2DeepEqual(src []int64) bool {
+func (p *VideosFavoriteCountResp) Field2DeepEqual(src map[int64]int64) bool {
 
-	if len(p.FavoriteCountList) != len(src) {
+	if len(p.FavoriteCountMap) != len(src) {
 		return false
 	}
-	for i, v := range p.FavoriteCountList {
-		_src := src[i]
+	for k, v := range p.FavoriteCountMap {
+		_src := src[k]
 		if v != _src {
 			return false
 		}
@@ -3243,9 +3255,8 @@ func (p *UsersFavoriteCountReq) Field1DeepEqual(src []int64) bool {
 }
 
 type UsersFavoriteCountResp struct {
-	BaseResp           *BaseResp `thrift:"base_resp,1,required" frugal:"1,required,BaseResp" json:"base_resp"`
-	FavoriteCountList  []int64   `thrift:"favorite_count_list,2,required" frugal:"2,required,list<i64>" json:"favorite_count_list"`
-	FavoritedCountList []int64   `thrift:"favorited_count_list,3,required" frugal:"3,required,list<i64>" json:"favorited_count_list"`
+	BaseResp         *BaseResp         `thrift:"base_resp,1,required" frugal:"1,required,BaseResp" json:"base_resp"`
+	FavoriteCountMap map[int64][]int64 `thrift:"favorite_count_map,3,required" frugal:"3,required,map<i64:list<i64>>" json:"favorite_count_map"`
 }
 
 func NewUsersFavoriteCountResp() *UsersFavoriteCountResp {
@@ -3265,27 +3276,19 @@ func (p *UsersFavoriteCountResp) GetBaseResp() (v *BaseResp) {
 	return p.BaseResp
 }
 
-func (p *UsersFavoriteCountResp) GetFavoriteCountList() (v []int64) {
-	return p.FavoriteCountList
-}
-
-func (p *UsersFavoriteCountResp) GetFavoritedCountList() (v []int64) {
-	return p.FavoritedCountList
+func (p *UsersFavoriteCountResp) GetFavoriteCountMap() (v map[int64][]int64) {
+	return p.FavoriteCountMap
 }
 func (p *UsersFavoriteCountResp) SetBaseResp(val *BaseResp) {
 	p.BaseResp = val
 }
-func (p *UsersFavoriteCountResp) SetFavoriteCountList(val []int64) {
-	p.FavoriteCountList = val
-}
-func (p *UsersFavoriteCountResp) SetFavoritedCountList(val []int64) {
-	p.FavoritedCountList = val
+func (p *UsersFavoriteCountResp) SetFavoriteCountMap(val map[int64][]int64) {
+	p.FavoriteCountMap = val
 }
 
 var fieldIDToName_UsersFavoriteCountResp = map[int16]string{
 	1: "base_resp",
-	2: "favorite_count_list",
-	3: "favorited_count_list",
+	3: "favorite_count_map",
 }
 
 func (p *UsersFavoriteCountResp) IsSetBaseResp() bool {
@@ -3297,8 +3300,7 @@ func (p *UsersFavoriteCountResp) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetBaseResp bool = false
-	var issetFavoriteCountList bool = false
-	var issetFavoritedCountList bool = false
+	var issetFavoriteCountMap bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -3325,23 +3327,12 @@ func (p *UsersFavoriteCountResp) Read(iprot thrift.TProtocol) (err error) {
 					goto SkipFieldError
 				}
 			}
-		case 2:
-			if fieldTypeId == thrift.LIST {
-				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetFavoriteCountList = true
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
 		case 3:
-			if fieldTypeId == thrift.LIST {
+			if fieldTypeId == thrift.MAP {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetFavoritedCountList = true
+				issetFavoriteCountMap = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -3366,12 +3357,7 @@ func (p *UsersFavoriteCountResp) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetFavoriteCountList {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetFavoritedCountList {
+	if !issetFavoriteCountMap {
 		fieldId = 3
 		goto RequiredFieldNotSetError
 	}
@@ -3401,45 +3387,42 @@ func (p *UsersFavoriteCountResp) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *UsersFavoriteCountResp) ReadField2(iprot thrift.TProtocol) error {
-	_, size, err := iprot.ReadListBegin()
-	if err != nil {
-		return err
-	}
-	p.FavoriteCountList = make([]int64, 0, size)
-	for i := 0; i < size; i++ {
-		var _elem int64
-		if v, err := iprot.ReadI64(); err != nil {
-			return err
-		} else {
-			_elem = v
-		}
-
-		p.FavoriteCountList = append(p.FavoriteCountList, _elem)
-	}
-	if err := iprot.ReadListEnd(); err != nil {
-		return err
-	}
-	return nil
-}
-
 func (p *UsersFavoriteCountResp) ReadField3(iprot thrift.TProtocol) error {
-	_, size, err := iprot.ReadListBegin()
+	_, _, size, err := iprot.ReadMapBegin()
 	if err != nil {
 		return err
 	}
-	p.FavoritedCountList = make([]int64, 0, size)
+	p.FavoriteCountMap = make(map[int64][]int64, size)
 	for i := 0; i < size; i++ {
-		var _elem int64
+		var _key int64
 		if v, err := iprot.ReadI64(); err != nil {
 			return err
 		} else {
-			_elem = v
+			_key = v
 		}
 
-		p.FavoritedCountList = append(p.FavoritedCountList, _elem)
+		_, size, err := iprot.ReadListBegin()
+		if err != nil {
+			return err
+		}
+		_val := make([]int64, 0, size)
+		for i := 0; i < size; i++ {
+			var _elem int64
+			if v, err := iprot.ReadI64(); err != nil {
+				return err
+			} else {
+				_elem = v
+			}
+
+			_val = append(_val, _elem)
+		}
+		if err := iprot.ReadListEnd(); err != nil {
+			return err
+		}
+
+		p.FavoriteCountMap[_key] = _val
 	}
-	if err := iprot.ReadListEnd(); err != nil {
+	if err := iprot.ReadMapEnd(); err != nil {
 		return err
 	}
 	return nil
@@ -3453,10 +3436,6 @@ func (p *UsersFavoriteCountResp) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
 			goto WriteFieldError
 		}
 		if err = p.writeField3(oprot); err != nil {
@@ -3499,44 +3478,32 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *UsersFavoriteCountResp) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("favorite_count_list", thrift.LIST, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteListBegin(thrift.I64, len(p.FavoriteCountList)); err != nil {
-		return err
-	}
-	for _, v := range p.FavoriteCountList {
-		if err := oprot.WriteI64(v); err != nil {
-			return err
-		}
-	}
-	if err := oprot.WriteListEnd(); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
-
 func (p *UsersFavoriteCountResp) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("favorited_count_list", thrift.LIST, 3); err != nil {
+	if err = oprot.WriteFieldBegin("favorite_count_map", thrift.MAP, 3); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteListBegin(thrift.I64, len(p.FavoritedCountList)); err != nil {
+	if err := oprot.WriteMapBegin(thrift.I64, thrift.LIST, len(p.FavoriteCountMap)); err != nil {
 		return err
 	}
-	for _, v := range p.FavoritedCountList {
-		if err := oprot.WriteI64(v); err != nil {
+	for k, v := range p.FavoriteCountMap {
+
+		if err := oprot.WriteI64(k); err != nil {
+			return err
+		}
+
+		if err := oprot.WriteListBegin(thrift.I64, len(v)); err != nil {
+			return err
+		}
+		for _, v := range v {
+			if err := oprot.WriteI64(v); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
 			return err
 		}
 	}
-	if err := oprot.WriteListEnd(); err != nil {
+	if err := oprot.WriteMapEnd(); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -3565,10 +3532,7 @@ func (p *UsersFavoriteCountResp) DeepEqual(ano *UsersFavoriteCountResp) bool {
 	if !p.Field1DeepEqual(ano.BaseResp) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.FavoriteCountList) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.FavoritedCountList) {
+	if !p.Field3DeepEqual(ano.FavoriteCountMap) {
 		return false
 	}
 	return true
@@ -3581,28 +3545,21 @@ func (p *UsersFavoriteCountResp) Field1DeepEqual(src *BaseResp) bool {
 	}
 	return true
 }
-func (p *UsersFavoriteCountResp) Field2DeepEqual(src []int64) bool {
+func (p *UsersFavoriteCountResp) Field3DeepEqual(src map[int64][]int64) bool {
 
-	if len(p.FavoriteCountList) != len(src) {
+	if len(p.FavoriteCountMap) != len(src) {
 		return false
 	}
-	for i, v := range p.FavoriteCountList {
-		_src := src[i]
-		if v != _src {
+	for k, v := range p.FavoriteCountMap {
+		_src := src[k]
+		if len(v) != len(_src) {
 			return false
 		}
-	}
-	return true
-}
-func (p *UsersFavoriteCountResp) Field3DeepEqual(src []int64) bool {
-
-	if len(p.FavoritedCountList) != len(src) {
-		return false
-	}
-	for i, v := range p.FavoritedCountList {
-		_src := src[i]
-		if v != _src {
-			return false
+		for i, v := range v {
+			_src1 := _src[i]
+			if v != _src1 {
+				return false
+			}
 		}
 	}
 	return true

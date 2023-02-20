@@ -100,13 +100,29 @@ func (s *FavoriteServiceImpl) VideoFavoriteCountMethod(ctx context.Context, requ
 }
 
 // VideosFavoriteCountMethod implements the FavoriteServiceImpl interface.
-func (s *FavoriteServiceImpl) VideosFavoriteCountMethod(ctx context.Context, request *favorite.VideosFavoriteCountReq) (resp *favorite.VideosFavoriteCountResp, err error) {
-	// TODO: Your code here...
+func (s *FavoriteServiceImpl) VideosFavoriteCountMethod(ctx context.Context,
+	request *favorite.VideosFavoriteCountReq) (resp *favorite.VideosFavoriteCountResp, err error) {
+	resp = &favorite.VideosFavoriteCountResp{}
+	favoriteMap, err := db.CountVideosFavorite(ctx, request.VideoIdList)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	resp.FavoriteCountMap = favoriteMap
 	return
 }
 
 // UsersFavoriteCountMethod implements the FavoriteServiceImpl interface.
-func (s *FavoriteServiceImpl) UsersFavoriteCountMethod(ctx context.Context, request *favorite.UsersFavoriteCountReq) (resp *favorite.UsersFavoriteCountResp, err error) {
-	// TODO: Your code here...
+func (s *FavoriteServiceImpl) UsersFavoriteCountMethod(ctx context.Context,
+	request *favorite.UsersFavoriteCountReq) (resp *favorite.UsersFavoriteCountResp, err error) {
+	resp = &favorite.UsersFavoriteCountResp{}
+	favoriteMap, err := db.CountUsersFavorite(ctx, request.UserIdList)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	resp.FavoriteCountMap = favoriteMap
 	return
 }

@@ -2214,7 +2214,7 @@ func (p *VideosFavoriteCountResp) FastRead(buf []byte) (int, error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetBaseResp bool = false
-	var issetFavoriteCountList bool = false
+	var issetFavoriteCountMap bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -2247,13 +2247,13 @@ func (p *VideosFavoriteCountResp) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 2:
-			if fieldTypeId == thrift.LIST {
+			if fieldTypeId == thrift.MAP {
 				l, err = p.FastReadField2(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetFavoriteCountList = true
+				issetFavoriteCountMap = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -2286,7 +2286,7 @@ func (p *VideosFavoriteCountResp) FastRead(buf []byte) (int, error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetFavoriteCountList {
+	if !issetFavoriteCountMap {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -2323,26 +2323,36 @@ func (p *VideosFavoriteCountResp) FastReadField1(buf []byte) (int, error) {
 func (p *VideosFavoriteCountResp) FastReadField2(buf []byte) (int, error) {
 	offset := 0
 
-	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
+	_, _, size, l, err := bthrift.Binary.ReadMapBegin(buf[offset:])
 	offset += l
 	if err != nil {
 		return offset, err
 	}
-	p.FavoriteCountList = make([]int64, 0, size)
+	p.FavoriteCountMap = make(map[int64]int64, size)
 	for i := 0; i < size; i++ {
-		var _elem int64
+		var _key int64
 		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
 			return offset, err
 		} else {
 			offset += l
 
-			_elem = v
+			_key = v
 
 		}
 
-		p.FavoriteCountList = append(p.FavoriteCountList, _elem)
+		var _val int64
+		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+			return offset, err
+		} else {
+			offset += l
+
+			_val = v
+
+		}
+
+		p.FavoriteCountMap[_key] = _val
 	}
-	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
+	if l, err := bthrift.Binary.ReadMapEnd(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -2389,17 +2399,20 @@ func (p *VideosFavoriteCountResp) fastWriteField1(buf []byte, binaryWriter bthri
 
 func (p *VideosFavoriteCountResp) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "favorite_count_list", thrift.LIST, 2)
-	listBeginOffset := offset
-	offset += bthrift.Binary.ListBeginLength(thrift.I64, 0)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "favorite_count_map", thrift.MAP, 2)
+	mapBeginOffset := offset
+	offset += bthrift.Binary.MapBeginLength(thrift.I64, thrift.I64, 0)
 	var length int
-	for _, v := range p.FavoriteCountList {
+	for k, v := range p.FavoriteCountMap {
 		length++
+
+		offset += bthrift.Binary.WriteI64(buf[offset:], k)
+
 		offset += bthrift.Binary.WriteI64(buf[offset:], v)
 
 	}
-	bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.I64, length)
-	offset += bthrift.Binary.WriteListEnd(buf[offset:])
+	bthrift.Binary.WriteMapBegin(buf[mapBeginOffset:], thrift.I64, thrift.I64, length)
+	offset += bthrift.Binary.WriteMapEnd(buf[offset:])
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
@@ -2414,11 +2427,12 @@ func (p *VideosFavoriteCountResp) field1Length() int {
 
 func (p *VideosFavoriteCountResp) field2Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("favorite_count_list", thrift.LIST, 2)
-	l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.FavoriteCountList))
+	l += bthrift.Binary.FieldBeginLength("favorite_count_map", thrift.MAP, 2)
+	l += bthrift.Binary.MapBeginLength(thrift.I64, thrift.I64, len(p.FavoriteCountMap))
+	var tmpK int64
 	var tmpV int64
-	l += bthrift.Binary.I64Length(int64(tmpV)) * len(p.FavoriteCountList)
-	l += bthrift.Binary.ListEndLength()
+	l += (bthrift.Binary.I64Length(int64(tmpK)) + bthrift.Binary.I64Length(int64(tmpV))) * len(p.FavoriteCountMap)
+	l += bthrift.Binary.MapEndLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }
@@ -2594,8 +2608,7 @@ func (p *UsersFavoriteCountResp) FastRead(buf []byte) (int, error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetBaseResp bool = false
-	var issetFavoriteCountList bool = false
-	var issetFavoritedCountList bool = false
+	var issetFavoriteCountMap bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -2627,29 +2640,14 @@ func (p *UsersFavoriteCountResp) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
-		case 2:
-			if fieldTypeId == thrift.LIST {
-				l, err = p.FastReadField2(buf[offset:])
-				offset += l
-				if err != nil {
-					goto ReadFieldError
-				}
-				issetFavoriteCountList = true
-			} else {
-				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
-				offset += l
-				if err != nil {
-					goto SkipFieldError
-				}
-			}
 		case 3:
-			if fieldTypeId == thrift.LIST {
+			if fieldTypeId == thrift.MAP {
 				l, err = p.FastReadField3(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetFavoritedCountList = true
+				issetFavoriteCountMap = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -2682,12 +2680,7 @@ func (p *UsersFavoriteCountResp) FastRead(buf []byte) (int, error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetFavoriteCountList {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetFavoritedCountList {
+	if !issetFavoriteCountMap {
 		fieldId = 3
 		goto RequiredFieldNotSetError
 	}
@@ -2721,59 +2714,54 @@ func (p *UsersFavoriteCountResp) FastReadField1(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *UsersFavoriteCountResp) FastReadField2(buf []byte) (int, error) {
-	offset := 0
-
-	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
-	offset += l
-	if err != nil {
-		return offset, err
-	}
-	p.FavoriteCountList = make([]int64, 0, size)
-	for i := 0; i < size; i++ {
-		var _elem int64
-		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
-			return offset, err
-		} else {
-			offset += l
-
-			_elem = v
-
-		}
-
-		p.FavoriteCountList = append(p.FavoriteCountList, _elem)
-	}
-	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
-		return offset, err
-	} else {
-		offset += l
-	}
-	return offset, nil
-}
-
 func (p *UsersFavoriteCountResp) FastReadField3(buf []byte) (int, error) {
 	offset := 0
 
-	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
+	_, _, size, l, err := bthrift.Binary.ReadMapBegin(buf[offset:])
 	offset += l
 	if err != nil {
 		return offset, err
 	}
-	p.FavoritedCountList = make([]int64, 0, size)
+	p.FavoriteCountMap = make(map[int64][]int64, size)
 	for i := 0; i < size; i++ {
-		var _elem int64
+		var _key int64
 		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
 			return offset, err
 		} else {
 			offset += l
 
-			_elem = v
+			_key = v
 
 		}
 
-		p.FavoritedCountList = append(p.FavoritedCountList, _elem)
+		_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
+		offset += l
+		if err != nil {
+			return offset, err
+		}
+		_val := make([]int64, 0, size)
+		for i := 0; i < size; i++ {
+			var _elem int64
+			if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+				return offset, err
+			} else {
+				offset += l
+
+				_elem = v
+
+			}
+
+			_val = append(_val, _elem)
+		}
+		if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
+			return offset, err
+		} else {
+			offset += l
+		}
+
+		p.FavoriteCountMap[_key] = _val
 	}
-	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
+	if l, err := bthrift.Binary.ReadMapEnd(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -2791,7 +2779,6 @@ func (p *UsersFavoriteCountResp) FastWriteNocopy(buf []byte, binaryWriter bthrif
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "UsersFavoriteCountResp")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
-		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
@@ -2804,7 +2791,6 @@ func (p *UsersFavoriteCountResp) BLength() int {
 	l += bthrift.Binary.StructBeginLength("UsersFavoriteCountResp")
 	if p != nil {
 		l += p.field1Length()
-		l += p.field2Length()
 		l += p.field3Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
@@ -2820,36 +2806,30 @@ func (p *UsersFavoriteCountResp) fastWriteField1(buf []byte, binaryWriter bthrif
 	return offset
 }
 
-func (p *UsersFavoriteCountResp) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
-	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "favorite_count_list", thrift.LIST, 2)
-	listBeginOffset := offset
-	offset += bthrift.Binary.ListBeginLength(thrift.I64, 0)
-	var length int
-	for _, v := range p.FavoriteCountList {
-		length++
-		offset += bthrift.Binary.WriteI64(buf[offset:], v)
-
-	}
-	bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.I64, length)
-	offset += bthrift.Binary.WriteListEnd(buf[offset:])
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
-	return offset
-}
-
 func (p *UsersFavoriteCountResp) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "favorited_count_list", thrift.LIST, 3)
-	listBeginOffset := offset
-	offset += bthrift.Binary.ListBeginLength(thrift.I64, 0)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "favorite_count_map", thrift.MAP, 3)
+	mapBeginOffset := offset
+	offset += bthrift.Binary.MapBeginLength(thrift.I64, thrift.LIST, 0)
 	var length int
-	for _, v := range p.FavoritedCountList {
+	for k, v := range p.FavoriteCountMap {
 		length++
-		offset += bthrift.Binary.WriteI64(buf[offset:], v)
 
+		offset += bthrift.Binary.WriteI64(buf[offset:], k)
+
+		listBeginOffset := offset
+		offset += bthrift.Binary.ListBeginLength(thrift.I64, 0)
+		var length int
+		for _, v := range v {
+			length++
+			offset += bthrift.Binary.WriteI64(buf[offset:], v)
+
+		}
+		bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.I64, length)
+		offset += bthrift.Binary.WriteListEnd(buf[offset:])
 	}
-	bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.I64, length)
-	offset += bthrift.Binary.WriteListEnd(buf[offset:])
+	bthrift.Binary.WriteMapBegin(buf[mapBeginOffset:], thrift.I64, thrift.LIST, length)
+	offset += bthrift.Binary.WriteMapEnd(buf[offset:])
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
@@ -2862,24 +2842,20 @@ func (p *UsersFavoriteCountResp) field1Length() int {
 	return l
 }
 
-func (p *UsersFavoriteCountResp) field2Length() int {
-	l := 0
-	l += bthrift.Binary.FieldBeginLength("favorite_count_list", thrift.LIST, 2)
-	l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.FavoriteCountList))
-	var tmpV int64
-	l += bthrift.Binary.I64Length(int64(tmpV)) * len(p.FavoriteCountList)
-	l += bthrift.Binary.ListEndLength()
-	l += bthrift.Binary.FieldEndLength()
-	return l
-}
-
 func (p *UsersFavoriteCountResp) field3Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("favorited_count_list", thrift.LIST, 3)
-	l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.FavoritedCountList))
-	var tmpV int64
-	l += bthrift.Binary.I64Length(int64(tmpV)) * len(p.FavoritedCountList)
-	l += bthrift.Binary.ListEndLength()
+	l += bthrift.Binary.FieldBeginLength("favorite_count_map", thrift.MAP, 3)
+	l += bthrift.Binary.MapBeginLength(thrift.I64, thrift.LIST, len(p.FavoriteCountMap))
+	for k, v := range p.FavoriteCountMap {
+
+		l += bthrift.Binary.I64Length(k)
+
+		l += bthrift.Binary.ListBeginLength(thrift.I64, len(v))
+		var tmpV int64
+		l += bthrift.Binary.I64Length(int64(tmpV)) * len(v)
+		l += bthrift.Binary.ListEndLength()
+	}
+	l += bthrift.Binary.MapEndLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }
