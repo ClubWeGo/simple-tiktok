@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 namespace go relation
 
 struct User {
