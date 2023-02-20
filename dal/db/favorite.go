@@ -75,3 +75,52 @@ func CountUserFavorite(ctx context.Context, uid int64) (int64, int64, error) {
 	}
 	return favoriteCnt, favoritedCnt, nil
 }
+
+func CountVideosFavorite(ctx context.Context, vid []int64) (map[int64]int64, error) {
+	var results []struct {
+		VideoId int64
+		Count   int64
+	}
+	err := Favorite.WithContext(ctx).Select(Favorite.VideoId, Favorite.VideoId.Count().As("count")).
+		Where(Favorite.VideoId.In(vid...)).Group(Favorite.VideoId).Scan(&results)
+	if err != nil {
+		return nil, errno.DBErr.WithMessage(err.Error())
+	}
+	res := make(map[int64]int64)
+	for _, r := range results {
+		res[r.VideoId] = r.Count
+	}
+	return res, nil
+}
+
+func CountUsersFavorite(ctx context.Context, uid []int64) (map[int64][]int64, error) {
+	var favoriteResults []struct {
+		UserId        int64
+		FavoriteCount int64
+	}
+	var favoritedResults []struct {
+		UserId         int64
+		FavoritedCount int64
+	}
+
+	err := Favorite.WithContext(ctx).Select(Favorite.UserId, Favorite.UserId.Count().As("favorite_count")).
+		Where(Favorite.UserId.In(uid...)).Group(Favorite.UserId).Scan(&favoriteResults)
+	if err != nil {
+		return nil, errno.DBErr.WithMessage(err.Error())
+	}
+
+	err = Favorite.WithContext(ctx).Select(Favorite.AuthorId.As("user_id"), Favorite.AuthorId.Count().As("favorited_count")).
+		Where(Favorite.AuthorId.In(uid...)).Group(Favorite.AuthorId).Scan(&favoritedResults)
+	if err != nil {
+		return nil, errno.DBErr.WithMessage(err.Error())
+	}
+
+	res := make(map[int64][]int64)
+	for _, r := range favoriteResults {
+		res[r.UserId] = []int64{r.FavoriteCount}
+	}
+	for _, r := range favoritedResults {
+		res[r.UserId] = append(res[r.UserId], r.FavoritedCount)
+	}
+	return res, nil
+}
