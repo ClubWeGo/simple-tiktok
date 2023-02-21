@@ -21,7 +21,7 @@ func GetFavoriteRelation(ctx context.Context, uid int64, vid int64) (bool, error
 func GetFavoriteRelations(ctx context.Context, uid int64, vids []int64) (map[int64]bool, error) {
 	res := make(map[int64]bool)
 	for _, vid := range vids {
-		status, err := dal.Redis.SIsMember(ctx, strconv.FormatInt(uid, 10), vid).Result()
+		status, err := GetFavoriteRelation(ctx, uid, vid)
 		if err != nil {
 			return nil, err
 		}

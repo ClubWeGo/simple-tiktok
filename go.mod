@@ -5,17 +5,18 @@ go 1.19
 require (
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.4.4
-	github.com/go-sql-driver/mysql v1.6.0
+	github.com/go-sql-driver/mysql v1.7.0
 	github.com/kitex-contrib/registry-etcd v0.1.0
 	github.com/redis/go-redis/v9 v9.0.2
 	golang.org/x/crypto v0.6.0
-	gorm.io/driver/mysql v1.4.0
+	gorm.io/driver/mysql v1.4.7
 	gorm.io/gen v0.3.21
 	gorm.io/gorm v1.24.5
-	gorm.io/plugin/dbresolver v1.3.0
+	gorm.io/plugin/dbresolver v1.4.1
 )
 
 require (
+	github.com/ClubWeGo/videomicro v0.0.0-20230220013200-4dee64770a5c // indirect
 	github.com/bytedance/gopkg v0.0.0-20220531084716-665b4f21126f // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/iasm v0.0.0-20220818063314-28c361dae733 // indirect
