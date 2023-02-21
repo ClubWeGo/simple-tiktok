@@ -2,11 +2,11 @@ package kitex_server
 
 import (
 	"context"
+	"sync"
+
 	"github.com/ClubWeGo/douyin/pack"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
-	"sync"
-
 
 	"github.com/ClubWeGo/douyin/biz/model/interaction"
 	"github.com/ClubWeGo/douyin/tools/errno"
@@ -160,6 +160,17 @@ func GetVideosFavoriteCountMap(idSet []int64, respVideosFavoriteCountMap chan ma
 func GetIsFavoriteMap() (idSet []int64, currentUser int64, respIsFavoriteMap chan map[int64]bool, wg *sync.WaitGroup, errChan chan error) {
 	defer wg.Done()
 
+	res, err := FavoriteClient.FavoriteRelationsMethod(context.Background(), &favorite.FavoriteRelationsReq{
+		UserId:      currentUser,
+		VideoIdList: idSet,
+	})
+	if err != nil {
+		respIsFavoriteMap <- map[int64]bool{}
+		errChan <- err
+		return
+	}
+	respIsFavoriteMap <- res.IsFavorites
+	errChan <- nil
 	// res, err := FavoriteClient.FavoriteRelationMethod(context.Background(), &favorite.FavoriteRelationReq{})
 	return
 }

@@ -62,7 +62,12 @@ func GetVideoLatestMap(idSet []int64, currentUser int64, respVideoMap chan map[i
 	// 批量查询视频的评论数，传入视频id的切片，返回对应的评论数（需携带对应视频id），从comment服务
 
 	// 批量查询 is_favorite, 传入目标视频id切片和currentUser查is_favorite的切片(结果需要携带视频id，douyin里后续需要转成map)：从favorite;
-	GetIsFavoriteMap()
+	respIsFavoriteMap := make(chan map[int64]int64, 1)
+	defer close(respIsFavoriteMap)
+	respIsFavoriteMapError := make(chan error, 1)
+	defer close(respIsFavoriteMapError)
+	wgVideo.Add(1)
+	go GetIsFavoriteMap(idSet, currentUser, respIsFavoriteMap, wgVideo, respIsFavoriteMapError)
 
 	// 等待数据
 	wgVideo.Wait()
@@ -104,6 +109,10 @@ func GetFeed(latestTime int64, currentUserId int64, limit int32) (resultList []*
 		for index, video := range r.VideoList {
 			authorIdSet[index] = video.AuthorId
 		}
+		videoIdSet := make([]int64, len(r.VideoList))
+		for index, video := range r.VideoList {
+			videoIdSet[index] = video.Id
+		}
 
 		wg := &sync.WaitGroup{}
 
@@ -123,7 +132,7 @@ func GetFeed(latestTime int64, currentUserId int64, limit int32) (resultList []*
 		respLatestVideoMapError := make(chan []error, 1)
 		defer close(respLatestVideoMapError)
 		wg.Add(1)
-		go GetVideoLatestMap(authorIdSet, currentUserId, respLatestVideoMap, wg, respLatestVideoMapError)
+		go GetVideoLatestMap(videoIdSet, currentUserId, respLatestVideoMap, wg, respLatestVideoMapError)
 
 		// 等待数据
 		wg.Wait()
@@ -181,6 +190,10 @@ func GetVideosByAuthorId(id int64) (resultList []*core.Video, err error) {
 
 	if r.Status {
 		authorIdSet := []int64{id} // 只有作者本人
+		videoIdSet := make([]int64, len(r.VideoList))
+		for index, video := range r.VideoList {
+			videoIdSet[index] = video.Id
+		}
 
 		wg := &sync.WaitGroup{}
 
@@ -198,7 +211,7 @@ func GetVideosByAuthorId(id int64) (resultList []*core.Video, err error) {
 		respLatestVideoMapError := make(chan []error, 1)
 		defer close(respLatestVideoMapError)
 		wg.Add(1)
-		go GetVideoLatestMap(authorIdSet, id, respLatestVideoMap, wg, respLatestVideoMapError)
+		go GetVideoLatestMap(videoIdSet, id, respLatestVideoMap, wg, respLatestVideoMapError)
 
 		// 等待数据
 		wg.Wait()
