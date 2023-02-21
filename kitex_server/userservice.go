@@ -3,12 +3,13 @@ package kitex_server
 import (
 	"context"
 	"errors"
-	"github.com/prometheus/common/log"
 	"strconv"
 	"sync"
+
 	"github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/prometheus/common/log"
 )
 
 // 工具函数
@@ -90,6 +91,17 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 	wgUser.Add(1)
 	go GetVideoCountMap(idSet, respVideoCountMap, wgUser, respVideoCountMapError)
 
+	// 批量查询FollowCount, FollowerCount，Is_follow 从relation服务
+	// Videoclient.GetVideoCountSetByIdUserSetMethod(context.Background(), &videomicro.GetVideoCountSetByIdUserSetReq{})
+	respRelationMap := make(chan map[int64]FollowInfoWithId, 1)
+	defer close(respRelationMap)
+	respRelationMapError := make(chan error, 1)
+	defer close(respRelationMapError)
+	wgUser.Add(1)
+	go GetRelationMap(idSet, currentUser, respRelationMap, wgUser, respRelationMapError)
+
+	// TODO : TotalFavourited, FavoriteCount，传入查询的userId切片，查对应这两个字段的切片，（结果需要携带UserId）：从favorite服务
+
 	// 等待数据
 	wgUser.Wait()
 
@@ -106,6 +118,12 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 	if err != nil {
 		errSlice = append(errSlice, err)
 	}
+
+	RelationMap := <-respRelationMap
+	err = <-respRelationMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
 	// TODO: 其他协程的错误处理
 
 	errChan <- errSlice // 错误切片
@@ -115,9 +133,9 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 		AuthorMap[id] = core.User{
 			ID:              user.ID,
 			Name:            user.Name,
-			FollowCount:     0,     // TODO: 从获取的数据中拿
-			FollowerCount:   0,     // TODO: 从获取的数据中拿
-			IsFollow:        false, // TODO: 从获取的数据中拿
+			FollowCount:     RelationMap[id].followInfo.FollowCount,   // Relation服务 最新的followCount
+			FollowerCount:   RelationMap[id].followInfo.FollowerCount, // Relation服务 最新的followerCount
+			IsFollow:        RelationMap[id].followInfo.IsFollow,      // Relation服务 最新的isFollow
 			Avatar:          user.Avatar,
 			BackgroundImage: user.BackgroundImage,
 			Signature:       user.Signature,
