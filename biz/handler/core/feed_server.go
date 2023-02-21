@@ -4,7 +4,6 @@ package core
 
 import (
 	"context"
-	"log"
 	"time"
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
@@ -53,7 +52,6 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 	// 缓存未命中，去后端调api
 	resultList, nextTime, err := kitex_server.GetFeed(latestTime, currentUserId, 30)
 	if err != nil {
-		log.Println(err)
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)

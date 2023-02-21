@@ -51,25 +51,28 @@ func GetVideoLatestMap(idSet []int64, currentUser int64, respVideoMap chan map[i
 
 	wgVideo := &sync.WaitGroup{} // 本函数子协程的wg
 
-	// 批量查询视频的 被喜欢数 ，Favorite 从Favorite服务
-	// 批量查询 favorite_count, total_favourited 从favorite服务: kitex_server.FavoriteClient.UserFavoriteCountMethod()
-	// TODO: 结果要 videoId与对应的数据 map
+	// 批量查询视频的 被喜欢数 ，传入视频id的切片，返回对应的FavoriteCount的切片（需携带对应视频id） 从Favorite服务
+	respVideosFavoriteCountMap := make(chan map[int64]int64, 1)
+	defer close(respVideosFavoriteCountMap)
+	respVideosFavoriteCountMapError := make(chan error, 1)
+	defer close(respVideosFavoriteCountMapError)
+	wgVideo.Add(1)
+	go GetVideosFavoriteCountMap(idSet, respVideosFavoriteCountMap, wgVideo, respVideosFavoriteCountMapError)
 
-	// 批量查询 is_follow, 从relation服务; 传入目标userID和currentUser
+	// 批量查询视频的评论数，传入视频id的切片，返回对应的评论数（需携带对应视频id），从comment服务
 
-	// 批量查询 follow_count， follower_cout 从relation服务
+	// 批量查询 is_favorite, 传入目标视频id切片和currentUser查is_favorite的切片(结果需要携带视频id，douyin里后续需要转成map)：从favorite;
+	GetIsFavoriteMap()
 
 	// 等待数据
 	wgVideo.Wait()
 
-	// // 处理协程错误
-	var errSlice = []error{} // 防止外部设置的chan缓存不够造成阻塞，要求外部设置长度为1的error切片类型
-	// err := <-respAuthorMapError
-	// if err != nil {
-	// 	errSlice = append(errSlice, err)
-	// }
-
-	// // TODO: 其他协程的错误处理
+	var errSlice = []error{}
+	VideosFavoriteCountMap := <-respVideosFavoriteCountMap
+	err := <-respVideosFavoriteCountMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
 
 	errChan <- errSlice // 记录错误的切片，至少应该返回一个空切片，否则chan会阻塞
 
@@ -77,9 +80,9 @@ func GetVideoLatestMap(idSet []int64, currentUser int64, respVideoMap chan map[i
 	videoLatestMap := make(map[int64]core.Video, len(idSet)) // 视频切片的id是没有重复的
 	for _, id := range idSet {
 		videoLatestMap[id] = core.Video{ // 视频id对应的Video存储查到的关键字段
-			FavoriteCount: 0,     // TODO:从拿到的MAP数据更新
-			CommentCount:  0,     // TODO:从拿到的MAP数据更新
-			IsFavorite:    false, // TODO:从拿到的MAP数据更新
+			FavoriteCount: VideosFavoriteCountMap[id], // TODO:从拿到的MAP数据更新
+			CommentCount:  0,                          // TODO:从拿到的MAP数据更新
+			IsFavorite:    false,                      // TODO:从拿到的MAP数据更新
 		}
 	}
 	respVideoMap <- videoLatestMap // 返回数据

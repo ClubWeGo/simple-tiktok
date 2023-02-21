@@ -31,5 +31,6 @@ go get github.com/ClubWeGo/relationmicro@latest
 
 go get github.com/ClubWeGo/favoritemicro@latest
 
+
 # 说明
 1. 当前注册用户时，前端并未提供个人参数配置的能力，也没有提供更新用户信息的能力，所以在core.register_server处写死了初始化的用户背景图像和头像。在配置本项目时，请将对应文件名换成minio中存储的文件名。

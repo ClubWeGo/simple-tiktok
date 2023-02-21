@@ -5,6 +5,8 @@ import (
 	"github.com/ClubWeGo/douyin/pack"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"sync"
+
 
 	"github.com/ClubWeGo/douyin/biz/model/interaction"
 	"github.com/ClubWeGo/douyin/tools/errno"
@@ -130,4 +132,47 @@ func CountUserFavorite(ctx context.Context, uid int64) (int64, int64, error) {
 		return 0, 0, errno.RPCErr
 	}
 	return res.FavoriteCount, res.FavoritedCount, nil
+}
+
+
+// 传入userId切片，批量查询user对应的favorite， total_favorited
+// map[int64][]int64  [FavoriteCount  FavoritedCount]
+func GetUsersFavoriteCountMap(idSet []int64, respUsersFavoriteCountMap chan map[int64][]int64, wg *sync.WaitGroup, errChan chan error) {
+	defer wg.Done()
+
+	res, err := FavoriteClient.UsersFavoriteCountMethod(context.Background(), &favorite.UsersFavoriteCountReq{
+		UserIdList: idSet,
+	})
+	if err != nil {
+		respUsersFavoriteCountMap <- map[int64][]int64{}
+		errChan <- err
+		return
+	}
+	respUsersFavoriteCountMap <- res.FavoriteCountMap
+	errChan <- nil
+}
+
+// 传入videoId切片，批量查询video对应的favorite， favorited
+// map[int64]int64  FavoriteCount
+func GetVideosFavoriteCountMap(idSet []int64, respVideosFavoriteCountMap chan map[int64]int64, wg *sync.WaitGroup, errChan chan error) {
+	defer wg.Done()
+
+	res, err := FavoriteClient.VideosFavoriteCountMethod(context.Background(), &favorite.VideosFavoriteCountReq{
+		VideoIdList: idSet,
+	})
+	if err != nil {
+		respVideosFavoriteCountMap <- map[int64]int64{}
+		errChan <- err
+		return
+	}
+	respVideosFavoriteCountMap <- res.FavoriteCountMap
+	errChan <- nil
+}
+
+// 传入videoId切片和当前用户id，批量查询喜欢情况
+func GetIsFavoriteMap() (idSet []int64, currentUser int64, respIsFavoriteMap chan map[int64]bool, wg *sync.WaitGroup, errChan chan error) {
+	defer wg.Done()
+
+	// res, err := FavoriteClient.FavoriteRelationMethod(context.Background(), &favorite.FavoriteRelationReq{})
+	return
 }

@@ -3,12 +3,13 @@ package kitex_server
 import (
 	"context"
 	"errors"
-	"github.com/prometheus/common/log"
 	"strconv"
 	"sync"
+
 	"github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/prometheus/common/log"
 )
 
 // 工具函数
@@ -90,6 +91,23 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 	wgUser.Add(1)
 	go GetVideoCountMap(idSet, respVideoCountMap, wgUser, respVideoCountMapError)
 
+	// 批量查询FollowCount, FollowerCount，Is_follow 从relation服务
+	// Videoclient.GetVideoCountSetByIdUserSetMethod(context.Background(), &videomicro.GetVideoCountSetByIdUserSetReq{})
+	respRelationMap := make(chan map[int64]FollowInfoWithId, 1)
+	defer close(respRelationMap)
+	respRelationMapError := make(chan error, 1)
+	defer close(respRelationMapError)
+	wgUser.Add(1)
+	go GetRelationMap(idSet, currentUser, respRelationMap, wgUser, respRelationMapError)
+
+	// 批量查询TotalFavourited, FavoriteCount，传入查询的userId切片
+	respUsersFavoriteCountMap := make(chan map[int64][]int64, 1) // [FavoriteCount  FavoritedCount]
+	defer close(respRelationMap)
+	respUsersFavoriteCountMapError := make(chan error, 1)
+	defer close(respUsersFavoriteCountMapError)
+	wgUser.Add(1)
+	go GetUsersFavoriteCountMap(idSet, respUsersFavoriteCountMap, wgUser, respUsersFavoriteCountMapError)
+
 	// 等待数据
 	wgUser.Wait()
 
@@ -106,6 +124,18 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 	if err != nil {
 		errSlice = append(errSlice, err)
 	}
+
+	RelationMap := <-respRelationMap
+	err = <-respRelationMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
+
+	FavoriteCountMap := <-respUsersFavoriteCountMap
+	err = <-respUsersFavoriteCountMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
 	// TODO: 其他协程的错误处理
 
 	errChan <- errSlice // 错误切片
@@ -115,15 +145,15 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 		AuthorMap[id] = core.User{
 			ID:              user.ID,
 			Name:            user.Name,
-			FollowCount:     0,     // TODO: 从获取的数据中拿
-			FollowerCount:   0,     // TODO: 从获取的数据中拿
-			IsFollow:        false, // TODO: 从获取的数据中拿
+			FollowCount:     RelationMap[id].followInfo.FollowCount,   // Relation服务 最新的followCount
+			FollowerCount:   RelationMap[id].followInfo.FollowerCount, // Relation服务 最新的followerCount
+			IsFollow:        RelationMap[id].followInfo.IsFollow,      // Relation服务 最新的isFollow
 			Avatar:          user.Avatar,
 			BackgroundImage: user.BackgroundImage,
 			Signature:       user.Signature,
-			TotalFavourited: "",                      // TODO: 从获取的数据中拿
-			WorkCount:       VideoCountMap[id].Count, // 最新的count数据
-			FavoriteCount:   0,                       // TODO: 从获取的数据中拿
+			TotalFavourited: strconv.FormatInt(FavoriteCountMap[id][1], 10), // TODO: 从获取的数据中拿
+			WorkCount:       VideoCountMap[id].Count,                        // 最新的count数据
+			FavoriteCount:   FavoriteCountMap[id][0],                        // TODO: 从获取的数据中拿
 		}
 
 	}

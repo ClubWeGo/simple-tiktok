@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sync"
+
 	"github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/biz/model/relation"
 	relationserver "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
@@ -188,9 +190,69 @@ func VerifyFollowParam(myUid int64, targetUid int64, actionType int32) *string {
 	return nil
 }
 
+
 // TODO : .GetIsFollowMapByUserIdSet
 func GetIsFollowMapByUserIdSet(uid int64, idSet []int64) (isFollowMap map[int64]bool, err error) {
 	return nil, nil
+
+// 协程接口
+
+type FollowInfoWithId struct {
+	Id         int64
+	followInfo relationserver.FollowInfo
+}
+
+// 通过GetFollowInfoMethod批量获取FollowInfo，包装为Map
+func GetRelationMap(idSet []int64, currentUser int64, respRelationMap chan map[int64]FollowInfoWithId, wg *sync.WaitGroup, errChan chan error) {
+	defer wg.Done()
+
+	wgRelation := &sync.WaitGroup{}
+	insideResultChan := make(chan FollowInfoWithId, len(idSet))
+	insideErrChan := make(chan error, len(idSet))
+	for _, id := range idSet {
+		wgRelation.Add(1)
+		go func(userid int64) {
+			defer wgRelation.Done()
+			r, err := Relationclient.GetFollowInfoMethod(context.Background(), &relationserver.GetFollowInfoReq{
+				MyUid:     &currentUser,
+				TargetUid: userid,
+			})
+			if err != nil {
+				insideResultChan <- FollowInfoWithId{} // 出错，传回一个空值
+				insideErrChan <- err
+				return
+			}
+			if r.StatusCode == 1 { // 0 error, 1 success, 2 参数不通过
+				followInfoWithId := FollowInfoWithId{
+					Id:         userid,
+					followInfo: *r.FollowInfo,
+				}
+				insideResultChan <- followInfoWithId
+				insideErrChan <- nil
+				return // 成功
+			}
+			insideResultChan <- FollowInfoWithId{} //没有显式出错，但是没有值
+			insideErrChan <- nil
+		}(id)
+	}
+	wgRelation.Wait()
+	for range idSet {
+		err := <-insideErrChan
+		if err != nil {
+			respRelationMap <- map[int64]FollowInfoWithId{}
+			errChan <- err
+			return // 有协程查数据错误，直接报错返回
+		}
+	}
+	// 封装数据
+	result := make(map[int64]FollowInfoWithId, len(idSet))
+	for range idSet {
+		data := <-insideResultChan
+		result[data.Id] = data
+	}
+
+	respRelationMap <- result //没有显式出错，但是没有值
+	errChan <- errors.New("relation server GetFollowInfoMethod error: 微服务调用成功，但是没有查到值")
 }
 
 // kitex relationserver 数据传输 user -> kitex 回显 core.User
