@@ -100,7 +100,13 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 	wgUser.Add(1)
 	go GetRelationMap(idSet, currentUser, respRelationMap, wgUser, respRelationMapError)
 
-	// TODO : TotalFavourited, FavoriteCount，传入查询的userId切片，查对应这两个字段的切片，（结果需要携带UserId）：从favorite服务
+	// 批量查询TotalFavourited, FavoriteCount，传入查询的userId切片
+	respUsersFavoriteCountMap := make(chan map[int64][]int64, 1) // [FavoriteCount  FavoritedCount]
+	defer close(respRelationMap)
+	respUsersFavoriteCountMapError := make(chan error, 1)
+	defer close(respUsersFavoriteCountMapError)
+	wgUser.Add(1)
+	go GetUsersFavoriteCountMap(idSet, respUsersFavoriteCountMap, wgUser, respUsersFavoriteCountMapError)
 
 	// 等待数据
 	wgUser.Wait()
@@ -124,6 +130,12 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 	if err != nil {
 		errSlice = append(errSlice, err)
 	}
+
+	FavoriteCountMap := <-respUsersFavoriteCountMap
+	err = <-respUsersFavoriteCountMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
 	// TODO: 其他协程的错误处理
 
 	errChan <- errSlice // 错误切片
@@ -139,9 +151,9 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 			Avatar:          user.Avatar,
 			BackgroundImage: user.BackgroundImage,
 			Signature:       user.Signature,
-			TotalFavourited: "",                      // TODO: 从获取的数据中拿
-			WorkCount:       VideoCountMap[id].Count, // 最新的count数据
-			FavoriteCount:   0,                       // TODO: 从获取的数据中拿
+			TotalFavourited: strconv.FormatInt(FavoriteCountMap[id][1], 10), // TODO: 从获取的数据中拿
+			WorkCount:       VideoCountMap[id].Count,                        // 最新的count数据
+			FavoriteCount:   FavoriteCountMap[id][0],                        // TODO: 从获取的数据中拿
 		}
 
 	}

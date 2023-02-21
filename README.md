@@ -29,6 +29,8 @@ go get github.com/ClubWeGo/usermicro@latest
 
 go get github.com/ClubWeGo/relationmicro@latest
 
+go get github.com/ClubWeGo/favoritemicro@latest
+
 
 
 # 说明
