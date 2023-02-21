@@ -26,13 +26,9 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 
 	// TODO : 记录ip地址和注册api调用次数，限制统一设备短时间太多的请求，预防爬虫。 redis
 
-	msgsucceed := "获取视频流成功"
-	msgFailed := "获取视频流失败"
-
 	resp := new(core.FeedResp)
 
 	// 字段处理
-	// 目前该api无需token，后续增加登录定制化内容则需根据token获取其他参数
 	var currentUserId int64
 	if req.Token != nil { // 可选字段，需要验证是否存在，判断对应指针是否存在
 		_, currentUserId, err = tools.ValidateToken(*req.Token) //
@@ -52,6 +48,7 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 	// 缓存未命中，去后端调api
 	resultList, nextTime, err := kitex_server.GetFeed(latestTime, currentUserId, 30)
 	if err != nil {
+		msgFailed := "获取视频流失败" + err.Error()
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
@@ -60,6 +57,7 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 
 	resp.VideoList = resultList
 
+	msgsucceed := "获取视频流成功"
 	resp.StatusMsg = &msgsucceed
 	resp.NextTime = nextTime / 1e6
 

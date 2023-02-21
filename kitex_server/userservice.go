@@ -142,6 +142,13 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 
 	// 更新数据
 	for id, user := range AuthorMap {
+		favoriteCountMap := FavoriteCountMap[id]
+		var totalFavourited int64
+		var favoriteCount int64
+		if len(favoriteCountMap) == 2 { // 服务失效时，会越界
+			totalFavourited = favoriteCountMap[0]
+			favoriteCount = favoriteCountMap[1]
+		}
 		AuthorMap[id] = core.User{
 			ID:              user.ID,
 			Name:            user.Name,
@@ -151,9 +158,9 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 			Avatar:          user.Avatar,
 			BackgroundImage: user.BackgroundImage,
 			Signature:       user.Signature,
-			TotalFavourited: strconv.FormatInt(FavoriteCountMap[id][1], 10), // TODO: 从获取的数据中拿
-			WorkCount:       VideoCountMap[id].Count,                        // 最新的count数据
-			FavoriteCount:   FavoriteCountMap[id][0],                        // TODO: 从获取的数据中拿
+			TotalFavourited: strconv.FormatInt(totalFavourited, 10), // TODO: 从获取的数据中拿
+			WorkCount:       VideoCountMap[id].Count,                // 最新的count数据
+			FavoriteCount:   favoriteCount,                          // TODO: 从获取的数据中拿
 		}
 
 	}
@@ -191,10 +198,12 @@ func RegisterUserALL(username, password string, email, signature, backgroundImag
 		BackgroundImage: backgroundImage,
 		Avatar:          avatar,
 	}
+	println(211)
 	r, err := Userclient.CreateUserMethod(context.Background(), &usermicro.CreateUserReq{
 		Newuser_: &newUser,
 		Password: password, // 此处传输明文，加密由user微服务进行
 	})
+	println(222)
 	if err != nil {
 		return 0, err
 	}
