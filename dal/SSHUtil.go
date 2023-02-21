@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"time"
 )
 
 type SSHConfig struct {
@@ -45,6 +46,7 @@ func dialSSH() *ssh.Client {
 			// Use the PublicKeys method for remote authentication.
 			ssh.PublicKeys(signer)},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		Timeout:         15 * time.Second,
 	})
 	if err != nil {
 		log.Fatalf("unable to connect: %v", err)
@@ -64,4 +66,8 @@ func (dialer *SSHDialer) Dial(ctx context.Context, addr string) (net.Conn, error
 
 func RegisterSSH() {
 	mysql.RegisterDialContext("mysql+ssh", (&SSHDialer{dialSSH(), nil}).Dial)
+}
+
+func RedisDial(ctx context.Context, network string, addr string) (net.Conn, error) {
+	return dialSSH().Dial(network, addr)
 }

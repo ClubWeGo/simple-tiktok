@@ -12,6 +12,7 @@ import (
 
 func main() {
 	dal.Init()
+	dal.InitRedis()
 
 	registry, err := etcd.NewEtcdRegistry([]string{"0.0.0.0:2379"})
 	if err != nil {

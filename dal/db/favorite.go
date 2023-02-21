@@ -2,9 +2,11 @@ package db
 
 import (
 	"context"
+	"github.com/ClubWeGo/favoritemicro/dal"
 	"github.com/ClubWeGo/favoritemicro/dal/model"
 	. "github.com/ClubWeGo/favoritemicro/dal/query"
 	"github.com/ClubWeGo/favoritemicro/pkg/errno"
+	"strconv"
 )
 
 // GetFavoriteRelation get favorite video info
@@ -14,6 +16,18 @@ func GetFavoriteRelation(ctx context.Context, uid int64, vid int64) (bool, error
 		return false, errno.DBErr.WithMessage(err.Error())
 	}
 	return cnt > 0, nil
+}
+
+func GetFavoriteRelations(ctx context.Context, uid int64, vids []int64) (map[int64]bool, error) {
+	res := make(map[int64]bool)
+	for _, vid := range vids {
+		status, err := dal.Redis.SIsMember(ctx, strconv.FormatInt(uid, 10), vid).Result()
+		if err != nil {
+			return nil, err
+		}
+		res[vid] = status
+	}
+	return res, nil
 }
 
 func AddFavorite(ctx context.Context, uid int64, vid int64, aid int64) error {
@@ -32,6 +46,10 @@ func AddFavorite(ctx context.Context, uid int64, vid int64, aid int64) error {
 	if err != nil {
 		return errno.DBErr.WithMessage(err.Error())
 	}
+	_, err = dal.Redis.SAdd(ctx, strconv.FormatInt(uid, 10), vid).Result()
+	if err != nil {
+		return errno.DBErr.WithMessage(err.Error())
+	}
 	return nil
 }
 
@@ -42,6 +60,10 @@ func DeleteFavorite(ctx context.Context, uid int64, vid int64) error {
 	}
 	if res.RowsAffected == 0 {
 		return errno.RecordNotExistErr.WithMessage("重复取消点赞")
+	}
+	_, err = dal.Redis.SRem(ctx, strconv.FormatInt(uid, 10), vid).Result()
+	if err != nil {
+		return errno.DBErr.WithMessage(err.Error())
 	}
 	return nil
 }
