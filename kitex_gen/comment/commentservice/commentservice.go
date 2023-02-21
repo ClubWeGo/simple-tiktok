@@ -19,8 +19,9 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "CommentService"
 	handlerType := (*comment.CommentService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CommentMethod":     kitex.NewMethodInfo(commentMethodHandler, newCommentServiceCommentMethodArgs, newCommentServiceCommentMethodResult, false),
-		"CommentListMethod": kitex.NewMethodInfo(commentListMethodHandler, newCommentServiceCommentListMethodArgs, newCommentServiceCommentListMethodResult, false),
+		"CommentMethod":             kitex.NewMethodInfo(commentMethodHandler, newCommentServiceCommentMethodArgs, newCommentServiceCommentMethodResult, false),
+		"CommentListMethod":         kitex.NewMethodInfo(commentListMethodHandler, newCommentServiceCommentListMethodArgs, newCommentServiceCommentListMethodResult, false),
+		"VideosFavoriteCountMethod": kitex.NewMethodInfo(videosFavoriteCountMethodHandler, newCommentServiceVideosFavoriteCountMethodArgs, newCommentServiceVideosFavoriteCountMethodResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "comment",
@@ -72,6 +73,24 @@ func newCommentServiceCommentListMethodResult() interface{} {
 	return comment.NewCommentServiceCommentListMethodResult()
 }
 
+func videosFavoriteCountMethodHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*comment.CommentServiceVideosFavoriteCountMethodArgs)
+	realResult := result.(*comment.CommentServiceVideosFavoriteCountMethodResult)
+	success, err := handler.(comment.CommentService).VideosFavoriteCountMethod(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newCommentServiceVideosFavoriteCountMethodArgs() interface{} {
+	return comment.NewCommentServiceVideosFavoriteCountMethodArgs()
+}
+
+func newCommentServiceVideosFavoriteCountMethodResult() interface{} {
+	return comment.NewCommentServiceVideosFavoriteCountMethodResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -97,6 +116,16 @@ func (p *kClient) CommentListMethod(ctx context.Context, request *comment.Commen
 	_args.Request = request
 	var _result comment.CommentServiceCommentListMethodResult
 	if err = p.c.Call(ctx, "CommentListMethod", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) VideosFavoriteCountMethod(ctx context.Context, request *comment.VideosCommentCountReq) (r *comment.VideosCommentCountResp, err error) {
+	var _args comment.CommentServiceVideosFavoriteCountMethodArgs
+	_args.Request = request
+	var _result comment.CommentServiceVideosFavoriteCountMethodResult
+	if err = p.c.Call(ctx, "VideosFavoriteCountMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

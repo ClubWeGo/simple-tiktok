@@ -12,8 +12,7 @@ import (
 
 func main() {
 
-	dsn := "root:12345678@tcp(127.0.0.1:3306)/simpletk?charset=utf8&parseTime=True&loc=Local"
-	dal.InitDB(dsn)
+	dal.Init()
 
 	r, err := etcd.NewEtcdRegistry([]string{"0.0.0.0:2379"})
 	if err != nil {

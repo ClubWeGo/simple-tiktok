@@ -63,7 +63,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
-	Comment ICommentDo
+	Comment *commentDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {

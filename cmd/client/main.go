@@ -25,7 +25,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//commenttext := "hi"
+	//commenttext := "hhh"
 	//req := &comment.CommentReq{UserId: 1, VideoId: 1, ActionType: 1, CommentText: &commenttext}
 	//resp, err := c.CommentMethod(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
 	//if err != nil {
@@ -48,23 +48,9 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Println(resp)
-	//req := &userdemo.CreateUserRequest{UserName: "nihao", Password: "123"}
-	//resp, err := c.CreateUser(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//log.Println(resp)
-	//user_ids := make([]int64, 0)
-	//user_ids = append(user_ids, 1)
-	//req := &userdemo.MGetUserRequest{UserIds: user_ids}
-	//resp, err := c.MGetUser(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//log.Println(resp)
-
-	//req := &userdemo.CheckUserRequest{UserName: "nihao", Password: "123"}
-	//resp, err := c.CheckUser(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+	//var sliceName []int64 = []int64{1, 2}
+	//req := &comment.VideosCommentCountReq{sliceName}
+	//resp, err := c.VideosFavoriteCountMethod(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
 	//if err != nil {
 	//	log.Fatal(err)
 	//}

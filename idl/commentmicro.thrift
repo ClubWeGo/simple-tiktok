@@ -1,5 +1,9 @@
 namespace go comment
 
+struct BaseResp {
+    1: required i32 status_code;
+    2: string status_msg;
+}
 
 struct User {
     1: required i64 id;
@@ -16,20 +20,6 @@ struct Comment {
     4: required string create_date;//评论发布日期时间 mm-dd
 }
 
-
-# commentList
-struct CommentListReq {
-    1: required i64 user_id;
-    2: required i64 video_id;//视频id
-}
-
-struct CommentListResp {
-    1: required i32 status_code;
-    2: optional string status_msg;
-    3: required list<Comment> comment_list;
-}
-
-
 # comment
 struct CommentReq {
 //    1: required string token;
@@ -42,13 +32,33 @@ struct CommentReq {
 
 struct CommentResp {
     1: required i32 status_code;
-    2: optional string status_msg;
+    2: string status_msg;
     3: optional Comment comment;
 }
+# commentList
+struct CommentListReq {
+    1: required i64 user_id;
+    2: required i64 video_id;//视频id
+}
 
+struct CommentListResp {
+    1: required i32 status_code;
+    2: string status_msg;
+    3: required list<Comment> comment_list;
+}
+
+struct VideosCommentCountReq {
+    1: required list<i64> video_id_list;
+}
+
+struct VideosCommentCountResp {
+    1: required BaseResp base_resp;
+    2: required map<i64, i64> comment_count_map;
+}
 
 # service
 service CommentService {
     CommentResp CommentMethod(1: CommentReq request) ;
     CommentListResp CommentListMethod(1: CommentListReq request)
+    VideosCommentCountResp VideosFavoriteCountMethod(1: VideosCommentCountReq request);
 }
