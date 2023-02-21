@@ -2,6 +2,9 @@ package kitex_server
 
 import (
 	"context"
+	"github.com/ClubWeGo/douyin/pack"
+	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 
 	"github.com/ClubWeGo/douyin/biz/model/interaction"
 	"github.com/ClubWeGo/douyin/tools/errno"
@@ -38,16 +41,52 @@ func DeleteFavorite(ctx context.Context, uid int64, vid int64) (*interaction.Fav
 	}, nil
 }
 
-func GetFavoriteList(ctx context.Context, uid int64) (favorites []*interaction.FavoriteListReq, err error) {
-	//res, err := FavoriteClient.FavoriteListMethod(ctx, &favorite.FavoriteListReq{
-	//	UserId: uid,
-	//})
-	//Videoclient.GetVideoMethod(ctx, &videomicro.GetVideoReq{})
-	//if err != nil {
-	//	return nil, errno.RPCErr
-	//}
+func GetFavoriteList(ctx context.Context, uid int64) (favorites *interaction.FavoriteListResp, err error) {
+	favoriteListRes, err := FavoriteClient.FavoriteListMethod(ctx, &favorite.FavoriteListReq{
+		UserId: uid,
+	})
+	if err != nil {
+		return nil, err
+	}
+	favoriteIdList := favoriteListRes.VideoIdList
+	videosResp, err := Videoclient.GetVideoSetByIdSetMethod(
+		ctx, &videomicro.GetVideoSetByIdSetReq{
+			IdSet: favoriteIdList,
+		})
+	if err != nil {
+		return nil, err
+	}
+	videos := videosResp.VideoSet
+	authorIdList := make([]int64, 0)
+	for _, v := range videos {
+		authorIdList = append(authorIdList, v.AuthorId)
+	}
 
-	return
+	if err != nil {
+		return nil, err
+	}
+	resp, err := Userclient.GetUserSetByIdSetMethod(ctx, &usermicro.GetUserSetByIdSetReq{
+		IdSet: authorIdList,
+	})
+	if err != nil {
+		return nil, errno.RPCErr
+	}
+	authors := resp.UserSet
+	isFavorites := make(map[int64]bool)
+	//isFollows := make(map[int64]bool)
+	isFollowSet, err := GetIsFollowSetByUserIdSet(uid, authorIdList)
+	if err != nil {
+		return nil, err
+	}
+	for _, v := range videos {
+		isFavorites[v.Id], _ = GetFavoriteRelation(ctx, uid, v.Id)
+		//isFollows[v.AuthorId] = Get
+	}
+	return &interaction.FavoriteListResp{
+		StatusCode: favoriteListRes.BaseResp.StatusCode,
+		StatusMsg:  favoriteListRes.BaseResp.StatusMsg,
+		VideoList:  pack.Videos(videos, authors, isFavorites, isFollowSet),
+	}, nil
 }
 
 func GetFavoriteRelation(ctx context.Context, uid int64, vid int64) (bool, error) {
