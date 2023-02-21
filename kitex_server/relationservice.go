@@ -10,6 +10,7 @@ import (
 	"github.com/ClubWeGo/douyin/biz/model/relation"
 	relationserver "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
 	"github.com/prometheus/common/log"
+	"strconv"
 )
 
 // 响应码
@@ -100,20 +101,14 @@ func Follow(myUid int64, targetUid int64, actionType int32) error {
 func GetFollowList(myUid int64, targetUid int64) ([]*core.User, error) {
 	resp, err := Relationclient.GetFollowListMethod(context.Background(), &relationserver.GetFollowListReq{MyId: &myUid, TargetId: targetUid})
 	if err != nil {
-		log.Errorf("rpc请求relation服务失败，详情:%s", err)
+		log.Errorf("GetFollowList rpc请求relation服务失败，详情:%s", err)
 		return nil, fmt.Errorf("本次请求失败,请稍后重试")
 	}
 	switch resp.StatusCode {
 	case SUCCESS:
 		userList := make([]*core.User, len(resp.UserList))
 		for i, user := range resp.GetUserList() {
-			userList[i] = &core.User{
-				ID:            user.Id,
-				Name:          user.Name,
-				FollowCount:   user.FollowCount,
-				FollowerCount: user.FollowerCount,
-				IsFollow:      user.IsFollow,
-			}
+			userList[i] = ConvertCoreUser(user)
 		}
 		return userList, nil
 	case ERROR:
@@ -132,20 +127,14 @@ func GetFollowList(myUid int64, targetUid int64) ([]*core.User, error) {
 func GetFollowerList(myUid int64, targetUid int64) ([]*core.User, error) {
 	resp, err := Relationclient.GetFollowerListMethod(context.Background(), &relationserver.GetFollowerListReq{MyId: &myUid, TargetId: targetUid})
 	if err != nil {
-		log.Errorf("rpc请求relation服务失败，详情:%s", err)
+		log.Errorf("GetFollowerList rpc请求relation服务失败，详情:%s", err)
 		return nil, fmt.Errorf("本次请求失败,请稍后重试")
 	}
 	switch resp.StatusCode {
 	case SUCCESS:
 		userList := make([]*core.User, len(resp.UserList))
 		for i, user := range resp.GetUserList() {
-			userList[i] = &core.User{
-				ID:            user.Id,
-				Name:          user.Name,
-				FollowCount:   user.FollowCount,
-				FollowerCount: user.FollowerCount,
-				IsFollow:      user.IsFollow,
-			}
+			userList[i] = ConvertCoreUser(user)
 		}
 		return userList, nil
 	case ERROR:
@@ -160,8 +149,30 @@ func GetFollowerList(myUid int64, targetUid int64) ([]*core.User, error) {
 	return nil, fmt.Errorf("本次请求失败，请稍后重试")
 }
 
-func GetFriendList() {
-
+// 好友列表
+func GetFriendList(myUid int64, targetUid int64) ([]*core.User, error) {
+	resp, err := Relationclient.GetFriendListMethod(context.Background(), &relationserver.GetFriendListReq{MyUid: &myUid, TargetUid: targetUid})
+	if err != nil {
+		log.Errorf("GetFriendList rpc请求relation服务失败，详情:%s", err)
+		return nil, fmt.Errorf("本次请求失败,请稍后重试")
+	}
+	switch resp.StatusCode {
+	case SUCCESS:
+		userList := make([]*core.User, len(resp.FriendList))
+		for i, user := range resp.GetFriendList() {
+			userList[i] = ConvertCoreUser(user)
+		}
+		return userList, nil
+	case ERROR:
+		log.Errorf("relation服务异常，详情:%s", *resp.Msg)
+		break
+	case VERIFY:
+		log.Errorf("relation服务参数校验异常，详情：%s", *resp.Msg)
+		break
+	default:
+		break
+	}
+	return nil, fmt.Errorf("本次请求失败，请稍后重试")
 }
 
 // 校验关注参数
@@ -237,4 +248,22 @@ func GetRelationMap(idSet []int64, currentUser int64, respRelationMap chan map[i
 
 	respRelationMap <- result //没有显式出错，但是没有值
 	errChan <- errors.New("relation server GetFollowInfoMethod error: 微服务调用成功，但是没有查到值")
+}
+
+// kitex relationserver 数据传输 user -> kitex 回显 core.User
+func ConvertCoreUser(user *relationserver.User) *core.User {
+	totalFavourited := strconv.FormatInt(*user.TotalFavorited, 10)
+	return &core.User{
+		ID:              user.Id,
+		Name:            user.Name,
+		FollowCount:     *user.FollowCount,
+		FollowerCount:   *user.FollowerCount,
+		IsFollow:        user.IsFollow,
+		Avatar:          *user.Avatar,
+		BackgroundImage: *user.BackgroundImage,
+		Signature:       *user.Signature,
+		TotalFavourited: totalFavourited,
+		WorkCount:       *user.WorkCount,
+		FavoriteCount:   *user.FavoriteCount,
+	}
 }
