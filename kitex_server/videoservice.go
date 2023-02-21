@@ -59,9 +59,14 @@ func GetVideoLatestMap(idSet []int64, currentUser int64, respVideoMap chan map[i
 	wgVideo.Add(1)
 	go GetVideosFavoriteCountMap(idSet, respVideosFavoriteCountMap, wgVideo, respVideosFavoriteCountMapError)
 
-	// TODO: @weitao
 	// 批量查询视频的评论数，传入视频id的切片，返回对应的评论数（需携带对应视频id），从comment服务
 	// 在此处类似上边的写法，写评论数的实现
+	respCommentCountMap := make(chan map[int64]int64, 1)
+	defer close(respCommentCountMap)
+	respCommentCountMapError := make(chan error, 1)
+	defer close(respCommentCountMapError)
+	wgVideo.Add(1)
+	go GetCommentCountMap(idSet, respCommentCountMap, wgVideo, respCommentCountMapError)
 
 	// 批量查询 is_favorite, 传入目标视频id切片和currentUser查is_favorite的切片(结果需要携带视频id，douyin里后续需要转成map)：从favorite;
 	respIsFavoriteMap := make(chan map[int64]bool, 1)
@@ -87,7 +92,11 @@ func GetVideoLatestMap(idSet []int64, currentUser int64, respVideoMap chan map[i
 		errSlice = append(errSlice, err)
 	}
 
-	// @weitao 在此处类似上边的写法，把数据从你前面定义的数据chan里面拿到，把错误从对应的错误chan里面appen到errSlice里面
+	VideosCommentCountMap := <-respCommentCountMap
+	err = <-respCommentCountMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
 
 	errChan <- errSlice // 记录错误的切片，至少应该返回一个空切片，否则chan会阻塞
 
@@ -96,7 +105,7 @@ func GetVideoLatestMap(idSet []int64, currentUser int64, respVideoMap chan map[i
 	for _, id := range idSet {
 		videoLatestMap[id] = core.Video{ // 视频id对应的Video存储查到的关键字段
 			FavoriteCount: VideosFavoriteCountMap[id], //
-			CommentCount:  0,                          // TODO: @weitao, 在此处从你返回的map里面读去对应id的评论数
+			CommentCount:  VideosCommentCountMap[id],  //
 			IsFavorite:    IsFavoriteMap[id],          //
 		}
 	}

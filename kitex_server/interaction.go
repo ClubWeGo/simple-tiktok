@@ -4,6 +4,7 @@ import (
 	"context"
 	"sync"
 
+	"github.com/ClubWeGo/commentmicro/kitex_gen/comment"
 	"github.com/ClubWeGo/douyin/pack"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
@@ -134,6 +135,7 @@ func CountUserFavorite(ctx context.Context, uid int64) (int64, int64, error) {
 	return res.FavoriteCount, res.FavoritedCount, nil
 }
 
+// 协程接口
 // 传入userId切片，批量查询user对应的favorite， total_favorited
 // map[int64][]int64  [FavoriteCount  FavoritedCount]
 func GetUsersFavoriteCountMap(idSet []int64, respUsersFavoriteCountMap chan map[int64][]int64, wg *sync.WaitGroup, errChan chan error) {
@@ -182,5 +184,21 @@ func GetIsFavoriteMap(idSet []int64, currentUser int64, respIsFavoriteMap chan m
 		return
 	}
 	respIsFavoriteMap <- res.IsFavoriteMap
+	errChan <- nil
+}
+
+// 传入videoId切片，批量视频的评论数量
+func GetCommentCountMap(idSet []int64, respIsFavoriteMap chan map[int64]int64, wg *sync.WaitGroup, errChan chan error) {
+	defer wg.Done()
+
+	res, err := CommentClient.VideosFavoriteCountMethod(context.Background(), &comment.VideosCommentCountReq{
+		VideoIdList: idSet,
+	})
+	if err != nil {
+		respIsFavoriteMap <- map[int64]int64{}
+		errChan <- err
+		return
+	}
+	respIsFavoriteMap <- res.CommentCountMap
 	errChan <- nil
 }
