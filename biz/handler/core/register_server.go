@@ -4,6 +4,7 @@ package core
 
 import (
 	"context"
+	"log"
 
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
@@ -40,22 +41,23 @@ func RegisterMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	msgsucceed := "注册成功"
-	msgFailed := "注册失败"
-
 	// 题目要求的基础注册功能
 	// userid, err := kitex_server.RegisterUser(req.Username, *req.Password)
 	// 附带个人设置的注册功能
+	log.Println(111)
 	var testBackgroundImage = "http://" + minio_server.GlobalConfig.Endpoint + "/douyin/" + "backgroud.jpg"
 	var testAvatar = "http://" + minio_server.GlobalConfig.Endpoint + "/douyin/" + "0019534761_20.jpg"
 	userid, err := kitex_server.RegisterUserALL(req.Username, *req.Password, nil, nil, &testBackgroundImage, &testAvatar)
+	log.Println(122)
 	if err != nil {
+		msgFailed := "注册失败"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
 		return
 	}
 
+	msgsucceed := "注册成功"
 	resp.StatusMsg = &msgsucceed
 	resp.Token = tools.GenerateToken(userid)
 	resp.UserID = userid
