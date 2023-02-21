@@ -13,7 +13,7 @@ import (
 type Client interface {
 	CommentMethod(ctx context.Context, request *comment.CommentReq, callOptions ...callopt.Option) (r *comment.CommentResp, err error)
 	CommentListMethod(ctx context.Context, request *comment.CommentListReq, callOptions ...callopt.Option) (r *comment.CommentListResp, err error)
-	VideosFavoriteCountMethod(ctx context.Context, request *comment.VideosCommentCountReq, callOptions ...callopt.Option) (r *comment.VideosCommentCountResp, err error)
+	VideosCommentCountMethod(ctx context.Context, request *comment.VideosCommentCountReq, callOptions ...callopt.Option) (r *comment.VideosCommentCountResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -55,7 +55,7 @@ func (p *kCommentServiceClient) CommentListMethod(ctx context.Context, request *
 	return p.kClient.CommentListMethod(ctx, request)
 }
 
-func (p *kCommentServiceClient) VideosFavoriteCountMethod(ctx context.Context, request *comment.VideosCommentCountReq, callOptions ...callopt.Option) (r *comment.VideosCommentCountResp, err error) {
+func (p *kCommentServiceClient) VideosCommentCountMethod(ctx context.Context, request *comment.VideosCommentCountReq, callOptions ...callopt.Option) (r *comment.VideosCommentCountResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.VideosFavoriteCountMethod(ctx, request)
+	return p.kClient.VideosCommentCountMethod(ctx, request)
 }

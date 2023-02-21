@@ -60,5 +60,5 @@ struct VideosCommentCountResp {
 service CommentService {
     CommentResp CommentMethod(1: CommentReq request) ;
     CommentListResp CommentListMethod(1: CommentListReq request)
-    VideosCommentCountResp VideosFavoriteCountMethod(1: VideosCommentCountReq request);
+    VideosCommentCountResp VideosCommentCountMethod(1: VideosCommentCountReq request);
 }

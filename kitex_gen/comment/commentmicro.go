@@ -2875,7 +2875,7 @@ type CommentService interface {
 
 	CommentListMethod(ctx context.Context, request *CommentListReq) (r *CommentListResp, err error)
 
-	VideosFavoriteCountMethod(ctx context.Context, request *VideosCommentCountReq) (r *VideosCommentCountResp, err error)
+	VideosCommentCountMethod(ctx context.Context, request *VideosCommentCountReq) (r *VideosCommentCountResp, err error)
 }
 
 type CommentServiceClient struct {
@@ -2922,11 +2922,11 @@ func (p *CommentServiceClient) CommentListMethod(ctx context.Context, request *C
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *CommentServiceClient) VideosFavoriteCountMethod(ctx context.Context, request *VideosCommentCountReq) (r *VideosCommentCountResp, err error) {
-	var _args CommentServiceVideosFavoriteCountMethodArgs
+func (p *CommentServiceClient) VideosCommentCountMethod(ctx context.Context, request *VideosCommentCountReq) (r *VideosCommentCountResp, err error) {
+	var _args CommentServiceVideosCommentCountMethodArgs
 	_args.Request = request
-	var _result CommentServiceVideosFavoriteCountMethodResult
-	if err = p.Client_().Call(ctx, "VideosFavoriteCountMethod", &_args, &_result); err != nil {
+	var _result CommentServiceVideosCommentCountMethodResult
+	if err = p.Client_().Call(ctx, "VideosCommentCountMethod", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -2954,7 +2954,7 @@ func NewCommentServiceProcessor(handler CommentService) *CommentServiceProcessor
 	self := &CommentServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
 	self.AddToProcessorMap("CommentMethod", &commentServiceProcessorCommentMethod{handler: handler})
 	self.AddToProcessorMap("CommentListMethod", &commentServiceProcessorCommentListMethod{handler: handler})
-	self.AddToProcessorMap("VideosFavoriteCountMethod", &commentServiceProcessorVideosFavoriteCountMethod{handler: handler})
+	self.AddToProcessorMap("VideosCommentCountMethod", &commentServiceProcessorVideosCommentCountMethod{handler: handler})
 	return self
 }
 func (p *CommentServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -3071,16 +3071,16 @@ func (p *commentServiceProcessorCommentListMethod) Process(ctx context.Context, 
 	return true, err
 }
 
-type commentServiceProcessorVideosFavoriteCountMethod struct {
+type commentServiceProcessorVideosCommentCountMethod struct {
 	handler CommentService
 }
 
-func (p *commentServiceProcessorVideosFavoriteCountMethod) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := CommentServiceVideosFavoriteCountMethodArgs{}
+func (p *commentServiceProcessorVideosCommentCountMethod) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := CommentServiceVideosCommentCountMethodArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("VideosFavoriteCountMethod", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("VideosCommentCountMethod", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -3089,11 +3089,11 @@ func (p *commentServiceProcessorVideosFavoriteCountMethod) Process(ctx context.C
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := CommentServiceVideosFavoriteCountMethodResult{}
+	result := CommentServiceVideosCommentCountMethodResult{}
 	var retval *VideosCommentCountResp
-	if retval, err2 = p.handler.VideosFavoriteCountMethod(ctx, args.Request); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing VideosFavoriteCountMethod: "+err2.Error())
-		oprot.WriteMessageBegin("VideosFavoriteCountMethod", thrift.EXCEPTION, seqId)
+	if retval, err2 = p.handler.VideosCommentCountMethod(ctx, args.Request); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing VideosCommentCountMethod: "+err2.Error())
+		oprot.WriteMessageBegin("VideosCommentCountMethod", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -3101,7 +3101,7 @@ func (p *commentServiceProcessorVideosFavoriteCountMethod) Process(ctx context.C
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("VideosFavoriteCountMethod", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("VideosCommentCountMethod", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -3811,39 +3811,39 @@ func (p *CommentServiceCommentListMethodResult) Field0DeepEqual(src *CommentList
 	return true
 }
 
-type CommentServiceVideosFavoriteCountMethodArgs struct {
+type CommentServiceVideosCommentCountMethodArgs struct {
 	Request *VideosCommentCountReq `thrift:"request,1" frugal:"1,default,VideosCommentCountReq" json:"request"`
 }
 
-func NewCommentServiceVideosFavoriteCountMethodArgs() *CommentServiceVideosFavoriteCountMethodArgs {
-	return &CommentServiceVideosFavoriteCountMethodArgs{}
+func NewCommentServiceVideosCommentCountMethodArgs() *CommentServiceVideosCommentCountMethodArgs {
+	return &CommentServiceVideosCommentCountMethodArgs{}
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) InitDefault() {
-	*p = CommentServiceVideosFavoriteCountMethodArgs{}
+func (p *CommentServiceVideosCommentCountMethodArgs) InitDefault() {
+	*p = CommentServiceVideosCommentCountMethodArgs{}
 }
 
-var CommentServiceVideosFavoriteCountMethodArgs_Request_DEFAULT *VideosCommentCountReq
+var CommentServiceVideosCommentCountMethodArgs_Request_DEFAULT *VideosCommentCountReq
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) GetRequest() (v *VideosCommentCountReq) {
+func (p *CommentServiceVideosCommentCountMethodArgs) GetRequest() (v *VideosCommentCountReq) {
 	if !p.IsSetRequest() {
-		return CommentServiceVideosFavoriteCountMethodArgs_Request_DEFAULT
+		return CommentServiceVideosCommentCountMethodArgs_Request_DEFAULT
 	}
 	return p.Request
 }
-func (p *CommentServiceVideosFavoriteCountMethodArgs) SetRequest(val *VideosCommentCountReq) {
+func (p *CommentServiceVideosCommentCountMethodArgs) SetRequest(val *VideosCommentCountReq) {
 	p.Request = val
 }
 
-var fieldIDToName_CommentServiceVideosFavoriteCountMethodArgs = map[int16]string{
+var fieldIDToName_CommentServiceVideosCommentCountMethodArgs = map[int16]string{
 	1: "request",
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) IsSetRequest() bool {
+func (p *CommentServiceVideosCommentCountMethodArgs) IsSetRequest() bool {
 	return p.Request != nil
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *CommentServiceVideosCommentCountMethodArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -3892,7 +3892,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CommentServiceVideosFavoriteCountMethodArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CommentServiceVideosCommentCountMethodArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -3902,7 +3902,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *CommentServiceVideosCommentCountMethodArgs) ReadField1(iprot thrift.TProtocol) error {
 	p.Request = NewVideosCommentCountReq()
 	if err := p.Request.Read(iprot); err != nil {
 		return err
@@ -3910,9 +3910,9 @@ func (p *CommentServiceVideosFavoriteCountMethodArgs) ReadField1(iprot thrift.TP
 	return nil
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *CommentServiceVideosCommentCountMethodArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("VideosFavoriteCountMethod_args"); err != nil {
+	if err = oprot.WriteStructBegin("VideosCommentCountMethod_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -3939,7 +3939,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *CommentServiceVideosCommentCountMethodArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("request", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -3956,14 +3956,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) String() string {
+func (p *CommentServiceVideosCommentCountMethodArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CommentServiceVideosFavoriteCountMethodArgs(%+v)", *p)
+	return fmt.Sprintf("CommentServiceVideosCommentCountMethodArgs(%+v)", *p)
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) DeepEqual(ano *CommentServiceVideosFavoriteCountMethodArgs) bool {
+func (p *CommentServiceVideosCommentCountMethodArgs) DeepEqual(ano *CommentServiceVideosCommentCountMethodArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -3975,7 +3975,7 @@ func (p *CommentServiceVideosFavoriteCountMethodArgs) DeepEqual(ano *CommentServ
 	return true
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodArgs) Field1DeepEqual(src *VideosCommentCountReq) bool {
+func (p *CommentServiceVideosCommentCountMethodArgs) Field1DeepEqual(src *VideosCommentCountReq) bool {
 
 	if !p.Request.DeepEqual(src) {
 		return false
@@ -3983,39 +3983,39 @@ func (p *CommentServiceVideosFavoriteCountMethodArgs) Field1DeepEqual(src *Video
 	return true
 }
 
-type CommentServiceVideosFavoriteCountMethodResult struct {
+type CommentServiceVideosCommentCountMethodResult struct {
 	Success *VideosCommentCountResp `thrift:"success,0,optional" frugal:"0,optional,VideosCommentCountResp" json:"success,omitempty"`
 }
 
-func NewCommentServiceVideosFavoriteCountMethodResult() *CommentServiceVideosFavoriteCountMethodResult {
-	return &CommentServiceVideosFavoriteCountMethodResult{}
+func NewCommentServiceVideosCommentCountMethodResult() *CommentServiceVideosCommentCountMethodResult {
+	return &CommentServiceVideosCommentCountMethodResult{}
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) InitDefault() {
-	*p = CommentServiceVideosFavoriteCountMethodResult{}
+func (p *CommentServiceVideosCommentCountMethodResult) InitDefault() {
+	*p = CommentServiceVideosCommentCountMethodResult{}
 }
 
-var CommentServiceVideosFavoriteCountMethodResult_Success_DEFAULT *VideosCommentCountResp
+var CommentServiceVideosCommentCountMethodResult_Success_DEFAULT *VideosCommentCountResp
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) GetSuccess() (v *VideosCommentCountResp) {
+func (p *CommentServiceVideosCommentCountMethodResult) GetSuccess() (v *VideosCommentCountResp) {
 	if !p.IsSetSuccess() {
-		return CommentServiceVideosFavoriteCountMethodResult_Success_DEFAULT
+		return CommentServiceVideosCommentCountMethodResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *CommentServiceVideosFavoriteCountMethodResult) SetSuccess(x interface{}) {
+func (p *CommentServiceVideosCommentCountMethodResult) SetSuccess(x interface{}) {
 	p.Success = x.(*VideosCommentCountResp)
 }
 
-var fieldIDToName_CommentServiceVideosFavoriteCountMethodResult = map[int16]string{
+var fieldIDToName_CommentServiceVideosCommentCountMethodResult = map[int16]string{
 	0: "success",
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) IsSetSuccess() bool {
+func (p *CommentServiceVideosCommentCountMethodResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *CommentServiceVideosCommentCountMethodResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4064,7 +4064,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CommentServiceVideosFavoriteCountMethodResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CommentServiceVideosCommentCountMethodResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4074,7 +4074,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *CommentServiceVideosCommentCountMethodResult) ReadField0(iprot thrift.TProtocol) error {
 	p.Success = NewVideosCommentCountResp()
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -4082,9 +4082,9 @@ func (p *CommentServiceVideosFavoriteCountMethodResult) ReadField0(iprot thrift.
 	return nil
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *CommentServiceVideosCommentCountMethodResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("VideosFavoriteCountMethod_result"); err != nil {
+	if err = oprot.WriteStructBegin("VideosCommentCountMethod_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4111,7 +4111,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *CommentServiceVideosCommentCountMethodResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -4130,14 +4130,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) String() string {
+func (p *CommentServiceVideosCommentCountMethodResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CommentServiceVideosFavoriteCountMethodResult(%+v)", *p)
+	return fmt.Sprintf("CommentServiceVideosCommentCountMethodResult(%+v)", *p)
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) DeepEqual(ano *CommentServiceVideosFavoriteCountMethodResult) bool {
+func (p *CommentServiceVideosCommentCountMethodResult) DeepEqual(ano *CommentServiceVideosCommentCountMethodResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -4149,7 +4149,7 @@ func (p *CommentServiceVideosFavoriteCountMethodResult) DeepEqual(ano *CommentSe
 	return true
 }
 
-func (p *CommentServiceVideosFavoriteCountMethodResult) Field0DeepEqual(src *VideosCommentCountResp) bool {
+func (p *CommentServiceVideosCommentCountMethodResult) Field0DeepEqual(src *VideosCommentCountResp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

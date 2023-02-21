@@ -65,8 +65,8 @@ func (s *CommentServiceImpl) CommentListMethod(ctx context.Context, request *com
 	return resp, nil
 }
 
-// VideosFavoriteCountMethod implements the CommentServiceImpl interface.
-func (s *CommentServiceImpl) VideosFavoriteCountMethod(ctx context.Context, request *comment.VideosCommentCountReq) (resp *comment.VideosCommentCountResp, err error) {
+// VideosCommentCountMethod implements the CommentServiceImpl interface.
+func (s *CommentServiceImpl) VideosCommentCountMethod(ctx context.Context, request *comment.VideosCommentCountReq) (resp *comment.VideosCommentCountResp, err error) {
 	resp = &comment.VideosCommentCountResp{}
 	commentCountMap, err := db.CountVideosComment(ctx, request.VideoIdList)
 	if err != nil {
