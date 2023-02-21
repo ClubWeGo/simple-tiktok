@@ -9,6 +9,7 @@ import (
 	"github.com/ClubWeGo/douyin/kitex_server"
 	"github.com/ClubWeGo/douyin/minio_server"
 	"github.com/ClubWeGo/douyin/tools"
+	"github.com/ClubWeGo/douyin/tools/safe"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -24,13 +25,23 @@ func RegisterMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	// TODO : 缓存记录ip地址和注册api调用次数，限制统一设备短时间太多的注册，预防黑灰产。
-	// TODO : 注册字段过滤 : 注入，敏感词，
+	resp := new(core.RegisterResp)
+
+	// TODO : 缓存记录ip地址和注册api调用次数，限制统一设备短时间太多的注册，预防黑灰产。同feed中要求
+
+	// 注册字段过滤 : 注入，敏感词检查
+	// 虽然gorm提供了sql防注入，但是这里在业务层再加一次字段过滤可以尽早阻止非法请求
+	err = safe.SqlInjectCheck(req.Username)
+	if err != nil {
+		msg := "非法字段"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msg
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
 
 	msgsucceed := "注册成功"
 	msgFailed := "注册失败"
-
-	resp := new(core.RegisterResp)
 
 	// 题目要求的基础注册功能
 	// userid, err := kitex_server.RegisterUser(req.Username, *req.Password)

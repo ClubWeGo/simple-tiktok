@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"sync"
 
+	"strconv"
+
 	"github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/biz/model/relation"
 	relationserver "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
 	"github.com/prometheus/common/log"
-	"strconv"
 )
 
 // 响应码
@@ -190,10 +191,10 @@ func VerifyFollowParam(myUid int64, targetUid int64, actionType int32) *string {
 	return nil
 }
 
-
 // TODO : .GetIsFollowMapByUserIdSet
 func GetIsFollowMapByUserIdSet(uid int64, idSet []int64) (isFollowMap map[int64]bool, err error) {
 	return nil, nil
+}
 
 // 协程接口
 
@@ -236,7 +237,7 @@ func GetRelationMap(idSet []int64, currentUser int64, respRelationMap chan map[i
 		}(id)
 	}
 	wgRelation.Wait()
-	for range idSet {
+	for range idSet { // 检查协程是否出错，出错直接按请求失败处理
 		err := <-insideErrChan
 		if err != nil {
 			respRelationMap <- map[int64]FollowInfoWithId{}
@@ -251,8 +252,8 @@ func GetRelationMap(idSet []int64, currentUser int64, respRelationMap chan map[i
 		result[data.Id] = data
 	}
 
-	respRelationMap <- result //没有显式出错，但是没有值
-	errChan <- errors.New("relation server GetFollowInfoMethod error: 微服务调用成功，但是没有查到值")
+	respRelationMap <- result // 返回查询结构
+	errChan <- nil
 }
 
 // kitex relationserver 数据传输 user -> kitex 回显 core.User
