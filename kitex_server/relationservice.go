@@ -188,9 +188,9 @@ func VerifyFollowParam(myUid int64, targetUid int64, actionType int32) *string {
 	return nil
 }
 
-// TODO : .GetIsFollowSetByUserIdSet
-func GetIsFollowSetByUserIdSet(idSet []int64) (isFollowSet []int64, err error) {
-	return []int64{}, nil
+// TODO : .GetIsFollowMapByUserIdSet
+func GetIsFollowMapByUserIdSet(uid int64, idSet []int64) (isFollowMap map[int64]bool, err error) {
+	return nil, nil
 }
 
 // kitex relationserver 数据传输 user -> kitex 回显 core.User
