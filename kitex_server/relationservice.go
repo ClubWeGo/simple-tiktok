@@ -190,6 +190,11 @@ func VerifyFollowParam(myUid int64, targetUid int64, actionType int32) *string {
 	return nil
 }
 
+
+// TODO : .GetIsFollowMapByUserIdSet
+func GetIsFollowMapByUserIdSet(uid int64, idSet []int64) (isFollowMap map[int64]bool, err error) {
+	return nil, nil
+
 // 协程接口
 
 type FollowInfoWithId struct {
