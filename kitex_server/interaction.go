@@ -59,8 +59,10 @@ func GetFavoriteList(ctx context.Context, uid int64) (favorites *interaction.Fav
 		return nil, err
 	}
 	videos := videosResp.VideoSet
+	videoIdList := make([]int64, 0)
 	authorIdList := make([]int64, 0)
 	for _, v := range videos {
+		videoIdList = append(videoIdList, v.Id)
 		authorIdList = append(authorIdList, v.AuthorId)
 	}
 
@@ -74,20 +76,18 @@ func GetFavoriteList(ctx context.Context, uid int64) (favorites *interaction.Fav
 		return nil, errno.RPCErr
 	}
 	authors := resp.UserSet
-	isFavorites := make(map[int64]bool)
-	//isFollows := make(map[int64]bool)
-	isFollowSet, err := GetIsFollowSetByUserIdSet(uid, authorIdList)
+	isFavoriteMap, err := GetFavoriteRelations(ctx, uid, videoIdList)
 	if err != nil {
 		return nil, err
 	}
-	for _, v := range videos {
-		isFavorites[v.Id], _ = GetFavoriteRelation(ctx, uid, v.Id)
-		//isFollows[v.AuthorId] = Get
+	isFollowMap, err := GetIsFollowMapByUserIdSet(uid, authorIdList)
+	if err != nil {
+		return nil, err
 	}
 	return &interaction.FavoriteListResp{
 		StatusCode: favoriteListRes.BaseResp.StatusCode,
 		StatusMsg:  favoriteListRes.BaseResp.StatusMsg,
-		VideoList:  pack.Videos(videos, authors, isFavorites, isFollowSet),
+		VideoList:  pack.Videos(videos, authors, isFavoriteMap, isFollowMap),
 	}, nil
 }
 
@@ -100,6 +100,18 @@ func GetFavoriteRelation(ctx context.Context, uid int64, vid int64) (bool, error
 		return false, errno.RPCErr
 	}
 	return res.IsFavorite, nil
+}
+
+func GetFavoriteRelations(ctx context.Context, uid int64, vids []int64) (isFavoriteMap map[int64]bool, err error) {
+	res, err := FavoriteClient.FavoriteRelationsMethod(ctx, &favorite.FavoriteRelationsReq{
+		UserId:      uid,
+		VideoIdList: vids,
+	})
+	if err != nil {
+		return nil, errno.RPCErr
+	}
+	isFavoriteMap = res.IsFavoriteMap
+	return isFavoriteMap, nil
 }
 
 func CountVideoFavorite(ctx context.Context, vid int64) (cnt int64, err error) {
@@ -121,6 +133,7 @@ func CountUserFavorite(ctx context.Context, uid int64) (int64, int64, error) {
 	}
 	return res.FavoriteCount, res.FavoritedCount, nil
 }
+
 
 // 传入userId切片，批量查询user对应的favorite， total_favorited
 // map[int64][]int64  [FavoriteCount  FavoritedCount]
