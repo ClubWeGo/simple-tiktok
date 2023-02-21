@@ -189,8 +189,26 @@ func VerifyFollowParam(myUid int64, targetUid int64, actionType int32) *string {
 }
 
 // TODO : .GetIsFollowSetByUserIdSet
-func GetIsFollowSetByUserIdSet(idSet []int64) (isFollowSet []int64, err error) {
-	return []int64{}, nil
+// 根据userIds 批量获取用户关注状态
+func GetIsFollowSetByUserIdSet(myUid int64, idSet []int64) (map[int64]bool, error) {
+	resp, err := Relationclient.GetIsFollowsMethod(context.Background(), &relationserver.GetIsFollowsReq{MyUid: myUid, UserIds: idSet})
+	if err != nil {
+		log.Errorf("GetIsFollowSetByUserIdSet rpc请求relation服务失败，详情:%s", err)
+		return nil, fmt.Errorf("本次请求失败,请稍后重试")
+	}
+	switch resp.StatusCode {
+	case SUCCESS:
+		return resp.IsFollowMap, nil
+	case ERROR:
+		log.Errorf("relation服务异常，详情:%s", *resp.Msg)
+		break
+	case VERIFY:
+		log.Errorf("relation服务参数校验异常，详情：%s", *resp.Msg)
+		break
+	default:
+		break
+	}
+	return nil, fmt.Errorf("本次请求失败，请稍后重试")
 }
 
 // kitex relationserver 数据传输 user -> kitex 回显 core.User
