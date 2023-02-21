@@ -100,9 +100,9 @@ func GetUserLatestMap(idSet []int64, currentUser int64, respUserMap chan map[int
 	wgUser.Add(1)
 	go GetRelationMap(idSet, currentUser, respRelationMap, wgUser, respRelationMapError)
 
-	// 批量查询TotalFavourited, FavoriteCount，传入查询的userId切片
+	// 批量查询TotalFavourited, FavoriteCount，传入查询的userId切片 从favorite服务
 	respUsersFavoriteCountMap := make(chan map[int64][]int64, 1) // [FavoriteCount  FavoritedCount]
-	defer close(respRelationMap)
+	defer close(respUsersFavoriteCountMap)
 	respUsersFavoriteCountMapError := make(chan error, 1)
 	defer close(respUsersFavoriteCountMapError)
 	wgUser.Add(1)

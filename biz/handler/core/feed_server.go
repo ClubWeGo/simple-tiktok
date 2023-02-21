@@ -24,7 +24,7 @@ func FeedMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	// TODO : 记录ip地址和注册api调用次数，限制统一设备短时间太多的请求，预防爬虫。
+	// TODO : 记录ip地址和注册api调用次数，限制统一设备短时间太多的请求，预防爬虫。 redis
 
 	msgsucceed := "获取视频流成功"
 	msgFailed := "获取视频流失败"

@@ -134,7 +134,6 @@ func CountUserFavorite(ctx context.Context, uid int64) (int64, int64, error) {
 	return res.FavoriteCount, res.FavoritedCount, nil
 }
 
-
 // 传入userId切片，批量查询user对应的favorite， total_favorited
 // map[int64][]int64  [FavoriteCount  FavoritedCount]
 func GetUsersFavoriteCountMap(idSet []int64, respUsersFavoriteCountMap chan map[int64][]int64, wg *sync.WaitGroup, errChan chan error) {
@@ -170,7 +169,7 @@ func GetVideosFavoriteCountMap(idSet []int64, respVideosFavoriteCountMap chan ma
 }
 
 // 传入videoId切片和当前用户id，批量查询喜欢情况
-func GetIsFavoriteMap() (idSet []int64, currentUser int64, respIsFavoriteMap chan map[int64]bool, wg *sync.WaitGroup, errChan chan error) {
+func GetIsFavoriteMap(idSet []int64, currentUser int64, respIsFavoriteMap chan map[int64]bool, wg *sync.WaitGroup, errChan chan error) {
 	defer wg.Done()
 
 	res, err := FavoriteClient.FavoriteRelationsMethod(context.Background(), &favorite.FavoriteRelationsReq{
@@ -182,8 +181,6 @@ func GetIsFavoriteMap() (idSet []int64, currentUser int64, respIsFavoriteMap cha
 		errChan <- err
 		return
 	}
-	respIsFavoriteMap <- res.IsFavorites
+	respIsFavoriteMap <- res.IsFavoriteMap
 	errChan <- nil
-	// res, err := FavoriteClient.FavoriteRelationMethod(context.Background(), &favorite.FavoriteRelationReq{})
-	return
 }
