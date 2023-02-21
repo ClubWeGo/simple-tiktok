@@ -8,6 +8,7 @@ import (
 	core "github.com/ClubWeGo/douyin/biz/model/core"
 	"github.com/ClubWeGo/douyin/kitex_server"
 	"github.com/ClubWeGo/douyin/tools"
+	"github.com/ClubWeGo/douyin/tools/safe"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -23,10 +24,20 @@ func LoginMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	resp := new(core.LoginResp)
+
+	// 虽然gorm提供了sql防注入，但是这里在业务层再加一次字段过滤可以尽早阻止非法请求
+	err = safe.SqlInjectCheck(req.Username)
+	if err != nil {
+		msg := "非法字段"
+		resp.StatusCode = 1
+		resp.StatusMsg = &msg
+		c.JSON(consts.StatusOK, resp)
+		return
+	}
+
 	msgsucceed := "登录成功"
 	msgFailed := "登录失败"
-
-	resp := new(core.LoginResp)
 
 	userid, err := kitex_server.LoginUser(req.Username, req.Password)
 	if err != nil {

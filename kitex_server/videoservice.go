@@ -51,25 +51,52 @@ func GetVideoLatestMap(idSet []int64, currentUser int64, respVideoMap chan map[i
 
 	wgVideo := &sync.WaitGroup{} // 本函数子协程的wg
 
-	// 批量查询视频的 被喜欢数 ，Favorite 从Favorite服务
-	// 批量查询 favorite_count, total_favourited 从favorite服务: kitex_server.FavoriteClient.UserFavoriteCountMethod()
-	// TODO: 结果要 videoId与对应的数据 map
+	// 批量查询视频的 被喜欢数 ，传入视频id的切片，返回对应的FavoriteCount的切片（需携带对应视频id） 从Favorite服务
+	respVideosFavoriteCountMap := make(chan map[int64]int64, 1)
+	defer close(respVideosFavoriteCountMap)
+	respVideosFavoriteCountMapError := make(chan error, 1)
+	defer close(respVideosFavoriteCountMapError)
+	wgVideo.Add(1)
+	go GetVideosFavoriteCountMap(idSet, respVideosFavoriteCountMap, wgVideo, respVideosFavoriteCountMapError)
 
-	// 批量查询 is_follow, 从relation服务; 传入目标userID和currentUser
+	// 批量查询视频的评论数，传入视频id的切片，返回对应的评论数（需携带对应视频id），从comment服务
+	// 在此处类似上边的写法，写评论数的实现
+	respCommentCountMap := make(chan map[int64]int64, 1)
+	defer close(respCommentCountMap)
+	respCommentCountMapError := make(chan error, 1)
+	defer close(respCommentCountMapError)
+	wgVideo.Add(1)
+	go GetCommentCountMap(idSet, respCommentCountMap, wgVideo, respCommentCountMapError)
 
-	// 批量查询 follow_count， follower_cout 从relation服务
+	// 批量查询 is_favorite, 传入目标视频id切片和currentUser查is_favorite的切片(结果需要携带视频id，douyin里后续需要转成map)：从favorite;
+	respIsFavoriteMap := make(chan map[int64]bool, 1)
+	defer close(respIsFavoriteMap)
+	respIsFavoriteMapError := make(chan error, 1)
+	defer close(respIsFavoriteMapError)
+	wgVideo.Add(1)
+	go GetIsFavoriteMap(idSet, currentUser, respIsFavoriteMap, wgVideo, respIsFavoriteMapError)
 
 	// 等待数据
 	wgVideo.Wait()
 
-	// // 处理协程错误
-	var errSlice = []error{} // 防止外部设置的chan缓存不够造成阻塞，要求外部设置长度为1的error切片类型
-	// err := <-respAuthorMapError
-	// if err != nil {
-	// 	errSlice = append(errSlice, err)
-	// }
+	var errSlice = []error{}
+	VideosFavoriteCountMap := <-respVideosFavoriteCountMap
+	err := <-respVideosFavoriteCountMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
 
-	// // TODO: 其他协程的错误处理
+	IsFavoriteMap := <-respIsFavoriteMap
+	err = <-respIsFavoriteMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
+
+	VideosCommentCountMap := <-respCommentCountMap
+	err = <-respCommentCountMapError
+	if err != nil {
+		errSlice = append(errSlice, err)
+	}
 
 	errChan <- errSlice // 记录错误的切片，至少应该返回一个空切片，否则chan会阻塞
 
@@ -77,9 +104,9 @@ func GetVideoLatestMap(idSet []int64, currentUser int64, respVideoMap chan map[i
 	videoLatestMap := make(map[int64]core.Video, len(idSet)) // 视频切片的id是没有重复的
 	for _, id := range idSet {
 		videoLatestMap[id] = core.Video{ // 视频id对应的Video存储查到的关键字段
-			FavoriteCount: 0,     // TODO:从拿到的MAP数据更新
-			CommentCount:  0,     // TODO:从拿到的MAP数据更新
-			IsFavorite:    false, // TODO:从拿到的MAP数据更新
+			FavoriteCount: VideosFavoriteCountMap[id], //
+			CommentCount:  VideosCommentCountMap[id],  //
+			IsFavorite:    IsFavoriteMap[id],          //
 		}
 	}
 	respVideoMap <- videoLatestMap // 返回数据
@@ -101,6 +128,10 @@ func GetFeed(latestTime int64, currentUserId int64, limit int32) (resultList []*
 		for index, video := range r.VideoList {
 			authorIdSet[index] = video.AuthorId
 		}
+		videoIdSet := make([]int64, len(r.VideoList))
+		for index, video := range r.VideoList {
+			videoIdSet[index] = video.Id
+		}
 
 		wg := &sync.WaitGroup{}
 
@@ -120,7 +151,7 @@ func GetFeed(latestTime int64, currentUserId int64, limit int32) (resultList []*
 		respLatestVideoMapError := make(chan []error, 1)
 		defer close(respLatestVideoMapError)
 		wg.Add(1)
-		go GetVideoLatestMap(authorIdSet, currentUserId, respLatestVideoMap, wg, respLatestVideoMapError)
+		go GetVideoLatestMap(videoIdSet, currentUserId, respLatestVideoMap, wg, respLatestVideoMapError)
 
 		// 等待数据
 		wg.Wait()
@@ -128,7 +159,6 @@ func GetFeed(latestTime int64, currentUserId int64, limit int32) (resultList []*
 		// 处理协程错误
 		AuthorMap := <-respLatestAuthorMap
 		errSlice := <-respLatestAuthorMapError
-
 		for _, errItem := range errSlice {
 			if errItem != nil {
 				return []*core.Video{}, 0, errItem
@@ -162,7 +192,7 @@ func GetFeed(latestTime int64, currentUserId int64, limit int32) (resultList []*
 				Title:         video.Title,
 			}
 		}
-		return resultList, *r.NextTime, nil
+		return resultList, *r.NextTime, nil // 成功
 	}
 	return []*core.Video{}, 0, errors.New("向kitex请求feed失败")
 }
@@ -178,6 +208,10 @@ func GetVideosByAuthorId(id int64) (resultList []*core.Video, err error) {
 
 	if r.Status {
 		authorIdSet := []int64{id} // 只有作者本人
+		videoIdSet := make([]int64, len(r.VideoList))
+		for index, video := range r.VideoList {
+			videoIdSet[index] = video.Id
+		}
 
 		wg := &sync.WaitGroup{}
 
@@ -195,7 +229,7 @@ func GetVideosByAuthorId(id int64) (resultList []*core.Video, err error) {
 		respLatestVideoMapError := make(chan []error, 1)
 		defer close(respLatestVideoMapError)
 		wg.Add(1)
-		go GetVideoLatestMap(authorIdSet, id, respLatestVideoMap, wg, respLatestVideoMapError)
+		go GetVideoLatestMap(videoIdSet, id, respLatestVideoMap, wg, respLatestVideoMapError)
 
 		// 等待数据
 		wg.Wait()
@@ -223,7 +257,7 @@ func GetVideosByAuthorId(id int64) (resultList []*core.Video, err error) {
 		resultList = make([]*core.Video, len(r.VideoList))
 		for index, video := range r.VideoList {
 			// TODO:没有查询到的错误处理
-			author := AuthorMap[video.AuthorId]
+			author := AuthorMap[video.AuthorId] // 只有作者本人，查map其实无所谓
 			// TODO:设置机制，慢速同步其他服务的最新数据到user服务的主表，video的主表
 
 			resultList[index] = &core.Video{

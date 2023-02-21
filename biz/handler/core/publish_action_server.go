@@ -51,11 +51,9 @@ func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	msgsucceed := "视频上传成功"
-	msgFailed := "视频上传失败"
-
 	fileHeader, err := c.Request.FormFile("data")
 	if err != nil {
+		msgFailed := "视频上传失败"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
@@ -78,6 +76,7 @@ func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 
 	err = tools.SaveFile(&file, filepath)
 	if err != nil {
+		msgFailed := "服务器文件存储出错"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
@@ -87,6 +86,7 @@ func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 	// TODO: 当前文件类型是写死的，后续需要优化
 	videourl, coverurl, err := minio_server.UploadMP4VideoToDouYin(filename, filepath, 1)
 	if err != nil {
+		msgFailed := "视频上传minio服务失败"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
@@ -95,11 +95,13 @@ func PublishActionMethod(ctx context.Context, c *app.RequestContext) {
 
 	err = kitex_server.CreateVideo(title, videourl, coverurl, authorId)
 	if err != nil {
+		msgFailed := "视频信息创建失败"
 		resp.StatusCode = 1
 		resp.StatusMsg = &msgFailed
 		c.JSON(consts.StatusOK, resp)
 		return
 	}
+	msgsucceed := "视频上传成功"
 	resp.StatusMsg = &msgsucceed
 	c.JSON(consts.StatusOK, resp)
 }

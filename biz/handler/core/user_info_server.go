@@ -24,9 +24,6 @@ func UserInfoMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	msgsucceed := "获取用户信息成功"
-	msgFailed := "获取用户信息失败"
-
 	resp := new(core.UserInfoResp)
 
 	ifValid, currentUserId, err := tools.ValidateToken(req.Token)
@@ -64,6 +61,7 @@ func UserInfoMethod(ctx context.Context, c *app.RequestContext) {
 	errSlice := <-respLatestAuthorMapError
 	for _, errItem := range errSlice {
 		if errItem != nil {
+			msgFailed := "获取用户信息失败" + errItem.Error()
 			resp.StatusCode = 1
 			resp.StatusMsg = &msgFailed
 			c.JSON(consts.StatusOK, resp)
@@ -71,6 +69,7 @@ func UserInfoMethod(ctx context.Context, c *app.RequestContext) {
 		}
 	}
 
+	msgsucceed := "获取用户信息成功"
 	user := AuthorMap[req.UserID]
 	resp.StatusMsg = &msgsucceed
 	resp.User = &user
