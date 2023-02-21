@@ -1558,7 +1558,7 @@ func (p *FavoriteRelationsResp) FastRead(buf []byte) (int, error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetBaseResp bool = false
-	var issetIsFavorites bool = false
+	var issetIsFavoriteMap bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -1597,7 +1597,7 @@ func (p *FavoriteRelationsResp) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetIsFavorites = true
+				issetIsFavoriteMap = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1630,7 +1630,7 @@ func (p *FavoriteRelationsResp) FastRead(buf []byte) (int, error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetIsFavorites {
+	if !issetIsFavoriteMap {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -1672,7 +1672,7 @@ func (p *FavoriteRelationsResp) FastReadField2(buf []byte) (int, error) {
 	if err != nil {
 		return offset, err
 	}
-	p.IsFavorites = make(map[int64]bool, size)
+	p.IsFavoriteMap = make(map[int64]bool, size)
 	for i := 0; i < size; i++ {
 		var _key int64
 		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
@@ -1694,7 +1694,7 @@ func (p *FavoriteRelationsResp) FastReadField2(buf []byte) (int, error) {
 
 		}
 
-		p.IsFavorites[_key] = _val
+		p.IsFavoriteMap[_key] = _val
 	}
 	if l, err := bthrift.Binary.ReadMapEnd(buf[offset:]); err != nil {
 		return offset, err
@@ -1743,11 +1743,11 @@ func (p *FavoriteRelationsResp) fastWriteField1(buf []byte, binaryWriter bthrift
 
 func (p *FavoriteRelationsResp) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "is_favorites", thrift.MAP, 2)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "is_favorite_map", thrift.MAP, 2)
 	mapBeginOffset := offset
 	offset += bthrift.Binary.MapBeginLength(thrift.I64, thrift.BOOL, 0)
 	var length int
-	for k, v := range p.IsFavorites {
+	for k, v := range p.IsFavoriteMap {
 		length++
 
 		offset += bthrift.Binary.WriteI64(buf[offset:], k)
@@ -1771,11 +1771,11 @@ func (p *FavoriteRelationsResp) field1Length() int {
 
 func (p *FavoriteRelationsResp) field2Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("is_favorites", thrift.MAP, 2)
-	l += bthrift.Binary.MapBeginLength(thrift.I64, thrift.BOOL, len(p.IsFavorites))
+	l += bthrift.Binary.FieldBeginLength("is_favorite_map", thrift.MAP, 2)
+	l += bthrift.Binary.MapBeginLength(thrift.I64, thrift.BOOL, len(p.IsFavoriteMap))
 	var tmpK int64
 	var tmpV bool
-	l += (bthrift.Binary.I64Length(int64(tmpK)) + bthrift.Binary.BoolLength(bool(tmpV))) * len(p.IsFavorites)
+	l += (bthrift.Binary.I64Length(int64(tmpK)) + bthrift.Binary.BoolLength(bool(tmpV))) * len(p.IsFavoriteMap)
 	l += bthrift.Binary.MapEndLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l

@@ -48,7 +48,7 @@ struct FavoriteRelationsReq {
 
 struct FavoriteRelationsResp {
     1: required BaseResp base_resp;
-    2: required map<i64, bool> is_favorites;
+    2: required map<i64, bool> is_favorite_map;
 }
 
 

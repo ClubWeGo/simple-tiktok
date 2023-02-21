@@ -1935,8 +1935,8 @@ func (p *FavoriteRelationsReq) Field2DeepEqual(src []int64) bool {
 }
 
 type FavoriteRelationsResp struct {
-	BaseResp    *BaseResp      `thrift:"base_resp,1,required" frugal:"1,required,BaseResp" json:"base_resp"`
-	IsFavorites map[int64]bool `thrift:"is_favorites,2,required" frugal:"2,required,map<i64:bool>" json:"is_favorites"`
+	BaseResp      *BaseResp      `thrift:"base_resp,1,required" frugal:"1,required,BaseResp" json:"base_resp"`
+	IsFavoriteMap map[int64]bool `thrift:"is_favorite_map,2,required" frugal:"2,required,map<i64:bool>" json:"is_favorite_map"`
 }
 
 func NewFavoriteRelationsResp() *FavoriteRelationsResp {
@@ -1956,19 +1956,19 @@ func (p *FavoriteRelationsResp) GetBaseResp() (v *BaseResp) {
 	return p.BaseResp
 }
 
-func (p *FavoriteRelationsResp) GetIsFavorites() (v map[int64]bool) {
-	return p.IsFavorites
+func (p *FavoriteRelationsResp) GetIsFavoriteMap() (v map[int64]bool) {
+	return p.IsFavoriteMap
 }
 func (p *FavoriteRelationsResp) SetBaseResp(val *BaseResp) {
 	p.BaseResp = val
 }
-func (p *FavoriteRelationsResp) SetIsFavorites(val map[int64]bool) {
-	p.IsFavorites = val
+func (p *FavoriteRelationsResp) SetIsFavoriteMap(val map[int64]bool) {
+	p.IsFavoriteMap = val
 }
 
 var fieldIDToName_FavoriteRelationsResp = map[int16]string{
 	1: "base_resp",
-	2: "is_favorites",
+	2: "is_favorite_map",
 }
 
 func (p *FavoriteRelationsResp) IsSetBaseResp() bool {
@@ -1980,7 +1980,7 @@ func (p *FavoriteRelationsResp) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetBaseResp bool = false
-	var issetIsFavorites bool = false
+	var issetIsFavoriteMap bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2012,7 +2012,7 @@ func (p *FavoriteRelationsResp) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetIsFavorites = true
+				issetIsFavoriteMap = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -2037,7 +2037,7 @@ func (p *FavoriteRelationsResp) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetIsFavorites {
+	if !issetIsFavoriteMap {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -2072,7 +2072,7 @@ func (p *FavoriteRelationsResp) ReadField2(iprot thrift.TProtocol) error {
 	if err != nil {
 		return err
 	}
-	p.IsFavorites = make(map[int64]bool, size)
+	p.IsFavoriteMap = make(map[int64]bool, size)
 	for i := 0; i < size; i++ {
 		var _key int64
 		if v, err := iprot.ReadI64(); err != nil {
@@ -2088,7 +2088,7 @@ func (p *FavoriteRelationsResp) ReadField2(iprot thrift.TProtocol) error {
 			_val = v
 		}
 
-		p.IsFavorites[_key] = _val
+		p.IsFavoriteMap[_key] = _val
 	}
 	if err := iprot.ReadMapEnd(); err != nil {
 		return err
@@ -2147,13 +2147,13 @@ WriteFieldEndError:
 }
 
 func (p *FavoriteRelationsResp) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("is_favorites", thrift.MAP, 2); err != nil {
+	if err = oprot.WriteFieldBegin("is_favorite_map", thrift.MAP, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteMapBegin(thrift.I64, thrift.BOOL, len(p.IsFavorites)); err != nil {
+	if err := oprot.WriteMapBegin(thrift.I64, thrift.BOOL, len(p.IsFavoriteMap)); err != nil {
 		return err
 	}
-	for k, v := range p.IsFavorites {
+	for k, v := range p.IsFavoriteMap {
 
 		if err := oprot.WriteI64(k); err != nil {
 			return err
@@ -2192,7 +2192,7 @@ func (p *FavoriteRelationsResp) DeepEqual(ano *FavoriteRelationsResp) bool {
 	if !p.Field1DeepEqual(ano.BaseResp) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.IsFavorites) {
+	if !p.Field2DeepEqual(ano.IsFavoriteMap) {
 		return false
 	}
 	return true
@@ -2207,10 +2207,10 @@ func (p *FavoriteRelationsResp) Field1DeepEqual(src *BaseResp) bool {
 }
 func (p *FavoriteRelationsResp) Field2DeepEqual(src map[int64]bool) bool {
 
-	if len(p.IsFavorites) != len(src) {
+	if len(p.IsFavoriteMap) != len(src) {
 		return false
 	}
-	for k, v := range p.IsFavorites {
+	for k, v := range p.IsFavoriteMap {
 		_src := src[k]
 		if v != _src {
 			return false
