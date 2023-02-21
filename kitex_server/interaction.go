@@ -190,8 +190,8 @@ func GetIsFavoriteMap(idSet []int64, currentUser int64, respIsFavoriteMap chan m
 // 传入videoId切片，批量视频的评论数量
 func GetCommentCountMap(idSet []int64, respIsFavoriteMap chan map[int64]int64, wg *sync.WaitGroup, errChan chan error) {
 	defer wg.Done()
-
-	res, err := CommentClient.VideosFavoriteCountMethod(context.Background(), &comment.VideosCommentCountReq{
+	// TODO comment服务改名了
+	res, err := CommentClient.VideosCommentCountMethod(context.Background(), &comment.VideosCommentCountReq{
 		VideoIdList: idSet,
 	})
 	if err != nil {
