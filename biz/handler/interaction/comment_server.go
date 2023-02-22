@@ -4,6 +4,9 @@ package interaction
 
 import (
 	"context"
+	"github.com/ClubWeGo/simple-tiktok/kitex_server"
+	"github.com/ClubWeGo/simple-tiktok/tools"
+	"github.com/ClubWeGo/simple-tiktok/tools/errno"
 
 	interaction "github.com/ClubWeGo/simple-tiktok/biz/model/interaction"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -17,11 +20,31 @@ func CommentMethod(ctx context.Context, c *app.RequestContext) {
 	var req interaction.CommentReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		SendResponse(c, errno.NewErrNo(consts.StatusBadRequest, err.Error()), nil)
 		return
 	}
 
-	resp := new(interaction.CommentResp)
+	valid, uid, err := tools.ValidateToken(req.Token)
+	if err != nil {
+		SendResponse(c, errno.NewErrNo(consts.StatusUnauthorized, err.Error()), nil)
+		return
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	if !valid {
+		SendResponse(c, errno.NewErrNo(consts.StatusUnauthorized, "token invalid"), nil)
+		return
+	}
+
+	if req.ActionType == 1 || req.ActionType == 2 {
+		res, err := kitex_server.CommentAction(ctx, uid, req.VideoID, req)
+		if err != nil {
+			SendResponse(c, err, nil)
+			return
+		}
+		SendResponse(c, nil, res)
+		return
+	} else {
+		SendResponse(c, errno.NewErrNo(consts.StatusBadRequest, "action type invalid"), nil)
+		return
+	}
 }

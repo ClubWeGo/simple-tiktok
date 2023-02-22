@@ -183,6 +183,42 @@ func GetIsFavoriteMap(idSet []int64, currentUser int64, respIsFavoriteMap chan m
 	errChan <- nil
 }
 
+func CommentAction(ctx context.Context, uid int64, vid int64, req interaction.CommentReq) (*interaction.CommentResp, error) {
+	resp, err := CommentClient.CommentMethod(ctx, &comment.CommentReq{
+		UserId:      uid,
+		VideoId:     vid,
+		ActionType:  req.ActionType,
+		CommentText: req.CommentText,
+		CommentId:   req.CommentID,
+	})
+	if err != nil {
+		return nil, errno.RPCErr
+	}
+	return &interaction.CommentResp{
+		StatusCode: resp.StatusCode,
+		StatusMsg:  &resp.StatusMsg,
+	}, nil
+}
+
+func GetCommentList(ctx context.Context, uid int64, req interaction.CommentListReq) (favorites *interaction.CommentListResp, err error) {
+	resp, err := CommentClient.CommentListMethod(ctx, &comment.CommentListReq{
+		UserId:  uid,
+		VideoId: req.VideoID,
+	})
+	if err != nil {
+		return nil, errno.RPCErr
+	}
+	comments, err := pack.Commentlist(resp.CommentList)
+	if err != nil {
+		return nil, errno.RPCErr
+	}
+	return &interaction.CommentListResp{
+		StatusCode:  resp.StatusCode,
+		StatusMsg:   &resp.StatusMsg,
+		CommentList: comments,
+	}, nil
+}
+
 // 传入videoId切片，批量视频的评论数量
 func GetCommentCountMap(idSet []int64, respIsFavoriteMap chan map[int64]int64, wg *sync.WaitGroup, errChan chan error) {
 	defer wg.Done()
