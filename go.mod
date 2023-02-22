@@ -5,10 +5,6 @@ go 1.19
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	github.com/ClubWeGo/commentmicro v0.0.0-20230221133753-f02aff39de27
-	github.com/ClubWeGo/relationmicro v0.0.0-20230221121729-815a12ae6608
-	github.com/ClubWeGo/usermicro v0.0.0-20230218161017-d68d94d1dac8
-	github.com/ClubWeGo/videomicro v0.0.0-20230220013200-4dee64770a5c
 	github.com/apache/thrift v0.18.0
 	github.com/cloudwego/hertz v0.5.2
 	github.com/cloudwego/kitex v0.4.4
@@ -22,6 +18,10 @@ require (
 )
 
 require (
+	github.com/ClubWeGo/simple-tiktok/services/commentmicro v0.0.0-20230222095454-474c27815378 // indirect
+	github.com/ClubWeGo/simple-tiktok/services/favoritemicro v0.0.0-20230222095454-474c27815378 // indirect
+	github.com/ClubWeGo/simple-tiktok/services/relationmicro v0.0.0-20230222095454-474c27815378 // indirect
+	github.com/ClubWeGo/simple-tiktok/services/videomicro v0.0.0-20230222095454-474c27815378 // indirect
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
 	github.com/andeya/ameda v1.5.3 // indirect

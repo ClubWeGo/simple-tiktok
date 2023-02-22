@@ -3,7 +3,7 @@ package rpc
 import (
 	"context"
 	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/pkg/errno"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
 )
 
 func GetAuthorId(ctx context.Context, vid int64) (uid int64, err error) {

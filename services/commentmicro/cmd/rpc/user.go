@@ -2,9 +2,9 @@ package rpc
 
 import (
 	"context"
-	"github.com/ClubWeGo/usermicro/dal/model"
-	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
-	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro/userservice"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro/userservice"
 	"github.com/cloudwego/kitex/client"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"log"

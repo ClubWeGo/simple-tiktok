@@ -7,8 +7,8 @@ import (
 	"sync"
 
 	"github.com/ClubWeGo/simple-tiktok/biz/model/core"
-	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
 	"github.com/prometheus/common/log"
 )
 

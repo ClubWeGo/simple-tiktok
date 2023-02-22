@@ -4,10 +4,10 @@ import (
 	"context"
 	"sync"
 
-	"github.com/ClubWeGo/commentmicro/kitex_gen/comment"
 	"github.com/ClubWeGo/simple-tiktok/pack"
-	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/ClubWeGo/simple-tiktok/services/commentmicro/kitex_gen/comment"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
 
 	"github.com/ClubWeGo/simple-tiktok/biz/model/interaction"
 	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite"

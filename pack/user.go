@@ -2,7 +2,7 @@ package pack
 
 import (
 	"github.com/ClubWeGo/simple-tiktok/biz/model/core"
-	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
 	"strconv"
 )
 

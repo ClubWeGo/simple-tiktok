@@ -2,8 +2,8 @@ package pack
 
 import (
 	"github.com/ClubWeGo/simple-tiktok/biz/model/core"
-	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
 )
 
 // Videos 将 videomicro.Video 列表转换为 core.Video 列表，针对每个用户，需要预先把用户对每个视频id的点赞状态和对作者id的关注状态传入

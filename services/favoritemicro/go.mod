@@ -3,7 +3,7 @@ module github.com/ClubWeGo/simple-tiktok/services/favoritemicro
 go 1.19
 
 require (
-	github.com/ClubWeGo/videomicro v0.0.0-20230220013200-4dee64770a5c
+	github.com/ClubWeGo/simple-tiktok/services/videomicro v0.0.0-20230222095454-474c27815378
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.4.4
 	github.com/go-sql-driver/mysql v1.7.0

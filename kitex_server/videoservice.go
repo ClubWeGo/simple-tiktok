@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/ClubWeGo/simple-tiktok/biz/model/core"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
 )
 
 // utils
