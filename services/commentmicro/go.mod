@@ -3,8 +3,7 @@ module github.com/ClubWeGo/simple-tiktok/services/commentmicro
 go 1.19
 
 require (
-	github.com/ClubWeGo/commentmicro v0.0.0-20230221133753-f02aff39de27
-	github.com/ClubWeGo/usermicro v0.0.0-20230218161017-d68d94d1dac8
+	github.com/ClubWeGo/simple-tiktok/services/usermicro v0.0.0-20230222101541-c0bae447259c
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.4.4
 	github.com/go-sql-driver/mysql v1.7.0
@@ -18,6 +17,7 @@ require (
 
 require (
 	github.com/bytedance/gopkg v0.0.0-20220531084716-665b4f21126f // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/iasm v0.0.0-20220818063314-28c361dae733 // indirect
 	github.com/choleraehyq/pid v0.0.15 // indirect
 	github.com/cloudwego/fastpb v0.0.3 // indirect

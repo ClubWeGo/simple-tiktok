@@ -23,15 +23,15 @@
 
 (微服务代码更新后，需主动执行来更新代码)
 
-go get github.com/ClubWeGo/videomicro@latest
+go get github.com/ClubWeGo/simple-tiktok/services/videomicro@latest
 
-go get github.com/ClubWeGo/usermicro@latest
+go get github.com/ClubWeGo/simple-tiktok/services/usermicro@latest
 
-go get github.com/ClubWeGo/relationmicro@latest
+go get github.com/ClubWeGo/simple-tiktok/services/relationmicro@latest
 
-go get github.com/ClubWeGo/favoritemicro@latest
+go get github.com/ClubWeGo/simple-tiktok/services/favoritemicro@latest
 
-go get github.com/ClubWeGo/commentmicro@latest
+go get github.com/ClubWeGo/simple-tiktok/services/commentmicro@latest
 
 
 # 说明

@@ -21,6 +21,16 @@ github.com/ClubWeGo/favoritemicro v0.0.0-20230221130053-a012e2f37ac3 h1:3tqBrZvk
 github.com/ClubWeGo/favoritemicro v0.0.0-20230221130053-a012e2f37ac3/go.mod h1:+ONb2T/vGvdEwB1bXvlC93KoIIN5c+lDjVqsg8EiQzU=
 github.com/ClubWeGo/relationmicro v0.0.0-20230221121729-815a12ae6608 h1:fWbgZ7LBKGIYFx4H6WLj33RpiZ66V3NUm2T082u3pMs=
 github.com/ClubWeGo/relationmicro v0.0.0-20230221121729-815a12ae6608/go.mod h1:/Tc8EIH6LqyqIC4lbmoDE7RyWJVBF8tbRSGkG76j/6w=
+github.com/ClubWeGo/simple-tiktok/services/commentmicro v0.0.0-20230222095454-474c27815378 h1:XLHpw0yY9BlrTlK7J7Ll+YNirVpCJ9GyoDi5zs1KD10=
+github.com/ClubWeGo/simple-tiktok/services/commentmicro v0.0.0-20230222095454-474c27815378/go.mod h1:4gu/0ATaPB4EbVTK62iEzp5h3GqHtjE7LNp1U1Ej2UM=
+github.com/ClubWeGo/simple-tiktok/services/favoritemicro v0.0.0-20230222095454-474c27815378 h1:N+fFS/JIoAQUnFJqJjjwNvAptZiRj8ecCFgY7KJ0zbU=
+github.com/ClubWeGo/simple-tiktok/services/favoritemicro v0.0.0-20230222095454-474c27815378/go.mod h1:9/8DwGXcsRqPNg/4JUkCS3jhdy4CmucoSyu5gWjbzQ4=
+github.com/ClubWeGo/simple-tiktok/services/relationmicro v0.0.0-20230222095454-474c27815378 h1:1p91f5F6tXQNkexDXX+BD0C4mg2+9jFd+ea3/2WzOYo=
+github.com/ClubWeGo/simple-tiktok/services/relationmicro v0.0.0-20230222095454-474c27815378/go.mod h1:zGLunatGgGQY2K/xbNEzU/1nQTiq6fkSh9FMqtUT6dI=
+github.com/ClubWeGo/simple-tiktok/services/usermicro v0.0.0-20230222101541-c0bae447259c h1:zF1FkmNq5VsTpGJuYgB8UYHwPg/dOeTws3S/GxXTgpk=
+github.com/ClubWeGo/simple-tiktok/services/usermicro v0.0.0-20230222101541-c0bae447259c/go.mod h1:47kmG7eKrnQnc4l3cTu47qUlvMquUNgg+VbR2HW1tMU=
+github.com/ClubWeGo/simple-tiktok/services/videomicro v0.0.0-20230222095454-474c27815378 h1:pcnjFS4qK6+hUiq0qLqGH5N3Wrq8AgNAmtu3ZmGLTwA=
+github.com/ClubWeGo/simple-tiktok/services/videomicro v0.0.0-20230222095454-474c27815378/go.mod h1:6w0OjlfXGq9lvKIplrlKQ1AVa7uWKtHs8SHH+ZHkNWU=
 github.com/ClubWeGo/usermicro v0.0.0-20230218161017-d68d94d1dac8 h1:khp8++vokeGjSu7DrLOV3OKoZByKNpvQgoAs6uzHsyE=
 github.com/ClubWeGo/usermicro v0.0.0-20230218161017-d68d94d1dac8/go.mod h1:t0WQl+w/flpA4yFJoCxdHnCb4cCDLWIStHQgUCSUPt8=
 github.com/ClubWeGo/videomicro v0.0.0-20230220013200-4dee64770a5c h1:M29y0DzI2jodwCbafb3fCUJL1ee8Gx0H1oLvYtfyvcA=

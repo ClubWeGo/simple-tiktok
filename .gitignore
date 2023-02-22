@@ -40,3 +40,5 @@ dumped_hertz_remote_config.json
 output/bin/videomicro
 >>>>>>> video
 !/services/relationmicro/main
+!/services/commentmicro/output/bin/
+!/services/relationmicro/output/bin/

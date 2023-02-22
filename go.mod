@@ -21,6 +21,7 @@ require (
 	github.com/ClubWeGo/simple-tiktok/services/commentmicro v0.0.0-20230222095454-474c27815378 // indirect
 	github.com/ClubWeGo/simple-tiktok/services/favoritemicro v0.0.0-20230222095454-474c27815378 // indirect
 	github.com/ClubWeGo/simple-tiktok/services/relationmicro v0.0.0-20230222095454-474c27815378 // indirect
+	github.com/ClubWeGo/simple-tiktok/services/usermicro v0.0.0-20230222101541-c0bae447259c // indirect
 	github.com/ClubWeGo/simple-tiktok/services/videomicro v0.0.0-20230222095454-474c27815378 // indirect
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect

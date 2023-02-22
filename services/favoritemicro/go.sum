@@ -16,8 +16,8 @@ github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.11.0/go.mod h1:HcM1YX14R7CJc
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.7.0/go.mod h1:yqy467j36fJxcRV2TzfVZ1pCb5vxm4BtZPUdYWe/Xo8=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/ClubWeGo/videomicro v0.0.0-20230220013200-4dee64770a5c h1:M29y0DzI2jodwCbafb3fCUJL1ee8Gx0H1oLvYtfyvcA=
-github.com/ClubWeGo/videomicro v0.0.0-20230220013200-4dee64770a5c/go.mod h1:SJiohnvP4Dk+iAO/cili779usv4VDj8eIX9RUEN4Cms=
+github.com/ClubWeGo/simple-tiktok/services/videomicro v0.0.0-20230222095454-474c27815378 h1:pcnjFS4qK6+hUiq0qLqGH5N3Wrq8AgNAmtu3ZmGLTwA=
+github.com/ClubWeGo/simple-tiktok/services/videomicro v0.0.0-20230222095454-474c27815378/go.mod h1:6w0OjlfXGq9lvKIplrlKQ1AVa7uWKtHs8SHH+ZHkNWU=
 github.com/HdrHistogram/hdrhistogram-go v1.1.2/go.mod h1:yDgFjdqOqDEKOvasDdhWNXYg9BVp4O+o5f6V/ehm6Oo=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
