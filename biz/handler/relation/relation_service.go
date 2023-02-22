@@ -4,9 +4,9 @@ package relation
 
 import (
 	"context"
-	relation "github.com/ClubWeGo/douyin/biz/model/relation"
-	"github.com/ClubWeGo/douyin/kitex_server"
-	"github.com/ClubWeGo/douyin/tools"
+	relation "github.com/ClubWeGo/simple-tiktok/biz/model/relation"
+	"github.com/ClubWeGo/simple-tiktok/kitex_server"
+	"github.com/ClubWeGo/simple-tiktok/tools"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )

@@ -4,11 +4,11 @@ package interaction
 
 import (
 	"context"
-	"github.com/ClubWeGo/douyin/kitex_server"
-	"github.com/ClubWeGo/douyin/tools"
-	"github.com/ClubWeGo/douyin/tools/errno"
+	"github.com/ClubWeGo/simple-tiktok/kitex_server"
+	"github.com/ClubWeGo/simple-tiktok/tools"
+	"github.com/ClubWeGo/simple-tiktok/tools/errno"
 
-	interaction "github.com/ClubWeGo/douyin/biz/model/interaction"
+	interaction "github.com/ClubWeGo/simple-tiktok/biz/model/interaction"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )

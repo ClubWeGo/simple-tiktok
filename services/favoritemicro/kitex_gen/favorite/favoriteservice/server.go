@@ -2,7 +2,7 @@
 package favoriteservice
 
 import (
-	favorite "github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
+	favorite "github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite"
 	server "github.com/cloudwego/kitex/server"
 )
 

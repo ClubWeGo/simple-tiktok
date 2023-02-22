@@ -1,7 +1,7 @@
 package pack
 
 import (
-	"github.com/ClubWeGo/favoritemicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal/model"
 )
 
 func Favorites(favorite []*model.Favorite) []int64 {

@@ -4,7 +4,7 @@ package favoriteservice
 
 import (
 	"context"
-	favorite "github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
+	favorite "github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )

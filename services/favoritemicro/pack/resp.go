@@ -2,8 +2,8 @@ package pack
 
 import (
 	"errors"
-	"github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
-	"github.com/ClubWeGo/favoritemicro/pkg/errno"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/pkg/errno"
 )
 
 func BuildBaseResp(err error) (resp *favorite.BaseResp) {

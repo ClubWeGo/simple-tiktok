@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"github.com/ClubWeGo/favoritemicro/kitex_gen/favorite/favoriteservice"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite/favoriteservice"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro/videoservice"
 	"github.com/cloudwego/kitex/client"
 	etcd "github.com/kitex-contrib/registry-etcd"

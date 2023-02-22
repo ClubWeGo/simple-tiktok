@@ -3,7 +3,7 @@
 package Relation
 
 import (
-	relation "github.com/ClubWeGo/douyin/biz/handler/relation"
+	relation "github.com/ClubWeGo/simple-tiktok/biz/handler/relation"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

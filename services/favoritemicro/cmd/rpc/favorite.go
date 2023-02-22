@@ -2,7 +2,7 @@ package rpc
 
 import (
 	"context"
-	"github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite"
 	"log"
 )
 

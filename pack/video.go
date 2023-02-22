@@ -1,7 +1,7 @@
 package pack
 
 import (
-	"github.com/ClubWeGo/douyin/biz/model/core"
+	"github.com/ClubWeGo/simple-tiktok/biz/model/core"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 )

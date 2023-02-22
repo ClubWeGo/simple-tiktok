@@ -3,7 +3,7 @@
 package Interaction
 
 import (
-	interaction "github.com/ClubWeGo/douyin/biz/handler/interaction"
+	interaction "github.com/ClubWeGo/simple-tiktok/biz/handler/interaction"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

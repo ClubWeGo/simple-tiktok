@@ -5,7 +5,7 @@ package interaction
 import (
 	"context"
 
-	interaction "github.com/ClubWeGo/douyin/biz/model/interaction"
+	interaction "github.com/ClubWeGo/simple-tiktok/biz/model/interaction"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )

@@ -3,7 +3,7 @@
 package main
 
 import (
-	handler "github.com/ClubWeGo/douyin/biz/handler"
+	handler "github.com/ClubWeGo/simple-tiktok/biz/handler"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

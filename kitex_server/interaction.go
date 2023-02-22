@@ -5,13 +5,13 @@ import (
 	"sync"
 
 	"github.com/ClubWeGo/commentmicro/kitex_gen/comment"
-	"github.com/ClubWeGo/douyin/pack"
+	"github.com/ClubWeGo/simple-tiktok/pack"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 
-	"github.com/ClubWeGo/douyin/biz/model/interaction"
-	"github.com/ClubWeGo/douyin/tools/errno"
-	"github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
+	"github.com/ClubWeGo/simple-tiktok/biz/model/interaction"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite"
+	"github.com/ClubWeGo/simple-tiktok/tools/errno"
 )
 
 func AddFavorite(ctx context.Context, uid int64, vid int64) (*interaction.FavoriteResp, error) {

@@ -5,8 +5,8 @@ package main
 import (
 	"log"
 
-	"github.com/ClubWeGo/douyin/kitex_server"
-	"github.com/ClubWeGo/douyin/minio_server"
+	"github.com/ClubWeGo/simple-tiktok/kitex_server"
+	"github.com/ClubWeGo/simple-tiktok/minio_server"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	etcd "github.com/kitex-contrib/registry-etcd"
 )

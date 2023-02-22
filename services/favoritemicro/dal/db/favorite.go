@@ -2,10 +2,9 @@ package db
 
 import (
 	"context"
-	"github.com/ClubWeGo/favoritemicro/dal"
-	"github.com/ClubWeGo/favoritemicro/dal/model"
-	. "github.com/ClubWeGo/favoritemicro/dal/query"
-	"github.com/ClubWeGo/favoritemicro/pkg/errno"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/pkg/errno"
 	"strconv"
 )
 

@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"github.com/ClubWeGo/favoritemicro/cmd/rpc"
-	"github.com/ClubWeGo/favoritemicro/dal/rdb"
-	favorite "github.com/ClubWeGo/favoritemicro/kitex_gen/favorite"
-	"github.com/ClubWeGo/favoritemicro/pack"
-	"github.com/ClubWeGo/favoritemicro/pkg/errno"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/cmd/rpc"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal/rdb"
+	favorite "github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/pack"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/pkg/errno"
 	"log"
 )
 

@@ -5,7 +5,7 @@ package relation
 import (
 	"context"
 	"fmt"
-	"github.com/ClubWeGo/douyin/biz/model/core"
+	"github.com/ClubWeGo/simple-tiktok/biz/model/core"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 

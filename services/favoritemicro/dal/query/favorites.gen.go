@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/ClubWeGo/favoritemicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal/model"
 )
 
 func newFavorite(db *gorm.DB, opts ...gen.DOOption) favorite {

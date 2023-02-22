@@ -8,9 +8,9 @@ import (
 
 	"strconv"
 
-	"github.com/ClubWeGo/douyin/biz/model/core"
-	"github.com/ClubWeGo/douyin/biz/model/relation"
 	relationserver "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
+	"github.com/ClubWeGo/simple-tiktok/biz/model/core"
+	"github.com/ClubWeGo/simple-tiktok/biz/model/relation"
 	"github.com/prometheus/common/log"
 )
 

@@ -3,7 +3,7 @@ package kitex_server
 import (
 	"log"
 
-	"github.com/ClubWeGo/favoritemicro/kitex_gen/favorite/favoriteservice"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite/favoriteservice"
 
 	"github.com/ClubWeGo/commentmicro/kitex_gen/comment/commentservice"
 	"github.com/ClubWeGo/relationmicro/kitex_gen/relation/combineservice"

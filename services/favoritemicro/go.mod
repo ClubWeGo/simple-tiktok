@@ -1,8 +1,9 @@
-module github.com/ClubWeGo/favoritemicro
+module github.com/ClubWeGo/simple-tiktok/services/favoritemicro
 
 go 1.19
 
 require (
+	github.com/ClubWeGo/videomicro v0.0.0-20230220013200-4dee64770a5c
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.4.4
 	github.com/go-sql-driver/mysql v1.7.0
@@ -16,7 +17,6 @@ require (
 )
 
 require (
-	github.com/ClubWeGo/videomicro v0.0.0-20230220013200-4dee64770a5c // indirect
 	github.com/bytedance/gopkg v0.0.0-20220531084716-665b4f21126f // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/iasm v0.0.0-20220818063314-28c361dae733 // indirect
@@ -52,7 +52,6 @@ require (
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/term v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ClubWeGo/favoritemicro/dal"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal"
 )
 
 func main() {

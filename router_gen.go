@@ -3,7 +3,7 @@
 package main
 
 import (
-	router "github.com/ClubWeGo/douyin/biz/router"
+	router "github.com/ClubWeGo/simple-tiktok/biz/router"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

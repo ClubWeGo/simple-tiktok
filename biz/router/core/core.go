@@ -3,7 +3,7 @@
 package Core
 
 import (
-	core "github.com/ClubWeGo/douyin/biz/handler/core"
+	core "github.com/ClubWeGo/simple-tiktok/biz/handler/core"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

@@ -3,9 +3,9 @@
 package router
 
 import (
-	core "github.com/ClubWeGo/douyin/biz/router/core"
-	interaction "github.com/ClubWeGo/douyin/biz/router/interaction"
-	relation "github.com/ClubWeGo/douyin/biz/router/relation"
+	core "github.com/ClubWeGo/simple-tiktok/biz/router/core"
+	interaction "github.com/ClubWeGo/simple-tiktok/biz/router/interaction"
+	relation "github.com/ClubWeGo/simple-tiktok/biz/router/relation"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

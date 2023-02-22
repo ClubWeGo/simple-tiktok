@@ -5,7 +5,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/ClubWeGo/douyin/biz/model/core"
+	"github.com/ClubWeGo/simple-tiktok/biz/model/core"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 )
 

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/ClubWeGo/favoritemicro/cmd/rpc"
-	"github.com/ClubWeGo/favoritemicro/dal"
-	favorite "github.com/ClubWeGo/favoritemicro/kitex_gen/favorite/favoriteservice"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/cmd/rpc"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal"
+	favorite "github.com/ClubWeGo/simple-tiktok/services/favoritemicro/kitex_gen/favorite/favoriteservice"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	etcd "github.com/kitex-contrib/registry-etcd"

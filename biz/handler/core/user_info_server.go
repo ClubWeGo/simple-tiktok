@@ -6,9 +6,9 @@ import (
 	"context"
 	"sync"
 
-	core "github.com/ClubWeGo/douyin/biz/model/core"
-	"github.com/ClubWeGo/douyin/kitex_server"
-	"github.com/ClubWeGo/douyin/tools"
+	core "github.com/ClubWeGo/simple-tiktok/biz/model/core"
+	"github.com/ClubWeGo/simple-tiktok/kitex_server"
+	"github.com/ClubWeGo/simple-tiktok/tools"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )

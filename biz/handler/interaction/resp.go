@@ -1,7 +1,7 @@
 package interaction
 
 import (
-	"github.com/ClubWeGo/douyin/tools/errno"
+	"github.com/ClubWeGo/simple-tiktok/tools/errno"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )

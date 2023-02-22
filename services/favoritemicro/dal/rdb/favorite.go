@@ -3,8 +3,8 @@ package rdb
 import (
 	"context"
 	"fmt"
-	"github.com/ClubWeGo/favoritemicro/dal"
-	"github.com/ClubWeGo/favoritemicro/pkg/errno"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/pkg/errno"
 	"github.com/redis/go-redis/v9"
 	"strconv"
 )

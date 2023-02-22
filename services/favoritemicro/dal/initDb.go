@@ -1,8 +1,8 @@
 package dal
 
 import (
-	"github.com/ClubWeGo/favoritemicro/dal/model"
-	"github.com/ClubWeGo/favoritemicro/dal/query"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/dal/query"
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
 	"gorm.io/gorm"

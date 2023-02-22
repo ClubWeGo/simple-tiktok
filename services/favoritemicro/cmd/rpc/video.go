@@ -2,7 +2,7 @@ package rpc
 
 import (
 	"context"
-	"github.com/ClubWeGo/favoritemicro/pkg/errno"
+	"github.com/ClubWeGo/simple-tiktok/services/favoritemicro/pkg/errno"
 	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 )
 
