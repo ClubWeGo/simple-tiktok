@@ -1,7 +1,3 @@
 kitexinfo:
-<<<<<<< HEAD
-   ServiceName: 'usermicro'
-=======
    ServiceName: 'videomicro'
->>>>>>> video
    ToolVersion: 'v0.4.4'

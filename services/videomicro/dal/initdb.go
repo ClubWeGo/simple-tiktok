@@ -1,21 +1,12 @@
 package dal
 
 import (
-<<<<<<< HEAD
-	"github.com/ClubWeGo/usermicro/utils"
-	"gorm.io/driver/mysql"
-
-	"github.com/ClubWeGo/usermicro/dal/query"
 	"log"
 
-=======
-	"log"
-
-	"github.com/ClubWeGo/videomicro/dal/query"
-	"github.com/ClubWeGo/videomicro/utils"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/dal/query"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/utils"
 
 	"gorm.io/driver/mysql"
->>>>>>> video
 	"gorm.io/gorm"
 )
 

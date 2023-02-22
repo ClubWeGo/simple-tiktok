@@ -16,62 +16,39 @@ import (
 )
 
 var (
-<<<<<<< HEAD
-	Q    = new(Query)
-	User *user
-=======
 	Q          = new(Query)
 	Video      *video
 	VideoCount *videoCount
->>>>>>> video
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
-<<<<<<< HEAD
-	User = &Q.User
-=======
 	Video = &Q.Video
 	VideoCount = &Q.VideoCount
->>>>>>> video
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-<<<<<<< HEAD
-		db:   db,
-		User: newUser(db, opts...),
-=======
 		db:         db,
 		Video:      newVideo(db, opts...),
 		VideoCount: newVideoCount(db, opts...),
->>>>>>> video
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-<<<<<<< HEAD
-	User user
-=======
 	Video      video
 	VideoCount videoCount
->>>>>>> video
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-<<<<<<< HEAD
-		db:   db,
-		User: q.User.clone(db),
-=======
 		db:         db,
 		Video:      q.Video.clone(db),
 		VideoCount: q.VideoCount.clone(db),
->>>>>>> video
 	}
 }
 
@@ -85,34 +62,21 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-<<<<<<< HEAD
-		db:   db,
-		User: q.User.replaceDB(db),
-=======
 		db:         db,
 		Video:      q.Video.replaceDB(db),
 		VideoCount: q.VideoCount.replaceDB(db),
->>>>>>> video
 	}
 }
 
 type queryCtx struct {
-<<<<<<< HEAD
-	User IUserDo
-=======
 	Video      IVideoDo
 	VideoCount IVideoCountDo
->>>>>>> video
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-<<<<<<< HEAD
-		User: q.User.WithContext(ctx),
-=======
 		Video:      q.Video.WithContext(ctx),
 		VideoCount: q.VideoCount.WithContext(ctx),
->>>>>>> video
 	}
 }
 

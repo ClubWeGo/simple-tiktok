@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-<<<<<<< HEAD
-RUN_NAME="usermicro"
-=======
 RUN_NAME="videomicro"
->>>>>>> video
 
 mkdir -p output/bin
 cp script/* output/

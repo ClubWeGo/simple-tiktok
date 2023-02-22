@@ -3,7 +3,7 @@ package kitex_server
 import (
 	"log"
 
-	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro/userservice"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro/userservice"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/discovery"
 )

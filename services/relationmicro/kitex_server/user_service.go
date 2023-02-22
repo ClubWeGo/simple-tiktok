@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_gen/relation"
-	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
 )
 
 // 根据userId 获取用户信息
