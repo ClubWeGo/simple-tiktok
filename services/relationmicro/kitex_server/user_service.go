@@ -3,7 +3,7 @@ package kitex_server
 import (
 	"context"
 	"fmt"
-	"github.com/ClubWeGo/relationmicro/kitex_gen/relation"
+	"github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_gen/relation"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
 )
 

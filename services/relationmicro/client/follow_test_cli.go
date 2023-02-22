@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	relation "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
-	relationService "github.com/ClubWeGo/relationmicro/kitex_gen/relation/relationservice"
+	relation "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_gen/relation"
+	relationService "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_gen/relation/relationservice"
 	"github.com/cloudwego/kitex/client"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"log"
@@ -71,8 +71,6 @@ func main() {
 		fmt.Println(user)
 	}
 
-
-
 	*myUid = 1
 	client.FollowMethod(context.Background(), &relation.FollowReq{MyUid: *myUid, TargetUid: 3, ActionType: 1})
 	client.FollowMethod(context.Background(), &relation.FollowReq{MyUid: *myUid, TargetUid: 2, ActionType: 1})
@@ -83,7 +81,6 @@ func main() {
 	for _, friend := range friendList.GetFriendList() {
 		fmt.Println(friend)
 	}
-
 
 	userIds := []int64{2009, 7777, 8888}
 	resp, err := client.GetIsFollowsMethod(context.Background(), &relation.GetIsFollowsReq{MyUid: 2006, UserIds: userIds})

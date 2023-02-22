@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/ClubWeGo/usermicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
 	"gorm.io/gorm"

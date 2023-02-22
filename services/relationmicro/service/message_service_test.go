@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	redisUtil "github.com/ClubWeGo/relationmicro/util"
+	redisUtil "github.com/ClubWeGo/simple-tiktok/services/relationmicro/util"
 )
 
 // go test -v message_service_test.go message_service.go

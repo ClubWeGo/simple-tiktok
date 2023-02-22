@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/ClubWeGo/usermicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/model"
 )
 
 func newUser(db *gorm.DB, opts ...gen.DOOption) user {

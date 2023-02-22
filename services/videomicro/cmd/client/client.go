@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro/videoservice"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro/videoservice"
 
 	"github.com/cloudwego/kitex/client"
 	etcd "github.com/kitex-contrib/registry-etcd"

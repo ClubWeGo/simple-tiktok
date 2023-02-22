@@ -4,7 +4,7 @@ package relationservice
 
 import (
 	"context"
-	relation "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
+	relation "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_gen/relation"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )

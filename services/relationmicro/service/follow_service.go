@@ -5,8 +5,8 @@ import (
 	"log"
 	"strconv"
 
-	kitexServer "github.com/ClubWeGo/relationmicro/kitex_server"
-	redisUtil "github.com/ClubWeGo/relationmicro/util"
+	kitexServer "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_server"
+	redisUtil "github.com/ClubWeGo/simple-tiktok/services/relationmicro/util"
 )
 
 //// 关注者

@@ -1,4 +1,4 @@
-module github.com/ClubWeGo/usermicro
+module github.com/ClubWeGo/simple-tiktok/services/usermicro
 
 go 1.19
 

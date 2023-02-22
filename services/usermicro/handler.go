@@ -5,10 +5,10 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 
-	"github.com/ClubWeGo/usermicro/dal/model"
-	"github.com/ClubWeGo/usermicro/dal/query"
-	service "github.com/ClubWeGo/usermicro/dal/service"
-	usermicro "github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/query"
+	service "github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/service"
+	usermicro "github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
 )
 
 func MD5(v string) string {

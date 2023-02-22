@@ -4,7 +4,7 @@ package userservice
 
 import (
 	"context"
-	usermicro "github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
+	usermicro "github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )

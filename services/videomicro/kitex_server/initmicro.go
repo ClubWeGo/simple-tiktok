@@ -7,8 +7,8 @@ import (
 
 	"github.com/ClubWeGo/commentmicro/kitex_gen/comment/commentservice"
 	"github.com/ClubWeGo/relationmicro/kitex_gen/relation/combineservice"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro/videoservice"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro/userservice"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro/videoservice"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/discovery"
 )

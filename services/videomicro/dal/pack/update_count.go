@@ -1,8 +1,8 @@
 package pack
 
 import (
-	"github.com/ClubWeGo/videomicro/dal/model"
-	"github.com/ClubWeGo/videomicro/dal/query"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/dal/query"
 )
 
 func AddCount(authorId int64) error {

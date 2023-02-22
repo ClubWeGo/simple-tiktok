@@ -4,9 +4,9 @@ import (
 	"log"
 	"net"
 
-	"github.com/ClubWeGo/videomicro/dal"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/dal"
 
-	videomicro "github.com/ClubWeGo/videomicro/kitex_gen/videomicro/videoservice"
+	videomicro "github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro/videoservice"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	etcd "github.com/kitex-contrib/registry-etcd"

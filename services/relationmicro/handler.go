@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	relation "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
-	"github.com/ClubWeGo/relationmicro/service"
+	relation "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_gen/relation"
+	"github.com/ClubWeGo/simple-tiktok/services/relationmicro/service"
 )
 
 // 响应码
@@ -295,7 +295,7 @@ func (s *CombineServiceImpl) GetIsFollowsMethod(ctx context.Context, request *re
 	isFollows, err := service.FindIsFollows(request.GetMyUid(), request.GetUserIds())
 	if err != nil {
 		return &relation.GetIsFollowsResp{
-			StatusCode: ERROR,
+			StatusCode:  ERROR,
 			IsFollowMap: nil,
 		}, nil
 	}
@@ -309,7 +309,7 @@ func (s *CombineServiceImpl) GetIsFollowsMethod(ctx context.Context, request *re
 		}
 	}
 	return &relation.GetIsFollowsResp{
-		StatusCode: SUCCESS,
+		StatusCode:  SUCCESS,
 		IsFollowMap: isFollowMap,
 	}, nil
 }

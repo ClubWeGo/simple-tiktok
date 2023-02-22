@@ -4,12 +4,12 @@ import (
 	"log"
 	"net"
 
-	relationmicro "github.com/ClubWeGo/relationmicro/kitex_gen/relation/relationservice"
-	redisUtil "github.com/ClubWeGo/relationmicro/util"
+	relationmicro "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_gen/relation/relationservice"
+	kitexServer "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_server"
+	redisUtil "github.com/ClubWeGo/simple-tiktok/services/relationmicro/util"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	kitexServer "github.com/ClubWeGo/relationmicro/kitex_server"
 )
 
 func main() {

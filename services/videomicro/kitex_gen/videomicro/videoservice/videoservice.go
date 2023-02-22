@@ -4,7 +4,7 @@ package videoservice
 
 import (
 	"context"
-	videomicro "github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	videomicro "github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )

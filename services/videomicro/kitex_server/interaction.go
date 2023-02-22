@@ -6,8 +6,8 @@ import (
 
 	"github.com/ClubWeGo/commentmicro/kitex_gen/comment"
 	"github.com/ClubWeGo/douyin/pack"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
 	"github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
-	"github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
 
 	"github.com/ClubWeGo/douyin/biz/model/interaction"
 	"github.com/ClubWeGo/douyin/tools/errno"

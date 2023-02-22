@@ -2,7 +2,7 @@
 package userservice
 
 import (
-	usermicro "github.com/ClubWeGo/usermicro/kitex_gen/usermicro"
+	usermicro "github.com/ClubWeGo/simple-tiktok/services/usermicro/kitex_gen/usermicro"
 	server "github.com/cloudwego/kitex/server"
 )
 

@@ -1,4 +1,4 @@
-module github.com/ClubWeGo/relationmicro
+module github.com/ClubWeGo/simple-tiktok/services/relationmicro
 
 go 1.19
 

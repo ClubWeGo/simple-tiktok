@@ -3,7 +3,7 @@ package service
 import (
 	"errors"
 
-	"github.com/ClubWeGo/usermicro/dal/query"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/query"
 )
 
 // 为什么返回查询对象？更新用户信息的场景，需要用这个对象直接去更新，而不是数据结果

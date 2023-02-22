@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	redisUtil "github.com/ClubWeGo/relationmicro/util"
+	redisUtil "github.com/ClubWeGo/simple-tiktok/services/relationmicro/util"
 )
 
 type Message struct {

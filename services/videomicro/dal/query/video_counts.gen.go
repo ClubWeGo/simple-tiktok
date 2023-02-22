@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/ClubWeGo/videomicro/dal/model"
+	"github.com/ClubWeGo/simple-tiktok/services/videomicro/dal/model"
 )
 
 func newVideoCount(db *gorm.DB, opts ...gen.DOOption) videoCount {

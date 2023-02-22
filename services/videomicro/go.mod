@@ -1,4 +1,4 @@
-module github.com/ClubWeGo/videomicro
+module github.com/ClubWeGo/simple-tiktok/services/videomicro
 
 go 1.19
 

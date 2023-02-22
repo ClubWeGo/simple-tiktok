@@ -1,10 +1,10 @@
 package dal
 
 import (
-	"github.com/ClubWeGo/usermicro/utils"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/utils"
 	"gorm.io/driver/mysql"
 
-	"github.com/ClubWeGo/usermicro/dal/query"
+	"github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/query"
 	"log"
 
 	"gorm.io/gorm"

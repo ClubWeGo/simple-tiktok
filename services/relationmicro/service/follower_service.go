@@ -2,11 +2,11 @@ package service
 
 import (
 	"fmt"
-	kitexServer "github.com/ClubWeGo/relationmicro/kitex_server"
+	kitexServer "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_server"
 	"log"
 	"strconv"
 
-	redisUtil "github.com/ClubWeGo/relationmicro/util"
+	redisUtil "github.com/ClubWeGo/simple-tiktok/services/relationmicro/util"
 )
 
 type FollowerList struct {

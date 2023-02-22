@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	redisUtil "github.com/ClubWeGo/relationmicro/util"
+	redisUtil "github.com/ClubWeGo/simple-tiktok/services/relationmicro/util"
 )
 
 // 关注
@@ -75,7 +75,7 @@ func TestFindNoneFollow(t *testing.T) {
 
 func TestFindIsFollows(t *testing.T) {
 	userIds := []int64{2009, 20027}
-	isFollowMap, err := FindIsFollows(2006 , userIds)
+	isFollowMap, err := FindIsFollows(2006, userIds)
 	if err != nil {
 		t.Error(err)
 	}

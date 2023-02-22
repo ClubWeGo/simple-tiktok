@@ -2,7 +2,7 @@
 package videoservice
 
 import (
-	videomicro "github.com/ClubWeGo/videomicro/kitex_gen/videomicro"
+	videomicro "github.com/ClubWeGo/simple-tiktok/services/videomicro/kitex_gen/videomicro"
 	server "github.com/cloudwego/kitex/server"
 )
 

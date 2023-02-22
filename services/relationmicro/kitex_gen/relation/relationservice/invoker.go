@@ -3,7 +3,7 @@
 package relationservice
 
 import (
-	relation "github.com/ClubWeGo/relationmicro/kitex_gen/relation"
+	relation "github.com/ClubWeGo/simple-tiktok/services/relationmicro/kitex_gen/relation"
 	server "github.com/cloudwego/kitex/server"
 )
 
