@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+<<<<<<< HEAD
+RUN_NAME="relationmicor"
+=======
+RUN_NAME="commentmicro"
+>>>>>>> comment
+
+mkdir -p output/bin
+cp script/* output/
+chmod +x output/bootstrap.sh
+
+if [ "$IS_SYSTEM_TEST_ENV" != "1" ]; then
+    go build -o output/bin/${RUN_NAME}
+else
+    go test -c -covermode=set -o output/bin/${RUN_NAME} -coverpkg=./...
+fi
