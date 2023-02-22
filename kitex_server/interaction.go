@@ -49,7 +49,7 @@ func GetFavoriteList(ctx context.Context, uid int64) (favorites *interaction.Fav
 		UserId: uid,
 	})
 	if err != nil {
-		return nil, err
+		return nil, errno.RPCErr.WithMessage(err.Error())
 	}
 	favoriteIdList := favoriteListRes.VideoIdList
 	videosResp, err := Videoclient.GetVideoSetByIdSetMethod(
@@ -57,7 +57,7 @@ func GetFavoriteList(ctx context.Context, uid int64) (favorites *interaction.Fav
 			IdSet: favoriteIdList,
 		})
 	if err != nil {
-		return nil, err
+		return nil, errno.RPCErr.WithMessage(err.Error())
 	}
 	videos := videosResp.VideoSet
 	videoIdList := make([]int64, 0)
@@ -65,10 +65,6 @@ func GetFavoriteList(ctx context.Context, uid int64) (favorites *interaction.Fav
 	for _, v := range videos {
 		videoIdList = append(videoIdList, v.Id)
 		authorIdList = append(authorIdList, v.AuthorId)
-	}
-
-	if err != nil {
-		return nil, err
 	}
 	resp, err := Userclient.GetUserSetByIdSetMethod(ctx, &usermicro.GetUserSetByIdSetReq{
 		IdSet: authorIdList,
@@ -83,7 +79,7 @@ func GetFavoriteList(ctx context.Context, uid int64) (favorites *interaction.Fav
 	}
 	isFollowMap, err := GetIsFollowMapByUserIdSet(uid, authorIdList)
 	if err != nil {
-		return nil, err
+		return nil, errno.RPCErr.WithMessage(err.Error())
 	}
 	return &interaction.FavoriteListResp{
 		StatusCode: favoriteListRes.BaseResp.StatusCode,

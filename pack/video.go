@@ -14,7 +14,7 @@ func Videos(videos []*videomicro.Video, authors []*usermicro.UserInfo, isFavorit
 		authorMap[a.Id] = a
 	}
 
-	var res []*core.Video
+	res := make([]*core.Video, 0, len(videos))
 	for _, v := range videos {
 		res = append(res, Video(v, authorMap[v.AuthorId], isFavorites[v.Id], isFollows[v.AuthorId]))
 	}
