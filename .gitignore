@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.o
 *.a
 *.so
@@ -35,3 +36,6 @@ _testmain.go
 *.local.yml
 dumped_hertz_remote_config.json
 		  
+=======
+output/bin/videomicro
+>>>>>>> video
