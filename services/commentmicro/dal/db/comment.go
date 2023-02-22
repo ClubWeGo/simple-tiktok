@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"github.com/ClubWeGo/simple-tiktok/services/commentmicro/dal/model"
+	. "github.com/ClubWeGo/simple-tiktok/services/commentmicro/dal/query"
 	"github.com/ClubWeGo/simple-tiktok/services/commentmicro/pkg/errno"
 )
 

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/ClubWeGo/commentmicro/dal"
-	comment "github.com/ClubWeGo/commentmicro/kitex_gen/comment/commentservice"
+	"github.com/ClubWeGo/simple-tiktok/services/commentmicro/dal"
+	comment "github.com/ClubWeGo/simple-tiktok/services/commentmicro/kitex_gen/comment/commentservice"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	etcd "github.com/kitex-contrib/registry-etcd"
