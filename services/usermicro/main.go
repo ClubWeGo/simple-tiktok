@@ -13,7 +13,8 @@ import (
 
 func main() {
 
-	dsn := "root:yutian@mysql+ssh(127.0.0.1:3306)/simpletk?charset=utf8&parseTime=True&loc=Local"
+	dsn := "root:yutian@tcp(127.0.0.1:3306)/simpletk?charset=utf8&parseTime=True&loc=Local"
+	dal.InitUser()
 	dal.InitDB(dsn)
 
 	r, err := etcd.NewEtcdRegistry([]string{"0.0.0.0:2379"})

@@ -15,8 +15,8 @@ import (
 func main() {
 
 	config := redisUtil.Config{
-		Url:         "localhost:6379",
-		Password:    "123456",
+		Url: "localhost:6379",
+		//Password:    "123456",
 		DB:          0,
 		MaxIdle:     10,
 		MaxActive:   10,

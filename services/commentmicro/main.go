@@ -19,7 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	addr, _ := net.ResolveTCPAddr("tcp", "0.0.0.0:10010")
+	addr, _ := net.ResolveTCPAddr("tcp", "0.0.0.0:10004")
 	svr := comment.NewServer(new(CommentServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "commentservice"}),
 		server.WithRegistry(r),

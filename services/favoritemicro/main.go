@@ -21,7 +21,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	addr, _ := net.ResolveTCPAddr("tcp", "0.0.0.0:10005")
+	addr, _ := net.ResolveTCPAddr("tcp", "0.0.0.0:10003")
 	svr := favorite.NewServer(new(FavoriteServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "favoriteservice"}),
 		server.WithRegistry(registry),

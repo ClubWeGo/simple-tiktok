@@ -1,7 +1,6 @@
 package dal
 
 import (
-	"github.com/ClubWeGo/simple-tiktok/services/usermicro/utils"
 	"gorm.io/driver/mysql"
 
 	"github.com/ClubWeGo/simple-tiktok/services/usermicro/dal/query"
@@ -13,7 +12,7 @@ import (
 var DB *gorm.DB
 
 func InitDB(dsn string) {
-	utils.RegisterSSH()
+	//utils.RegisterSSH()
 	database, err := gorm.Open(mysql.Open(dsn))
 	if err != nil {
 		log.Fatal(err)

@@ -48,10 +48,10 @@ func Init(config Config) {
 				return nil, err
 			}
 			// 验证密码
-			if _, err := c.Do("AUTH", config.Password); err != nil {
-				c.Close()
-				return nil, err
-			}
+			//if _, err := c.Do("AUTH", config.Password); err != nil {
+			//	c.Close()
+			//	return nil, err
+			//}
 
 			// 选择库
 			if _, err := c.Do("SELECT", config.DB); err != nil {

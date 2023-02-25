@@ -19,8 +19,9 @@ func Init() {
 		OutPath: "./dal/query",
 		Mode:    gen.WithDefaultQuery, //| gen.WithQueryInterface, gen.WithoutContext | // generate mode
 	})
-	RegisterSSH()
-	db, _ := gorm.Open(mysql.Open("root:yutian@mysql+ssh(127.0.0.1:3306)/simpletk?charset=utf8mb4&parseTime=True&loc=Local"))
+	//RegisterSSH()
+	//db, _ := gorm.Open(mysql.Open("root:yutian@mysql+ssh(127.0.0.1:3306)/simpletk?charset=utf8mb4&parseTime=True&loc=Local"))
+	db, _ := gorm.Open(mysql.Open("root:yutian@tcp(127.0.0.1:3306)/simpletk?charset=utf8mb4&parseTime=True&loc=Local"))
 	err := db.AutoMigrate(&model.Favorite{})
 	if err != nil {
 		return
