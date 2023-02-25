@@ -1,0 +1,98 @@
+version: "3.3"
+
+
+
+
+services:
+
+  mysql:
+    image: 'mysql:latest'
+#    ports:
+#      - "3306:3306"
+    network_mode: "host"
+    environment:
+      - MYSQL_DATABASE=simpletk
+      - MYSQL_ROOT_PASSWORD=yutian
+    volumes:
+      - ~/mysql/data:/var/lib/mysql
+
+  redis:
+    image: 'redis:latest'
+#    ports:
+#    - "6379:6379"
+    network_mode: "host"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ~/redis/data:/data
+
+  Etcd:
+    image: 'bitnami/etcd:latest'
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+#    ports:
+#      - "2379:2379"
+    network_mode: "host"
+
+  Minio:
+    image: 'quay.io/minio/minio:latest'
+#    ports:
+#      - "9000:9000"
+#      - "9090:9090"
+    network_mode: "host"
+    volumes:
+      - ~/minio/data:/data
+    environment:
+      MINIO_ROOT_USER: clubwego
+      MINIO_ROOT_PASSWORD: simpletiktok
+    command: server /data --console-address ":9090"
+
+  usermicro:
+    image: 'usermicro:latest'
+    network_mode: "host"
+    depends_on:
+      - mysql
+      - redis
+      - Etcd
+      - Minio
+#    ports:
+#      - "10000:10000"
+
+  videomicro:
+    image: "videomicro:latest"
+    depends_on:
+      - usermicro
+    network_mode: "host"
+#    ports:
+#      - "10001:10001"
+
+  relation-micro:
+    image: 'relationmicro:latest'
+    network_mode: "host"
+    depends_on:
+      - videomicro
+#    ports:
+#      - "10002:10002"
+
+  favoritemicro:
+    image: "favoritemicro:latest"
+    network_mode: "host"
+    depends_on:
+      - relation-micro
+#    ports:
+#      - "10003:10003"
+
+  comment-micro:
+    image: 'commentmicro:latest'
+    depends_on:
+      - favoritemicro
+    network_mode: "host"
+#    ports:
+#      - "10004:10004"
+
+  simple-tiktok:
+    image: simple-tiktok:latest
+    network_mode: "host"
+    depends_on:
+      - comment-micro
+

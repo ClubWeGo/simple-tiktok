@@ -1,9 +1,10 @@
-FROM ubuntu:20.04
-RUN sed -i s@/archive.ubuntu.com/@/mirrors.163.com/@g /etc/apt/sources.list
-RUN sed -i s@/security.ubuntu.com/@/mirrors.163.com/@g /etc/apt/sources.list
-RUN apt-get clean
-RUN apt-get -y update
+FROM golang:1.19.6 AS builder
+WORKDIR $GOPATH/src/usermicro
+ADD . .
+RUN go build .
 
-WORKDIR ~/
-Add ./output .
-ENTRYPOINT ["./bootstrap.sh"]
+FROM ubuntu:latest
+WORKDIR usermicro
+COPY --from=builder /go/src/usermicro/usermicro .
+EXPOSE 10000
+CMD ["./usermicro"]
